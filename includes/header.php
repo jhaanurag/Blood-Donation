@@ -29,9 +29,6 @@ include_once 'includes/db.php';
                     <?php if(isset($_SESSION['donor_id'])): ?>
                         <a href="/dashboard/donor.php" class="hover:text-red-200 transition">My Dashboard</a>
                         <a href="/logout.php" class="hover:text-red-200 transition">Logout</a>
-                    <?php elseif(isset($_SESSION['admin_id'])): ?>
-                        <a href="/dashboard/admin.php" class="hover:text-red-200 transition">Admin Dashboard</a>
-                        <a href="/logout.php" class="hover:text-red-200 transition">Logout</a>
                     <?php else: ?>
                         <a href="/login.php" class="hover:text-red-200 transition">Login</a>
                         <a href="/register.php" class="hover:text-red-200 transition">Register</a>
@@ -51,9 +48,6 @@ include_once 'includes/db.php';
                 <a href="/request.php" class="block py-2 hover:text-red-200 transition">Request Blood</a>
                 <?php if(isset($_SESSION['donor_id'])): ?>
                     <a href="/dashboard/donor.php" class="block py-2 hover:text-red-200 transition">My Dashboard</a>
-                    <a href="/logout.php" class="block py-2 hover:text-red-200 transition">Logout</a>
-                <?php elseif(isset($_SESSION['admin_id'])): ?>
-                    <a href="/dashboard/admin.php" class="block py-2 hover:text-red-200 transition">Admin Dashboard</a>
                     <a href="/logout.php" class="block py-2 hover:text-red-200 transition">Logout</a>
                 <?php else: ?>
                     <a href="/login.php" class="block py-2 hover:text-red-200 transition">Login</a>

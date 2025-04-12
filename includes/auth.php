@@ -10,31 +10,12 @@ function is_donor_logged_in() {
 }
 
 /**
- * Check if user is logged in as admin
- * @return bool
- */
-function is_admin_logged_in() {
-    return isset($_SESSION['admin_id']);
-}
-
-/**
  * Redirect to login if user is not logged in as donor
  */
 function require_donor_login() {
     if (!is_donor_logged_in()) {
         $_SESSION['error'] = "You must be logged in to view that page.";
         header("Location: /login.php");
-        exit;
-    }
-}
-
-/**
- * Redirect to login if user is not logged in as admin
- */
-function require_admin_login() {
-    if (!is_admin_logged_in()) {
-        $_SESSION['error'] = "You must be logged in as an admin to view that page.";
-        header("Location: /admin_login.php");
         exit;
     }
 }
