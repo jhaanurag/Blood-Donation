@@ -3,7 +3,7 @@ session_start();
 include_once '../includes/db.php';
 include_once '../includes/auth.php';
 
-// Check if user is logged in
+
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to respond to blood requests.";
     header("Location: /login.php");
@@ -16,14 +16,14 @@ $success = false;
 $request_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $request_data = null;
 
-// Check if request ID is valid
+
 if ($request_id <= 0) {
     $_SESSION['error'] = "Invalid request ID.";
     header("Location: /dashboard/donor.php");
     exit;
 }
 
-// Get donor details
+
 $donor_query = "SELECT * FROM users WHERE id = ?";
 $donor_stmt = $conn->prepare($donor_query);
 $donor_stmt->bind_param("i", $donor_id);
@@ -31,7 +31,7 @@ $donor_stmt->execute();
 $donor_result = $donor_stmt->get_result();
 $donor = $donor_result->fetch_assoc();
 
-// Get request details
+
 $request_query = "SELECT * FROM requests WHERE id = ?";
 $request_stmt = $conn->prepare($request_query);
 $request_stmt->bind_param("i", $request_id);
@@ -46,16 +46,16 @@ if ($request_result->num_rows === 0) {
 
 $request_data = $request_result->fetch_assoc();
 
-// Check if blood groups match
+
 if ($donor['blood_group'] !== $request_data['blood_group']) {
     $_SESSION['error'] = "Your blood group does not match the requested blood group.";
     header("Location: /dashboard/donor.php");
     exit;
 }
 
-// Process form submission
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate CSRF token
+    
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $errors[] = "Invalid form submission.";
     }
@@ -66,9 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Please provide a message for the requester.";
     }
     
-    // If no errors, update request and send notification
+    
     if (empty($errors)) {
-        // Update the request status and matched donor
+        
         $update_query = "UPDATE requests SET matched_donor_id = ?, status = 'contacted' WHERE id = ?";
         $update_stmt = $conn->prepare($update_query);
         $update_stmt->bind_param("ii", $donor_id, $request_id);
@@ -76,8 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($update_stmt->execute()) {
             $success = true;
             
-            // In a real application, send email notification to the requester here
-            // For now, we'll just show a success message
+            
+            
             
             $_SESSION['success'] = "You have volunteered to help with this blood request. Thank you for your generosity!";
             header("Location: /dashboard/donor.php");
