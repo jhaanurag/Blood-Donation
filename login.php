@@ -4,7 +4,7 @@ include_once 'includes/db.php';
 include_once 'includes/header.php';
 include_once 'includes/auth.php';
 
-// If user is already logged in, redirect to dashboard
+
 if (is_donor_logged_in()) {
     header("Location: /dashboard/donor.php");
     exit;
@@ -13,18 +13,18 @@ if (is_donor_logged_in()) {
 $errors = [];
 $email = '';
 
-// Process login form
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate CSRF token
+    
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $errors[] = "Invalid form submission.";
     }
     
-    // Get form data
+    
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     
-    // Validate input
+    
     if (empty($email)) {
         $errors[] = "Email is required.";
     }
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "Password is required.";
     }
     
-    // If no errors, attempt to login
+    
     if (empty($errors)) {
         $stmt = $conn->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
@@ -43,9 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             
-            // Verify password
+            
             if (password_verify($password, $user['password'])) {
-                // Set session variables
+                
                 $_SESSION['donor_id'] = $user['id'];
                 $_SESSION['donor_name'] = $user['name'];
                 $_SESSION['donor_email'] = $user['email'];
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php echo display_alerts(); ?>
             
             <?php 
-            // Display any errors
+            
             if (!empty($errors)) {
                 echo '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">';
                 echo '<ul class="list-disc list-inside">';

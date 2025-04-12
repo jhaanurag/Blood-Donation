@@ -16,7 +16,7 @@ include_once 'includes/auth.php';
                 </div>
             </div>
             <div class="md:w-1/2">
-                <img src="https://placehold.co/600x400/red/white?text=Blood+Donation" alt="Blood Donation" class="rounded-lg shadow-xl">
+                <img src="https:
             </div>
         </div>
     </div>
@@ -92,7 +92,7 @@ include_once 'includes/auth.php';
         </div>
         
         <?php
-        // Get upcoming blood camps (limit to 3)
+        
         $query = "SELECT * FROM blood_camps WHERE date >= CURDATE() ORDER BY date ASC LIMIT 3";
         $result = mysqli_query($conn, $query);
         
