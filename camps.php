@@ -3,7 +3,7 @@ include_once 'includes/header.php';
 include_once 'includes/auth.php';
 include_once 'includes/db.php';
 
-// Get all upcoming blood camps
+
 $query = "SELECT * FROM blood_camps WHERE date >= CURDATE() ORDER BY date ASC";
 $result = mysqli_query($conn, $query);
 ?>

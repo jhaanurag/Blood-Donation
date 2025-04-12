@@ -8,27 +8,27 @@ $state = trim($_GET['state'] ?? '');
 $age_min_param = $_GET['age_min'] ?? '';
 $age_max_param = $_GET['age_max'] ?? '';
 
-// Determine if a filter action was explicitly taken (button click or non-empty filter value)
+
 $filter_active = isset($_GET['filter']) || !empty($blood_group) || !empty($city) || !empty($state) || $age_min_param !== '' || $age_max_param !== '';
 
-// Default age values
+
 $age_min = ($age_min_param !== '') ? intval($age_min_param) : 18;
 $age_max = ($age_max_param !== '') ? intval($age_max_param) : 65;
 
-// Ensure min/max are valid
+
 if ($age_min < 18) $age_min = 18;
 if ($age_max > 65 || $age_max < $age_min) $age_max = 65;
 
 $donors = [];
-$search_performed = true; // Always try to display results on this page
+$search_performed = true; 
 
-// Build the base query for eligible donors
+
 $query = "SELECT id, name, blood_group, city, state, last_donation_date FROM users 
           WHERE (last_donation_date IS NULL OR last_donation_date <= DATE_SUB(CURDATE(), INTERVAL 3 MONTH))";
 $params = [];
 $types = "";
 
-// Add filters only if they are provided
+
 if (!empty($blood_group)) {
     $query .= " AND blood_group = ?";
     $params[] = $blood_group;
@@ -47,52 +47,52 @@ if (!empty($state)) {
     $types .= "s";
 }
 
-// Apply age filter only if non-default values were provided
+
 if ($age_min_param !== '' || $age_max_param !== '') {
     $query .= " AND age BETWEEN ? AND ?";
     $params[] = $age_min;
     $params[] = $age_max;
     $types .= "ii";
 } elseif ($filter_active) {
-    // If other filters are active but age is default, still apply default age range
+    
     $query .= " AND age BETWEEN ? AND ?";
-    $params[] = 18; // Default min age
-    $params[] = 65; // Default max age
+    $params[] = 18; 
+    $params[] = 65; 
     $types .= "ii";
 }
-// Note: If no filters are active at all, the age filter is NOT applied by default,
-// showing all eligible donors regardless of age unless specified.
+
+
 
 $query .= " ORDER BY last_donation_date ASC, name ASC";
 
-// Prepare and execute the query
+
 $stmt = $conn->prepare($query);
 
 if ($stmt === false) {
-    // Handle query preparation error, e.g., log it
+    
     error_log("Failed to prepare statement: " . $conn->error);
-    $donors = []; // Ensure donors array is empty
+    $donors = []; 
 } else {
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
     }
 
     if (!$stmt->execute()) {
-        // Handle query execution error
+        
         error_log("Failed to execute statement: " . $stmt->error);
         $donors = [];
     } else {
         $result = $stmt->get_result();
-        // Clear the array before fetching new results
+        
         $donors = [];
         while ($row = $result->fetch_assoc()) {
-            $donors[] = $row; // Append each row
+            $donors[] = $row; 
         }
     }
     $stmt->close();
 }
 
-// Get unique cities and states for filtering options
+
 $cities_query = "SELECT DISTINCT city FROM users ORDER BY city";
 $cities_result = mysqli_query($conn, $cities_query);
 $cities = [];
@@ -216,7 +216,7 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                                             ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <?php // Login check removed for simplicity in example ?>
+                                            <?php 
                                             <a href="/login.php" class="text-blue-600 hover:underline">Login to Contact</a>
                                         </td>
                                     </tr>

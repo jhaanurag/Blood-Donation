@@ -3,7 +3,7 @@ session_start();
 include_once '../includes/db.php';
 include_once '../includes/auth.php';
 
-// Check if user is logged in
+
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to access your profile.";
     header("Location: /login.php");
@@ -14,7 +14,7 @@ $donor_id = $_SESSION['donor_id'];
 $errors = [];
 $success = false;
 
-// Get user details
+
 $query = "SELECT * FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $donor_id);
@@ -22,14 +22,14 @@ $stmt->execute();
 $result = $stmt->get_result();
 $donor = $result->fetch_assoc();
 
-// Process form submission
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate CSRF token
+    
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $errors[] = "Invalid form submission.";
     }
     
-    // Validate input
+    
     $name = trim($_POST['name'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
     $age = intval($_POST['age'] ?? 0);
@@ -64,14 +64,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "State is required.";
     }
     
-    // If changing password, validate it
+    
     if (!empty($current_password)) {
-        // Verify current password
+        
         if (!password_verify($current_password, $donor['password'])) {
             $errors[] = "Current password is incorrect.";
         }
         
-        // Validate new password
+        
         if (empty($new_password)) {
             $errors[] = "New password is required.";
         } elseif (strlen($new_password) < 6) {
@@ -83,15 +83,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
     
-    // If no errors, update user profile
+    
     if (empty($errors)) {
-        // Start with basic profile update
+        
         $update_query = "UPDATE users SET name = ?, phone = ?, age = ?, blood_group = ?, city = ?, state = ? WHERE id = ?";
         $update_stmt = $conn->prepare($update_query);
         $update_stmt->bind_param("ssisssi", $name, $phone, $age, $blood_group, $city, $state, $donor_id);
         $update_result = $update_stmt->execute();
         
-        // If password is being changed, update it
+        
         if (!empty($current_password) && !empty($new_password)) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
             $pwd_update_query = "UPDATE users SET password = ? WHERE id = ?";
@@ -106,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($update_result) {
             $success = true;
-            $_SESSION['donor_name'] = $name; // Update session name
+            $_SESSION['donor_name'] = $name; 
             $_SESSION['success'] = "Your profile has been updated successfully.";
             header("Location: /dashboard/donor.php");
             exit;

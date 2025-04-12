@@ -3,14 +3,14 @@ session_start();
 include_once '../includes/db.php';
 include_once '../includes/auth.php';
 
-// Check if user is logged in
+
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to access your dashboard.";
     header("Location: /login.php");
     exit;
 }
 
-// Get user details
+
 $donor_id = $_SESSION['donor_id'];
 $query = "SELECT * FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
@@ -19,28 +19,28 @@ $stmt->execute();
 $result = $stmt->get_result();
 $donor = $result->fetch_assoc();
 
-// Get upcoming appointments
+
 $appt_query = "SELECT * FROM appointments WHERE user_id = ? AND status != 'completed' ORDER BY appointment_date ASC";
 $appt_stmt = $conn->prepare($appt_query);
 $appt_stmt->bind_param("i", $donor_id);
 $appt_stmt->execute();
 $appointments = $appt_stmt->get_result();
 
-// Get donation history
+
 $history_query = "SELECT * FROM appointments WHERE user_id = ? AND status = 'completed' ORDER BY appointment_date DESC";
 $history_stmt = $conn->prepare($history_query);
 $history_stmt->bind_param("i", $donor_id);
 $history_stmt->execute();
 $history = $history_stmt->get_result();
 
-// Check for blood requests matching this donor's blood group
+
 $request_query = "SELECT * FROM requests WHERE blood_group = ? AND city = ? AND state = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 3";
 $request_stmt = $conn->prepare($request_query);
 $request_stmt->bind_param("sss", $donor['blood_group'], $donor['city'], $donor['state']);
 $request_stmt->execute();
 $matching_requests = $request_stmt->get_result();
 
-// Get upcoming blood camps in donor's area
+
 $camps_query = "SELECT * FROM blood_camps WHERE city = ? AND state = ? AND date >= CURDATE() ORDER BY date ASC LIMIT 3";
 $camps_stmt = $conn->prepare($camps_query);
 $camps_stmt->bind_param("ss", $donor['city'], $donor['state']);

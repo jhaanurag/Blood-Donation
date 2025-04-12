@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once 'includes/header.php';
 include_once 'includes/auth.php';
 ?>
@@ -16,7 +20,7 @@ include_once 'includes/auth.php';
                 </div>
             </div>
             <div class="md:w-1/2">
-                <img src="https://placehold.co/600x400/red/white?text=Blood+Donation" alt="Blood Donation" class="rounded-lg shadow-xl">
+                <img src="https:
             </div>
         </div>
     </div>
@@ -88,11 +92,11 @@ include_once 'includes/auth.php';
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold">Upcoming Blood Camps</h2>
-            <a href="/camps.php" class="text-red-600 hover:underline font-semibold">View All <i class="fas fa-arrow-right ml-1"></i></a>
+            <a href="camps.php" class="text-red-600 hover:underline font-semibold">View All <i class="fas fa-arrow-right ml-1"></i></a>
         </div>
         
         <?php
-        // Get upcoming blood camps (limit to 3)
+        
         $query = "SELECT * FROM blood_camps WHERE date >= CURDATE() ORDER BY date ASC LIMIT 3";
         $result = mysqli_query($conn, $query);
         
