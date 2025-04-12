@@ -3,9 +3,9 @@ session_start();
 include_once 'includes/db.php';
 include_once 'includes/header.php';
 include_once 'includes/auth.php';
-include_once 'mail/send.php'; // Include the mail function
+include_once 'mail/send.php'; 
 
-// If user is already logged in, redirect to dashboard
+
 if (is_donor_logged_in()) {
     header("Location: /dashboard/donor.php");
     exit;
@@ -14,14 +14,14 @@ if (is_donor_logged_in()) {
 $errors = [];
 $name = $email = $phone = $age = $blood_group = $city = $state = '';
 
-// Process registration form
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate CSRF token
+    
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $errors[] = "Invalid form submission.";
     }
     
-    // Validate input
+    
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "State is required.";
     }
     
-    // Check if email already exists
+    
     $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $stmt->close();
     
-    // If no errors, register the user
+    
     if (empty($errors)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['donor_email'] = $email;
             $_SESSION['success'] = "Registration successful! Welcome to the Blood Donation System.";
             
-            // Send welcome email
+            
             $subject = "Welcome to the Blood Donation System!";
             $message = "Dear " . htmlspecialchars($name) . ",<br><br>Thank you for registering as a blood donor. Your commitment helps save lives!<br><br>You can now log in to your dashboard to book appointments and manage your profile.<br><br>Best regards,<br>The Blood Donation Team";
             send_email($email, $subject, $message);
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h2 class="text-2xl font-bold text-center text-red-600 mb-6">Register as a Blood Donor</h2>
             
             <?php 
-            // Display any errors
+            
             if (!empty($errors)) {
                 echo '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">';
                 echo '<ul class="list-disc list-inside">';

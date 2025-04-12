@@ -3,20 +3,20 @@ session_start();
 include_once 'includes/db.php';
 include_once 'includes/header.php';
 include_once 'includes/auth.php';
-include_once 'mail/send.php'; // Include the mail function
+include_once 'mail/send.php'; 
 
 $errors = [];
 $success = false;
 $requester_name = $blood_group = $city = $state = $message = '';
 
-// Process request form
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate CSRF token
+    
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $errors[] = "Invalid form submission.";
     }
     
-    // Validate input
+    
     $requester_name = trim($_POST['requester_name'] ?? '');
     $blood_group = $_POST['blood_group'] ?? '';
     $city = trim($_POST['city'] ?? '');
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "State is required.";
     }
     
-    // If no errors, save the request
+    
     if (empty($errors)) {
         $stmt = $conn->prepare("INSERT INTO requests (requester_name, blood_group, city, state, message) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $requester_name, $blood_group, $city, $state, $message);
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $success = true;
             $new_request_id = $stmt->insert_id;
             
-            // Find matching donors based on blood group, city, and state who are eligible
+            
             $donor_query = "SELECT id, name, email FROM users 
                            WHERE blood_group = ? AND city = ? AND state = ? 
                            AND (last_donation_date IS NULL OR last_donation_date <= DATE_SUB(CURDATE(), INTERVAL 3 MONTH))";
@@ -57,14 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $donor_stmt->execute();
             $matching_donors = $donor_stmt->get_result();
             
-            // Send email to matching donors
+            
             if ($matching_donors->num_rows > 0) {
                 $subject = "Urgent Blood Request Matching Your Profile";
                 $email_message = "Dear Donor,<br><br>An urgent request for <strong>" . htmlspecialchars($blood_group) . "</strong> blood has been made in your area (<strong>" . htmlspecialchars($city) . ", " . htmlspecialchars($state) . "</strong>).<br><br>";
                 $email_message .= "Requester: " . htmlspecialchars($requester_name) . "<br>";
                 $email_message .= "Message: " . nl2br(htmlspecialchars($message)) . "<br><br>";
                 $email_message .= "If you are available and willing to help, please log in to your dashboard to view the request details and respond.<br><br>";
-                $email_message .= "<a href='http://" . $_SERVER['HTTP_HOST'] . "/dashboard/help_request.php?id=" . $new_request_id . "'>Click here to view the request</a><br><br>";
+                $email_message .= "<a href='http:
                 $email_message .= "Thank you for being a potential lifesaver!<br><br>Best regards,<br>The Blood Donation Team";
                 
                 while ($donor = $matching_donors->fetch_assoc()) {
@@ -72,12 +72,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
             
-            // Clear form data
+            
             $requester_name = $blood_group = $city = $state = $message = '';
         } else {
             $errors[] = "Request submission failed. Please try again later.";
         }
-        $stmt->close(); // Close the statement here
+        $stmt->close(); 
     }
 }
 ?>
