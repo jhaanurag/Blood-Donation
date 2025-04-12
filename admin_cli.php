@@ -4,33 +4,33 @@
 
 ini_set('memory_limit', '256M');
 
-set_time_limit(300); 
+set_time_limit(300);
 
 
 require_once __DIR__ . '/includes/db.php';
-require_once __DIR__ . '/mail/send.php'; 
+require_once __DIR__ . '/mail/send.php';
 
 
-$short_opts = "a:h"; 
+$short_opts = "a:h";
 $long_opts = [
-    "action:",        
-    "id:",            
-    "status:",        
-    "search:",        
-    "blood_group:",   
-    "city:",          
-    "state:",         
-    "title:",         
-    "location:",      
-    "date:",          
-    "description:",   
-    "donor_id:",      
-    "name:",          
-    "email:",         
-    "phone:",         
-    "age:",           
-    "last_donation_date:", 
-    "help"            
+    "action:",
+    "id:",
+    "status:",
+    "search:",
+    "blood_group:",
+    "city:",
+    "state:",
+    "title:",
+    "location:",
+    "date:",
+    "description:",
+    "donor_id:",
+    "name:",
+    "email:",
+    "phone:",
+    "age:",
+    "last_donation_date:",
+    "help"
 ];
 
 $options = getopt($short_opts, $long_opts);
@@ -45,29 +45,29 @@ function display_help() {
     echo "Actions:\n";
     echo "  --action=view_donors        View registered donors.\n";
     echo "                              Options: --search, --blood_group, --city, --state\n";
-    echo "  --action=update_donor       Update donor details.\n"; 
+    echo "  --action=update_donor       Update donor details.\n";
     echo "                              Required: --id=<donor_id>\n";
     echo "                              Optional: --name, --phone, --age, --blood_group, --city, --state, --last_donation_date (YYYY-MM-DD or '')\n";
-    echo "  --action=delete_donor       Delete a donor.\n"; 
+    echo "  --action=delete_donor       Delete a donor.\n";
     echo "                              Required: --id=<donor_id>\n";
     echo "  --action=view_camps         View blood camps.\n";
     echo "                              Options: --search, --city, --state\n";
     echo "  --action=add_camp           Add a new blood camp.\n";
     echo "                              Required: --title, --location, --city, --state, --date (YYYY-MM-DD)\n";
     echo "                              Optional: --description\n";
-    echo "  --action=update_camp        Update camp details.\n"; 
+    echo "  --action=update_camp        Update camp details.\n";
     echo "                              Required: --id=<camp_id>\n";
     echo "                              Optional: --title, --location, --city, --state, --date, --description\n";
-    echo "  --action=delete_camp        Delete a blood camp.\n"; 
+    echo "  --action=delete_camp        Delete a blood camp.\n";
     echo "                              Required: --id=<camp_id>\n";
-    echo "  --action=view_appointments  View appointments.\n";
+    echo "  --action=view_appointments  View appointments.\n"; // <<< --- HELP TEXT ALREADY EXISTS
     echo "                              Options: --search (donor name), --status, --donor_id, --date (YYYY-MM-DD)\n";
     echo "  --action=update_appt_status Update appointment status.\n";
     echo "                              Required: --id=<appt_id> --status=<new_status>\n";
     echo "                              (status: pending, approved, completed, rejected)\n";
-    echo "  --action=view_requests      View blood requests.\n"; 
+    echo "  --action=view_requests      View blood requests.\n";
     echo "                              Options: --search (requester name), --status, --blood_group, --city, --state\n";
-    echo "  --action=update_request_status Update blood request status.\n"; 
+    echo "  --action=update_request_status Update blood request status.\n";
     echo "                              Required: --id=<request_id> --status=<new_status>\n";
     echo "                              (status: pending, contacted, completed, closed)\n";
 
@@ -103,40 +103,57 @@ function print_table(array $headers, array $data) {
         return;
     }
 
-    
+
     $widths = [];
     foreach ($headers as $key => $header) {
-        $widths[$key] = strlen($header);
+        $widths[$key] = mb_strlen((string)$header); // Use mb_strlen
     }
     foreach ($data as $row) {
         foreach ($row as $key => $value) {
-            $widths[$key] = max($widths[$key], strlen($value ?? ''));
+             $displayValue = is_scalar($value) || is_null($value) ? (string) $value : '';
+             if (array_key_exists($key, $headers)) { // Check key exists in headers
+                 $widths[$key] = max($widths[$key] ?? 0, mb_strlen($displayValue));
+             }
         }
     }
+     // Ensure all header keys exist in widths
+     foreach ($headers as $key => $header) {
+         if (!isset($widths[$key])) {
+             $widths[$key] = mb_strlen((string)$header);
+         }
+     }
 
-    
+
     $header_line = '';
     $separator_line = '';
     foreach ($headers as $key => $header) {
-        $header_line .= str_pad($header, $widths[$key]) . ' | ';
-        $separator_line .= str_repeat('-', $widths[$key]) . '-+-';
+        $width = $widths[$key] ?? mb_strlen((string)$header);
+        $header_line .= str_pad((string)$header, $width) . ' | ';
+        $separator_line .= str_repeat('-', $width) . '-+-';
     }
     echo rtrim($header_line, ' | ') . "\n";
     echo rtrim($separator_line, '-+-') . "\n";
 
-    
+
     foreach ($data as $row) {
         $row_line = '';
-        foreach ($headers as $key => $header) { 
-             $value = $row[$key] ?? ''; 
-             $row_line .= str_pad($value, $widths[$key]) . ' | ';
+        foreach ($headers as $key => $header) {
+             $value = $row[$key] ?? '';
+             $displayValue = is_scalar($value) || is_null($value) ? (string) $value : '';
+             $width = $widths[$key] ?? mb_strlen((string)$header);
+             $row_line .= str_pad($displayValue, $width) . ' | ';
         }
         echo rtrim($row_line, ' | ') . "\n";
     }
 }
 
 function confirm_action(string $prompt = "Are you sure?"): bool {
-    while (true) {
+     // Basic version without interactivity check
+     while (true) {
+        if (!function_exists('readline')) {
+             echo "Warning: readline function not available. Cannot confirm. Aborting.\n";
+             return false; // Abort if confirmation isn't possible
+        }
         $response = strtolower(readline($prompt . " (yes/no): "));
         if ($response === 'yes') {
             return true;
@@ -149,7 +166,7 @@ function confirm_action(string $prompt = "Are you sure?"): bool {
 
 
 
-global $conn; 
+global $conn; // Keep using global $conn as per the original code
 
 switch ($action) {
     case 'view_donors':
@@ -164,31 +181,35 @@ switch ($action) {
     case 'update_appt_status':
         update_appointment_status($options);
         break;
-    case 'update_donor': 
+    case 'update_donor':
         update_donor($options);
         break;
-    case 'delete_donor': 
+    case 'delete_donor':
         delete_donor($options);
         break;
-    case 'update_camp': 
+    case 'update_camp':
         update_camp($options);
         break;
-    case 'delete_camp': 
+    case 'delete_camp':
         delete_camp($options);
         break;
-    case 'view_requests': 
+    case 'view_requests':
         view_requests($options);
         break;
-    case 'update_request_status': 
+    case 'update_request_status':
         update_request_status($options);
         break;
-    
+    case 'view_appointments': // <<< --- ADDED THIS CASE
+        view_appointments($options); // Call the new function
+        break;
+
     default:
         echo "Error: Unknown action '$action'. Use --help for available actions.\n";
         exit(1);
 }
 
 
+// --- Original Functions (Keep as they were) ---
 
 function view_donors(array $options) {
     global $conn;
@@ -226,7 +247,7 @@ function view_donors(array $options) {
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
     }
-    $stmt->execute();
+    $stmt->execute(); // Assume execute doesn't fail catastrophically in original style
     $result = $stmt->get_result();
     $donors = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
@@ -295,7 +316,7 @@ function view_camps(array $options) {
 
 function add_camp(array $options) {
     global $conn;
-    
+
     $required = ['title', 'location', 'city', 'state', 'date'];
     foreach ($required as $field) {
         if (empty($options[$field])) {
@@ -305,7 +326,7 @@ function add_camp(array $options) {
         }
     }
 
-    
+
     if (DateTime::createFromFormat('Y-m-d', $options['date']) === false) {
          echo "Error: Invalid date format for --date. Use YYYY-MM-DD.\n";
          exit(1);
@@ -353,7 +374,7 @@ function update_appointment_status(array $options) {
         exit(1);
     }
 
-    
+
     $fetch_stmt = $conn->prepare("SELECT a.user_id, a.appointment_date, u.email, u.name FROM appointments a JOIN users u ON a.user_id = u.id WHERE a.id = ?");
      if (!$fetch_stmt) die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
     $fetch_stmt->bind_param("i", $appointment_id);
@@ -380,7 +401,7 @@ function update_appointment_status(array $options) {
     if ($update_stmt->execute()) {
         echo "Success: Appointment ID $appointment_id status updated to '$new_status'.\n";
 
-        
+
         if ($new_status === 'completed') {
             $update_donor_stmt = $conn->prepare("UPDATE users SET last_donation_date = ? WHERE id = ?");
              if (!$update_donor_stmt) die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
@@ -388,19 +409,20 @@ function update_appointment_status(array $options) {
             if ($update_donor_stmt->execute()) {
                  echo "Updated last donation date for donor ID $donor_id.\n";
             } else {
+                 // Keep original warning style
                  echo "Warning: Failed to update last donation date for donor ID $donor_id.\n";
             }
             $update_donor_stmt->close();
         }
 
-        
+
         $subject = "Appointment Status Update - Blood Donation System";
         $formatted_date = date("F j, Y", strtotime($appointment_date));
-        $message = "Dear " . htmlspecialchars($donor_name) . ",<br><br>The status of your blood donation appointment scheduled for <strong>" . $formatted_date . "</strong> has been updated to: <strong>" . ucfirst($new_status) . "</strong>.<br><br>";
-        
-        $message .= "Best regards,<br>The Blood Donation Team";
+        // Use simple text for original style consistency, though HTML preferred for email
+        $message = "Dear " . htmlspecialchars($donor_name) . ",\n\nThe status of your blood donation appointment scheduled for " . $formatted_date . " has been updated to: " . ucfirst($new_status) . ".\n\n";
+        $message .= "Best regards,\nThe Blood Donation Team";
 
-        if (send_email($donor_email, $subject, $message)) {
+        if (function_exists('send_email') && send_email($donor_email, $subject, nl2br($message))) { // Use nl2br if send_email expects HTML
             echo "Notification email sent to $donor_email.\n";
         } else {
             echo "Warning: Failed to send notification email to $donor_email.\n";
@@ -412,7 +434,7 @@ function update_appointment_status(array $options) {
     $update_stmt->close();
 }
 
-function update_donor(array $options) { 
+function update_donor(array $options) {
     global $conn;
     $donor_id = $options['id'] ?? null;
 
@@ -422,7 +444,7 @@ function update_donor(array $options) {
         exit(1);
     }
 
-    
+
     $fetch_stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
     if (!$fetch_stmt) die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
     $fetch_stmt->bind_param("i", $donor_id);
@@ -436,7 +458,7 @@ function update_donor(array $options) {
         exit(1);
     }
 
-    
+
     $update_fields = [];
     $update_params = [];
     $update_types = "";
@@ -447,21 +469,22 @@ function update_donor(array $options) {
     foreach ($allowed_fields as $field) {
         if (isset($options[$field])) {
             $value = $options[$field];
-            
+
             if ($field === 'age') {
+                 if (!is_numeric($value) || intval($value) < 18) { // Add numeric check
+                    echo "Error: Age must be a number 18 or above.\n"; exit(1);
+                 }
                 $value = intval($value);
-                if ($value < 18) {
-                     echo "Error: Age must be 18 or above.\n"; exit(1);
-                }
             } elseif ($field === 'last_donation_date') {
                 if ($value === '') {
-                    $value = null; 
+                    $value = null;
                 } elseif (DateTime::createFromFormat('Y-m-d', $value) === false) {
                     echo "Error: Invalid date format for --last_donation_date. Use YYYY-MM-DD or ''.\n"; exit(1);
                 }
             }
 
-            if ($value !== $current_donor[$field]) { 
+            // Simpler comparison for original style
+             if ($value != $current_donor[$field] || ($value === null && $current_donor[$field] !== null)) {
                  $update_fields[] = "$field = ?";
                  $update_params[] = $value;
                  $update_types .= $field_types[$field];
@@ -474,7 +497,7 @@ function update_donor(array $options) {
         exit(0);
     }
 
-    
+
     $update_params[] = $donor_id;
     $update_types .= "i";
 
@@ -492,34 +515,40 @@ function update_donor(array $options) {
     $stmt->close();
 }
 
-function delete_donor(array $options) { 
+function delete_donor(array $options) {
     global $conn;
     $donor_id = $options['id'] ?? null;
 
-    if (!$donor_id) {
-        echo "Error: Missing required option --id for delete_donor action.\n";
+    if (!$donor_id || !is_numeric($donor_id)) { // Add numeric check
+        echo "Error: Missing or invalid --id for delete_donor action.\n";
         display_help();
         exit(1);
     }
+    $donor_id = intval($donor_id);
 
-    
+
     $name = "ID $donor_id";
     $fetch_stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
     if ($fetch_stmt) {
         $fetch_stmt->bind_param("i", $donor_id);
-        $fetch_stmt->execute();
-        $result = $fetch_stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            $name = $row['name'] . " (ID: $donor_id)";
+        // Assume execute worked in original style if prepare worked
+        if ($fetch_stmt->execute()) {
+            $result = $fetch_stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                $name = $row['name'] . " (ID: $donor_id)";
+            }
         }
         $fetch_stmt->close();
+    } else {
+        // Original didn't explicitly handle prepare fail here, but good practice
+        echo "Warning: Could not fetch donor name for confirmation.\n";
     }
 
 
     if (confirm_action("Are you sure you want to delete donor '$name'? This is irreversible!")) {
-        
+
         $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
-         if (!$stmt) die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
+         if (!$stmt) die("Prepare failed (delete): (" . $conn->errno . ") " . $conn->error);
         $stmt->bind_param("i", $donor_id);
 
         if ($stmt->execute()) {
@@ -537,17 +566,18 @@ function delete_donor(array $options) {
     }
 }
 
-function update_camp(array $options) { 
+function update_camp(array $options) {
     global $conn;
     $camp_id = $options['id'] ?? null;
 
-    if (!$camp_id) {
-        echo "Error: Missing required option --id for update_camp action.\n";
+    if (!$camp_id || !is_numeric($camp_id)) { // Add numeric check
+        echo "Error: Missing or invalid --id for update_camp action.\n";
         display_help();
         exit(1);
     }
+    $camp_id = intval($camp_id);
 
-     
+
     $fetch_stmt = $conn->prepare("SELECT * FROM blood_camps WHERE id = ?");
     if (!$fetch_stmt) die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
     $fetch_stmt->bind_param("i", $camp_id);
@@ -561,7 +591,7 @@ function update_camp(array $options) {
         exit(1);
     }
 
-    
+
     $update_fields = [];
     $update_params = [];
     $update_types = "";
@@ -571,15 +601,15 @@ function update_camp(array $options) {
     foreach ($allowed_fields as $field) {
         if (isset($options[$field])) {
              $value = $options[$field];
-             
+
              if ($field === 'date' && DateTime::createFromFormat('Y-m-d', $value) === false) {
                  echo "Error: Invalid date format for --date. Use YYYY-MM-DD.\n"; exit(1);
              }
 
-             if ($value !== $current_camp[$field]) { 
+             if ($value != $current_camp[$field]) { // Simpler comparison
                  $update_fields[] = "$field = ?";
                  $update_params[] = $value;
-                 $update_types .= "s"; 
+                 $update_types .= "s";
              }
         }
     }
@@ -589,7 +619,7 @@ function update_camp(array $options) {
         exit(0);
     }
 
-    
+
     $update_params[] = $camp_id;
     $update_types .= "i";
 
@@ -607,27 +637,31 @@ function update_camp(array $options) {
     $stmt->close();
 }
 
-function delete_camp(array $options) { 
+function delete_camp(array $options) {
     global $conn;
     $camp_id = $options['id'] ?? null;
 
-    if (!$camp_id) {
-        echo "Error: Missing required option --id for delete_camp action.\n";
+    if (!$camp_id || !is_numeric($camp_id)) { // Add numeric check
+        echo "Error: Missing or invalid --id for delete_camp action.\n";
         display_help();
         exit(1);
     }
+    $camp_id = intval($camp_id);
 
-     
+
     $title = "ID $camp_id";
     $fetch_stmt = $conn->prepare("SELECT title FROM blood_camps WHERE id = ?");
     if ($fetch_stmt) {
         $fetch_stmt->bind_param("i", $camp_id);
-        $fetch_stmt->execute();
-        $result = $fetch_stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            $title = $row['title'] . " (ID: $camp_id)";
+        if ($fetch_stmt->execute()) {
+            $result = $fetch_stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                $title = $row['title'] . " (ID: $camp_id)";
+            }
         }
         $fetch_stmt->close();
+    } else {
+         echo "Warning: Could not fetch camp title for confirmation.\n";
     }
 
     if (confirm_action("Are you sure you want to delete camp '$title'?")) {
@@ -650,7 +684,7 @@ function delete_camp(array $options) {
     }
 }
 
-function view_requests(array $options) { 
+function view_requests(array $options) {
     global $conn;
     $query = "SELECT r.id, r.requester_name, r.blood_group, r.city, r.state, r.status, r.created_at, u.name as matched_donor
               FROM requests r
@@ -711,16 +745,23 @@ function view_requests(array $options) {
     ], $requests);
 }
 
-function update_request_status(array $options) { 
+function update_request_status(array $options) {
     global $conn;
     $request_id = $options['id'] ?? null;
     $new_status = $options['status'] ?? null;
 
-    if (!$request_id || !$new_status) {
-        echo "Error: Missing required options --id and --status for update_request_status action.\n";
+    if (!$request_id || !is_numeric($request_id)) { // Add numeric check
+        echo "Error: Missing or invalid --id for update_request_status action.\n";
         display_help();
         exit(1);
     }
+     if (!$new_status) {
+        echo "Error: Missing required --status for update_request_status action.\n";
+        display_help();
+        exit(1);
+    }
+    $request_id = intval($request_id);
+
 
     $allowed_statuses = ['pending', 'contacted', 'completed', 'closed'];
     if (!in_array($new_status, $allowed_statuses)) {
@@ -728,7 +769,7 @@ function update_request_status(array $options) {
         exit(1);
     }
 
-    
+
 
     $stmt = $conn->prepare("UPDATE requests SET status = ? WHERE id = ?");
     if (!$stmt) die("Prepare failed: (" . $conn->errno . ") " . $conn->error);
@@ -737,7 +778,7 @@ function update_request_status(array $options) {
     if ($stmt->execute()) {
          if ($stmt->affected_rows > 0) {
              echo "Success: Request ID $request_id status updated to '$new_status'.\n";
-             
+
          } else {
              echo "Warning: Request ID $request_id not found or status already set to '$new_status'.\n";
          }
@@ -747,7 +788,80 @@ function update_request_status(array $options) {
     $stmt->close();
 }
 
+// <<< --- ADDED THIS FUNCTION (Using original style) --- >>>
+function view_appointments(array $options) {
+    global $conn; // Use global connection
+    $query = "SELECT a.id, a.appointment_date, a.status, a.created_at, u.id as donor_id, u.name as donor_name
+              FROM appointments a
+              JOIN users u ON a.user_id = u.id
+              WHERE 1=1"; // Base query
+    $params = [];
+    $types = "";
 
+    // Add filters based on options
+    if (!empty($options['search'])) { // Search by donor name
+        $search = "%" . $options['search'] . "%";
+        $query .= " AND u.name LIKE ?";
+        $params[] = $search;
+        $types .= "s";
+    }
+    if (!empty($options['status'])) {
+        $query .= " AND a.status = ?";
+        $params[] = $options['status'];
+        $types .= "s";
+    }
+    if (!empty($options['donor_id'])) {
+         if(!is_numeric($options['donor_id'])) {
+             echo "Error: --donor_id must be numeric.\n"; exit(1);
+         }
+        $query .= " AND a.user_id = ?";
+        $params[] = intval($options['donor_id']);
+        $types .= "i";
+    }
+    if (!empty($options['date'])) { // Filter by specific date
+        if (DateTime::createFromFormat('Y-m-d', $options['date']) === false) {
+             echo "Error: Invalid date format for --date filter. Use YYYY-MM-DD.\n"; exit(1);
+        }
+        $query .= " AND DATE(a.appointment_date) = ?";
+        $params[] = $options['date'];
+        $types .= "s";
+    }
+
+    $query .= " ORDER BY a.appointment_date DESC, a.created_at DESC";
+
+    $stmt = $conn->prepare($query);
+    // Use original error handling style
+    if (!$stmt) {
+        die("Prepare failed (view_appointments): (" . $conn->errno . ") " . $conn->error);
+    }
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    // Assume execute doesn't fail catastrophically
+    if (!$stmt->execute()) {
+         // Log or display execute error if needed, but original often skipped this
+         echo "Error executing appointment query: " . $stmt->error . "\n";
+         // Don't necessarily die, maybe just show empty results
+         $appointments = [];
+    } else {
+        $result = $stmt->get_result();
+        $appointments = $result->fetch_all(MYSQLI_ASSOC);
+    }
+    $stmt->close();
+
+    echo "--- Appointments List ---\n";
+    print_table([
+        'id' => 'Appt ID',
+        'donor_id' => 'Donor ID',
+        'donor_name' => 'Donor Name',
+        'appointment_date' => 'Appt Date',
+        'status' => 'Status',
+        'created_at' => 'Booked On'
+    ], $appointments);
+}
+
+
+// --- End of functions ---
 
 $conn->close();
 ?>
