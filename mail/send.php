@@ -1,6 +1,5 @@
 <?php
 // Basic mail sending function
-// In a production environment, consider using a library like PHPMailer for better features and reliability.
 
 function send_email($to, $subject, $message, $from_email = 'alwaysoutsmartyou@gmail.com', $from_name = 'Blood Donation System') {
     $headers = "From: " . $from_name . " <" . $from_email . ">\r\n";
