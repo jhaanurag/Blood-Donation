@@ -2,7 +2,7 @@
 
 $host = "localhost";
 $username = "root";
-$password = "a";
+$password = "";
 $database = "blood_donation";
 
 

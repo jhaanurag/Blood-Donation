@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once 'includes/header.php';
 include_once 'includes/auth.php';
 ?>
@@ -88,7 +92,7 @@ include_once 'includes/auth.php';
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold">Upcoming Blood Camps</h2>
-            <a href="/camps.php" class="text-red-600 hover:underline font-semibold">View All <i class="fas fa-arrow-right ml-1"></i></a>
+            <a href="camps.php" class="text-red-600 hover:underline font-semibold">View All <i class="fas fa-arrow-right ml-1"></i></a>
         </div>
         
         <?php
