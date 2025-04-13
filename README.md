@@ -27,38 +27,6 @@ LifeFlow is a web-based platform designed to connect blood donors with individua
 *   **Email:** PHP `mail()` function (Requires proper server configuration)
 *   **Dependency Management:** Composer (for potential future libraries, setup script included)
 
-## 📂 Project Structure
-
-
-.
-├── assets/ # CSS stylesheets, images (if any)
-│ └── styles.css
-├── dashboard/ # Donor dashboard pages
-│ ├── appointments.php
-│ ├── cancel_appointment.php
-│ ├── donor.php
-│ ├── help_request.php
-│ ├── profile.php
-│ └── view_appointment.php
-├── includes/ # Core PHP files (DB connection, auth, header/footer)
-│ ├── auth.php
-│ ├── db.php
-│ ├── footer.php
-│ └── header.php
-├── mail/ # Email sending logic
-│ └── send.php
-├── admin_cli.php # Command-line interface for admin tasks
-├── camps.php # Public page listing blood camps
-├── composer-setup.php # Composer installation script
-├── contact_donor.php # Page to display donor contact info (requires login)
-├── index.php # Homepage / Main entry point
-├── login.php # User login page
-├── logout.php # Handles user logout
-├── register.php # User registration page
-├── request.php # Page to submit a blood request
-├── search.php # Page to search for donors
-└── todo.txt # Project TODO list
-
 ## 🚀 Setup and Installation
 
 1.  **Prerequisites:**
@@ -220,12 +188,4 @@ Please ensure your code adheres to basic PHP standards and includes comments whe
 
 📜 License
 
-This project is licensed under the MIT License - see the LICENSE file for details (You should create a LICENSE file, typically containing the standard MIT License text).
-
-This README was generated based on the project structure and files provided.
-
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
+This project is licensed under the MIT License - see the LICENSE file for details
