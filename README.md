@@ -159,6 +159,8 @@ Add notifications within the dashboard.
 
 Provide a .sql database schema file in the repository.
 
+Fancy UI: Shaders, mouse following animations
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:

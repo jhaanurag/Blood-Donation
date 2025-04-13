@@ -55,7 +55,7 @@ include_once '../includes/header.php';
         
         <!-- Dashboard Header -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex flex-col md:flex-row justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Welcome, <?php echo htmlspecialchars($donor['name']); ?></h1>
                     <p class="text-gray-600">
