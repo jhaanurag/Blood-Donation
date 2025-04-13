@@ -4,7 +4,7 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between">
                 <div class="mb-6 md:mb-0">
-                    <h3 class="text-xl font-bold mb-3">BloodDonate</h3>
+                    <h3 class="text-xl font-bold mb-3">LifeFlow</h3>
                     <p class="max-w-xs">Connecting blood donors with those in need. Save lives through the gift of blood donation.</p>
                 </div>
                 <div class="mb-6 md:mb-0">
@@ -19,7 +19,7 @@
                 <div>
                     <h4 class="font-semibold mb-3">Contact</h4>
                     <ul>
-                        <li class="mb-2"><i class="fas fa-envelope mr-2"></i> contact@blooddonate.org</li>
+                        <li class="mb-2"><i class="fas fa-envelope mr-2"></i> contact@lifeflow.org</li>
                         <li class="mb-2"><i class="fas fa-phone mr-2"></i> +1-800-BLOOD-HELP</li>
                     </ul>
                     <div class="flex space-x-4 mt-4">

@@ -118,8 +118,7 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="blood_group">Blood Group</label>
-                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
-                                name="blood_group" id="blood_group">
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" name="blood_group" id="blood_group">
                             <option value="" <?php echo empty($blood_group) ? 'selected' : ''; ?>>Any</option>
                             <option value="A+" <?php echo $blood_group === 'A+' ? 'selected' : ''; ?>>A+</option>
                             <option value="A-" <?php echo $blood_group === 'A-' ? 'selected' : ''; ?>>A-</option>

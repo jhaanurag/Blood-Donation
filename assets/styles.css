@@ -2,12 +2,12 @@
     0% {
         opacity: 0.2;
         /* filter: blur(10px); */
-        transform: perspective(500px) rotateX(1deg);
+        transform: perspective(400px) rotateX(1deg);
     }
     100% {
         opacity: 1;
         /* filter: blur(0px); */
-        transform: perspective(500px) rotateX(0deg);
+        transform: perspective(400px) rotateX(0deg);
     }
 }
 

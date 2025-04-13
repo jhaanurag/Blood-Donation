@@ -19,7 +19,7 @@ include_once 'includes/db.php';
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <a href="/index.php" class="font-bold text-xl">
-                        <i class="fas fa-heartbeat mr-2"></i>BloodDonate
+                        <i class="fas fa-heartbeat mr-2"></i>LifeFlow
                     </a>
                 </div>
                 <div class="hidden md:flex space-x-6">
