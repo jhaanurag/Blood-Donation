@@ -139,8 +139,9 @@ Help:
 php admin_cli.php --help
 # or
 php admin_cli.php -h
+```
 
-🔮 Future Enhancements (from todo.txt & ideas)
+## 🔮 Future Enhancements (from todo.txt & ideas)
 
 Add LLM Chatbot for user queries.
 
@@ -158,7 +159,7 @@ Add notifications within the dashboard.
 
 Provide a .sql database schema file in the repository.
 
-🤝 Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
 
@@ -176,6 +177,6 @@ Open a Pull Request.
 
 Please ensure your code adheres to basic PHP standards and includes comments where necessary.
 
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License - see the LICENSE file for details
