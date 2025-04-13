@@ -77,11 +77,6 @@ The `admin_cli.php` script provides administrative functionalities. Run it from 
 
 ```bash
 php admin_cli.php --action=<action_name> [options]
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-IGNORE_WHEN_COPYING_END
 
 Available Actions:
 
@@ -144,12 +139,7 @@ Help:
 php admin_cli.php --help
 # or
 php admin_cli.php -h
-IGNORE_WHEN_COPYING_START
-content_copy
-download
-Use code with caution.
-Bash
-IGNORE_WHEN_COPYING_END
+
 🔮 Future Enhancements (from todo.txt & ideas)
 
 Add LLM Chatbot for user queries.
