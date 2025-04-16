@@ -3,7 +3,7 @@ session_start();
 include_once '../includes/db.php';
 include_once '../includes/auth.php';
 
-// Check if user is logged in
+
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to view your appointments.";
     header("Location: /login.php");
@@ -13,14 +13,14 @@ if (!is_donor_logged_in()) {
 $donor_id = $_SESSION['donor_id'];
 $appointment_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Check if appointment ID is valid
+
 if ($appointment_id <= 0) {
     $_SESSION['error'] = "Invalid appointment ID.";
     header("Location: /dashboard/donor.php");
     exit;
 }
 
-// Get appointment details and make sure it belongs to the logged-in user
+
 $query = "SELECT a.*, bc.title as camp_title, bc.location as camp_location, bc.city as camp_city, bc.state as camp_state 
           FROM appointments a
           LEFT JOIN blood_camps bc ON DATE(a.appointment_date) = DATE(bc.date) AND (bc.city = (SELECT city FROM users WHERE id = ?) AND bc.state = (SELECT state FROM users WHERE id = ?))
@@ -30,7 +30,7 @@ $stmt->bind_param("iiii", $donor_id, $donor_id, $appointment_id, $donor_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// If appointment not found or doesn't belong to user, redirect back
+
 if ($result->num_rows === 0) {
     $_SESSION['error'] = "Appointment not found.";
     header("Location: /dashboard/donor.php");
@@ -39,10 +39,10 @@ if ($result->num_rows === 0) {
 
 $appointment = $result->fetch_assoc();
 
-// Format appointment date
+
 $appointment_date = date("F j, Y", strtotime($appointment['appointment_date']));
 
-// Determine status color class
+
 $status_class = '';
 switch ($appointment['status']) {
     case 'pending':
@@ -109,6 +109,17 @@ include_once '../includes/header.php';
                                 <i class="fas fa-city mr-2"></i>
                                 <?php echo htmlspecialchars($appointment['camp_city']) . ', ' . htmlspecialchars($appointment['camp_state']); ?>
                             </p>
+                            <div class="mt-4">
+                                <iframe
+                                    width="100%"
+                                    height="200"
+                                    style="border:0"
+                                    loading="lazy"
+                                    allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    src="https://maps.google.com/maps?q=<?= urlencode($appointment['camp_location'] . ', ' . $appointment['camp_city'] . ', ' . $appointment['camp_state']) ?>&output=embed&z=15">
+                                </iframe>
+                            </div>
                         </div>
                     <?php endif; ?>
                     

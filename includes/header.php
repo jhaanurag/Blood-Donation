@@ -13,7 +13,7 @@ include_once 'includes/db.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Navbar -->
+    
     <nav class="bg-red-600 text-white shadow-lg">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
@@ -41,7 +41,7 @@ include_once 'includes/db.php';
                     </button>
                 </div>
             </div>
-            <!-- Mobile Menu -->
+            
             <div id="mobile-menu" class="md:hidden hidden pt-4 pb-2">
                 <a href="/index.php" class="block py-2 hover:text-red-200 transition">Home</a>
                 <a href="/search.php" class="block py-2 hover:text-red-200 transition">Donor Search</a>

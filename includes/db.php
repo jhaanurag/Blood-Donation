@@ -2,7 +2,7 @@
 // Database connection
 $host = "localhost";
 $username = "root";
-$password = "";
+$password = "a";
 $database = "blood_donation";
 
 // Create connection

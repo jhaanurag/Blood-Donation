@@ -2,9 +2,9 @@
 session_start();
 include_once '../includes/db.php';
 include_once '../includes/auth.php';
-include_once '../mail/send.php'; // Include the mail function
+include_once '../mail/send.php'; 
 
-// Check if user is logged in
+
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to book an appointment.";
     header("Location: /login.php");
@@ -15,7 +15,7 @@ $donor_id = $_SESSION['donor_id'];
 $errors = [];
 $success = false;
 
-// Check if donor is eligible (hasn't donated in the last 3 months)
+
 $eligibility_query = "SELECT last_donation_date FROM users WHERE id = ?";
 $eligibility_stmt = $conn->prepare($eligibility_query);
 $eligibility_stmt->bind_param("i", $donor_id);
@@ -32,14 +32,14 @@ if (!empty($donor_data['last_donation_date'])) {
     $diff = $last_donation->diff($today);
     $days_since_donation = $diff->days;
     
-    // Check if it's been less than 3 months (approximately 90 days)
+    
     if ($days_since_donation < 90) {
         $is_eligible = false;
         $days_until_eligible = 90 - $days_since_donation;
     }
 }
 
-// Get camp ID from URL if available
+
 $camp_id = isset($_GET['camp_id']) ? intval($_GET['camp_id']) : 0;
 $camp_data = null;
 
@@ -54,24 +54,24 @@ if ($camp_id > 0) {
     }
 }
 
-// Process form submission
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate CSRF token
+    
     if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $errors[] = "Invalid form submission.";
     }
     
-    // Check eligibility again
+    
     if (!$is_eligible) {
         $errors[] = "You are not eligible to donate blood at this time. Please wait $days_until_eligible more days.";
     } else {
-        // Get appointment date
+        
         $appointment_date = $_POST['appointment_date'] ?? '';
         
         if (empty($appointment_date)) {
             $errors[] = "Please select an appointment date.";
         } else {
-            // Make sure appointment date is in the future
+            
             $selected_date = new DateTime($appointment_date);
             $today = new DateTime();
             
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         
-        // If no errors, save appointment
+        
         if (empty($errors)) {
             $stmt = $conn->prepare("INSERT INTO appointments (user_id, appointment_date, status) VALUES (?, ?, 'pending')");
             $stmt->bind_param("is", $donor_id, $appointment_date);
@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($stmt->execute()) {
                 $success = true;
                 
-                // Send email confirmation to donor
+                
                 $donor_email_query = "SELECT email, name FROM users WHERE id = ?";
                 $donor_email_stmt = $conn->prepare($donor_email_query);
                 $donor_email_stmt->bind_param("i", $donor_id);
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-// Get list of upcoming blood camps
+
 $camps_query = "SELECT * FROM blood_camps WHERE date >= CURDATE() ORDER BY date ASC";
 $camps_result = mysqli_query($conn, $camps_query);
 
@@ -172,6 +172,17 @@ include_once '../includes/header.php';
                             <p class="mb-1"><strong>Location:</strong> <?php echo htmlspecialchars($camp_data['location']); ?></p>
                             <p><strong>City:</strong> <?php echo htmlspecialchars($camp_data['city']) . ', ' . htmlspecialchars($camp_data['state']); ?></p>
                             <input type="hidden" name="appointment_date" value="<?php echo $camp_data['date']; ?>">
+                            <div class="mt-4">
+                                <iframe
+                                    width="100%"
+                                    height="200"
+                                    style="border:0"
+                                    loading="lazy"
+                                    allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade"
+                                    src="https://maps.google.com/maps?q=<?= urlencode($camp_data['location'] . ', ' . $camp_data['city'] . ', ' . $camp_data['state']) ?>&output=embed&z=15">
+                                </iframe>
+                            </div>
                         </div>
                     <?php else: ?>
                         <div class="mb-6">
