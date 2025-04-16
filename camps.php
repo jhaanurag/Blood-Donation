@@ -1,13 +1,29 @@
 <?php
-include_once 'includes/header.php';
-include_once 'includes/auth.php';
-include_once 'includes/db.php';
+// camps.php - Upcoming Blood Donation Camps Page
+//
+// Workflow:
+// 1. Includes header, authentication, and database connection files.
+// 2. Fetches all upcoming blood donation camps from the database (date >= today).
+// 3. Displays each camp as a card with title, date, location, and description.
+// 4. If a donor is logged in, shows a 'Book Appointment' button; otherwise, prompts login.
+// 5. If no camps are available, shows a friendly message.
+// 6. Provides an informational section about what to expect at a blood donation camp.
+// 7. Includes the footer at the end.
 
-// Get all upcoming blood camps
+include_once 'includes/header.php'; // Loads the HTML header and navigation bar
+include_once 'includes/auth.php';   // Handles user authentication and session
+include_once 'includes/db.php';     // Connects to the MySQL database
+
+// Get all upcoming blood camps (date today or in the future)
 $query = "SELECT * FROM blood_camps WHERE date >= CURDATE() ORDER BY date ASC";
 $result = mysqli_query($conn, $query);
 ?>
 
+<!--
+Main Section: Displays upcoming blood donation camps in a responsive grid.
+Each camp card shows title, date, location, description, and booking/login button.
+If no camps, shows a message. Also includes an info section about the camp process.
+-->
 <div class="bg-gray-100 py-12">
     <div class="container mx-auto px-4">
         <h1 class="text-3xl font-bold text-center mb-10">Upcoming Blood Donation Camps</h1>
@@ -52,10 +68,12 @@ $result = mysqli_query($conn, $query);
             </div>
         <?php endif; ?>
         
+        <!-- Informational section: What to expect at a blood donation camp -->
         <div class="mt-10 bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-bold mb-4">What to Expect at a Blood Donation Camp</h2>
             
             <div class="space-y-4">
+                <!-- Step 1: Registration -->
                 <div class="flex items-start">
                     <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4">
                         <span class="font-bold">1</span>
@@ -65,7 +83,7 @@ $result = mysqli_query($conn, $query);
                         <p class="text-gray-700">You'll need to fill out a form and show identification. Your basic information will be recorded.</p>
                     </div>
                 </div>
-                
+                <!-- Step 2: Health Screening -->
                 <div class="flex items-start">
                     <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4">
                         <span class="font-bold">2</span>
@@ -75,7 +93,7 @@ $result = mysqli_query($conn, $query);
                         <p class="text-gray-700">A healthcare professional will check your pulse, blood pressure, temperature, and hemoglobin levels.</p>
                     </div>
                 </div>
-                
+                <!-- Step 3: Donation Process -->
                 <div class="flex items-start">
                     <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4">
                         <span class="font-bold">3</span>
@@ -85,7 +103,7 @@ $result = mysqli_query($conn, $query);
                         <p class="text-gray-700">The actual donation takes only about 8-10 minutes, during which approximately 450ml of blood is collected.</p>
                     </div>
                 </div>
-                
+                <!-- Step 4: Recovery -->
                 <div class="flex items-start">
                     <div class="bg-red-100 text-red-600 p-3 rounded-full mr-4">
                         <span class="font-bold">4</span>
@@ -100,4 +118,4 @@ $result = mysqli_query($conn, $query);
     </div>
 </div>
 
-<?php include_once 'includes/footer.php'; ?>
+<?php include_once 'includes/footer.php'; // Loads the HTML footer and scripts ?>
