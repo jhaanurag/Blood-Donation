@@ -141,7 +141,7 @@ php admin_cli.php --help
 php admin_cli.php -h
 ```
 
-## 🔮 Future Enhancements (from todo.txt & ideas)
+## 🔮 Future Enhancements (& ideas)
 
 Add LLM Chatbot for user queries.
 
