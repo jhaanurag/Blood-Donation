@@ -6,7 +6,7 @@ include_once '../includes/auth.php';
 // Check if user is logged in
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to respond to blood requests.";
-    header("Location: login.php");
+    header("Location: /login.php");
     exit;
 }
 
@@ -19,7 +19,7 @@ $request_data = null;
 // Check if request ID is valid
 if ($request_id <= 0) {
     $_SESSION['error'] = "Invalid request ID.";
-    header("Location: dashboard/donor.php");
+    header("Location: /dashboard/donor.php");
     exit;
 }
 
@@ -40,7 +40,7 @@ $request_result = $request_stmt->get_result();
 
 if ($request_result->num_rows === 0) {
     $_SESSION['error'] = "Blood request not found.";
-    header("Location: dashboard/donor.php");
+    header("Location: /dashboard/donor.php");
     exit;
 }
 
@@ -49,7 +49,7 @@ $request_data = $request_result->fetch_assoc();
 // Check if blood groups match
 if ($donor['blood_group'] !== $request_data['blood_group']) {
     $_SESSION['error'] = "Your blood group does not match the requested blood group.";
-    header("Location: dashboard/donor.php");
+    header("Location: /dashboard/donor.php");
     exit;
 }
 
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // For now, we'll just show a success message
             
             $_SESSION['success'] = "You have volunteered to help with this blood request. Thank you for your generosity!";
-            header("Location: dashboard/donor.php");
+            header("Location: /dashboard/donor.php");
             exit;
         } else {
             $errors[] = "Failed to process your request. Please try again later.";
@@ -96,7 +96,7 @@ include_once '../includes/header.php';
         <div class="max-w-2xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold">Respond to Blood Request</h1>
-                <a href="dashboard/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
+                <a href="/dashboard/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
                     <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
                 </a>
             </div>
