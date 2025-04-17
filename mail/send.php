@@ -7,8 +7,21 @@
  * IMPORTANT: This function relies on PHP's mail() function, which requires
  * a properly configured mail server (MTA) on the system where PHP is running,
  * or specific php.ini settings to use an external SMTP server. 
- * It often DOES NOT work reliably on standard local development environments 
- * without specific configuration.
+ * 
+ * XAMPP CONFIGURATION:
+ * 1. Open php.ini file in your XAMPP installation (usually in xampp/php/php.ini)
+ * 2. Find the [mail function] section and configure as follows:
+ *    SMTP = smtp.gmail.com (or your SMTP server)
+ *    smtp_port = 587 (or appropriate port)
+ *    sendmail_from = your-email@gmail.com
+ *    sendmail_path = "\"C:\xampp\sendmail\sendmail.exe\" -t"
+ * 3. Then open xampp/sendmail/sendmail.ini and configure:
+ *    smtp_server=smtp.gmail.com (or your SMTP server)
+ *    smtp_port=587 (or appropriate port)
+ *    auth_username=your-email@gmail.com
+ *    auth_password=your-password (for Gmail, use App Password)
+ *    force_sender=your-email@gmail.com
+ * 4. Restart Apache after making these changes
  *
  * @param string $to Recipient email address.
  * @param string $subject Email subject.

@@ -10,10 +10,10 @@
                 <div class="mb-6 md:mb-0">
                     <h4 class="font-semibold mb-3">Quick Links</h4>
                     <ul>
-                        <li class="mb-2"><a href="/index.php" class="hover:text-red-200">Home</a></li>
-                        <li class="mb-2"><a href="/search.php" class="hover:text-red-200">Search Donors</a></li>
-                        <li class="mb-2"><a href="/camps.php" class="hover:text-red-200">Blood Camps</a></li>
-                        <li class="mb-2"><a href="/request.php" class="hover:text-red-200">Request Blood</a></li>
+                        <li class="mb-2"><a href="index.php" class="hover:text-red-200">Home</a></li>
+                        <li class="mb-2"><a href="search.php" class="hover:text-red-200">Search Donors</a></li>
+                        <li class="mb-2"><a href="camps.php" class="hover:text-red-200">Blood Camps</a></li>
+                        <li class="mb-2"><a href="request.php" class="hover:text-red-200">Request Blood</a></li>
                     </ul>
                 </div>
                 <div>

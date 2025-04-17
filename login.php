@@ -5,7 +5,7 @@ include_once 'includes/header.php'; // Make sure header does NOT call session_st
 include_once 'includes/auth.php';
 
 // Get redirect URL if set from GET parameter first
-$redirect_url = '/dashboard/donor.php'; // Default redirect
+$redirect_url = BASE_URL . '/dashboard/donor.php'; // Default redirect
 if (isset($_GET['redirect'])) {
     // Basic validation: ensure it's a local path and not external
     $potential_redirect = $_GET['redirect'];
@@ -130,8 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
                     <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
                            type="password" name="password" id="password" required>
-                    <!-- Add a forgot password link if needed -->
-                    <!-- <p class="text-right text-sm mt-1"><a href="/forgot-password.php" class="text-blue-600 hover:underline">Forgot Password?</a></p> -->
+                    <p class="text-right text-sm mt-1"><a href="forgot_password.php" class="text-blue-600 hover:underline">Forgot Password?</a></p>
                 </div>
 
                 <div class="mb-6">
@@ -141,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="text-center text-gray-600">
                     <p class="mb-2">
-                        Don't have an account? <a href="/register.php" class="text-red-600 hover:underline">Register here</a>
+                        Don't have an account? <a href="register.php" class="text-red-600 hover:underline">Register here</a>
                     </p>
                 </div>
             </form>

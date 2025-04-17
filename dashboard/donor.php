@@ -1,12 +1,20 @@
 <?php
-session_start();
-include_once '../includes/db.php';
-include_once '../includes/auth.php';
+// Start the session only if one doesn't already exist
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include the config file (adjust path as needed)
+require_once __DIR__ . '/../includes/config.php';
+
+// Include necessary files
+require_once INCLUDES_PATH . 'db.php';
+require_once INCLUDES_PATH . 'auth.php';
 
 // Check if user is logged in
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to access your dashboard.";
-    header("Location: /login.php");
+    header("Location: " . BASE_URL . "/login.php");
     exit;
 }
 
@@ -47,7 +55,10 @@ $camps_stmt->bind_param("ss", $donor['city'], $donor['state']);
 $camps_stmt->execute();
 $upcoming_camps = $camps_stmt->get_result();
 
-include_once '../includes/header.php';
+include_once INCLUDES_PATH . 'header.php';
+
+// Define paths for links
+$dashboard_url = DASHBOARD_URL;
 ?>
 
 <div class="bg-gray-100 min-h-screen">
@@ -69,10 +80,10 @@ include_once '../includes/header.php';
                 </div>
                 
                 <div class="mt-4 md:mt-0">
-                    <a href="/dashboard/profile.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded mr-2">
+                    <a href="<?php echo $dashboard_url; ?>/profile.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded mr-2">
                         <i class="fas fa-user mr-1"></i> Edit Profile
                     </a>
-                    <a href="/dashboard/appointments.php" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
+                    <a href="<?php echo $dashboard_url; ?>/appointments.php" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
                         <i class="fas fa-calendar-plus mr-1"></i> Book Appointment
                     </a>
                 </div>
@@ -128,9 +139,9 @@ include_once '../includes/header.php';
                                                     </span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                    <a href="/dashboard/view_appointment.php?id=<?php echo $appointment['id']; ?>" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
+                                                    <a href="<?php echo $dashboard_url; ?>/view_appointment.php?id=<?php echo $appointment['id']; ?>" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
                                                     <?php if ($appointment['status'] === 'pending'): ?>
-                                                        <a href="/dashboard/cancel_appointment.php?id=<?php echo $appointment['id']; ?>" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to cancel this appointment?');">Cancel</a>
+                                                        <a href="<?php echo $dashboard_url; ?>/cancel_appointment.php?id=<?php echo $appointment['id']; ?>" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to cancel this appointment?');">Cancel</a>
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>
@@ -140,7 +151,7 @@ include_once '../includes/header.php';
                             </div>
                         <?php else: ?>
                             <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded" role="alert">
-                                <p>You have no upcoming appointments. <a href="/dashboard/appointments.php" class="font-bold underline hover:text-blue-800">Book an appointment</a> to donate blood.</p>
+                                <p>You have no upcoming appointments. <a href="<?php echo $dashboard_url; ?>/appointments.php" class="font-bold underline hover:text-blue-800">Book an appointment</a> to donate blood.</p>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -205,7 +216,7 @@ include_once '../includes/header.php';
                                         <p class="font-semibold"><?php echo htmlspecialchars($request['requester_name']); ?> needs <?php echo htmlspecialchars($request['blood_group']); ?> blood</p>
                                         <p class="text-sm text-gray-600"><?php echo htmlspecialchars($request['city']) . ', ' . htmlspecialchars($request['state']); ?></p>
                                         <p class="text-sm text-gray-500 mt-1"><?php echo htmlspecialchars(substr($request['message'], 0, 100)) . (strlen($request['message']) > 100 ? '...' : ''); ?></p>
-                                        <a href="/dashboard/help_request.php?id=<?php echo $request['id']; ?>" class="mt-2 inline-block bg-red-600 text-white text-sm px-3 py-1 rounded hover:bg-red-700">I Can Help</a>
+                                        <a href="<?php echo $dashboard_path; ?>help_request.php?id=<?php echo $request['id']; ?>" class="mt-2 inline-block bg-red-600 text-white text-sm px-3 py-1 rounded hover:bg-red-700">I Can Help</a>
                                     </li>
                                 <?php endwhile; ?>
                             </ul>
@@ -226,7 +237,7 @@ include_once '../includes/header.php';
                                         <p class="font-semibold"><?php echo htmlspecialchars($camp['title']); ?></p>
                                         <p class="text-sm text-gray-600"><?php echo date("F j, Y", strtotime($camp['date'])); ?></p>
                                         <p class="text-sm text-gray-500"><?php echo htmlspecialchars($camp['location']); ?></p>
-                                        <a href="/dashboard/appointments.php?camp_id=<?php echo $camp['id']; ?>" class="mt-2 inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700">Book Appointment</a>
+                                        <a href="<?php echo $dashboard_path; ?>appointments.php?camp_id=<?php echo $camp['id']; ?>" class="mt-2 inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700">Book Appointment</a>
                                     </li>
                                 <?php endwhile; ?>
                             </ul>
@@ -275,4 +286,4 @@ include_once '../includes/header.php';
     </div>
 </div>
 
-<?php include_once '../includes/footer.php'; ?>
+<?php include_once $root_path . 'includes/footer.php'; ?>
