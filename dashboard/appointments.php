@@ -7,7 +7,7 @@ include_once '../mail/send.php';
 
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to book an appointment.";
-    header("Location: /login.php");
+    header("Location: login.php");
     exit;
 }
 
@@ -104,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 
                 $_SESSION['success'] = "Your appointment has been scheduled. You will be notified once it's confirmed.";
-                header("Location: /dashboard/donor.php");
+                header("Location: " . DASHBOARD_URL . "/donor.php");
                 exit;
             } else {
                 $errors[] = "Failed to schedule your appointment. Please try again later.";
@@ -125,7 +125,7 @@ include_once '../includes/header.php';
         <div class="max-w-2xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold">Book Blood Donation Appointment</h1>
-                <a href="/dashboard/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
+                <a href="<?php echo DASHBOARD_URL; ?>/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
                     <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
                 </a>
             </div>
@@ -229,7 +229,7 @@ include_once '../includes/header.php';
                                 <p class="text-sm text-gray-600"><?php echo date("F j, Y", strtotime($camp['date'])); ?></p>
                                 <p class="text-sm text-gray-500"><?php echo htmlspecialchars($camp['location']); ?></p>
                                 <div class="mt-2">
-                                    <a href="/dashboard/appointments.php?camp_id=<?php echo $camp['id']; ?>" class="text-blue-600 hover:underline">Select This Camp</a>
+                                    <a href="appointments.php?camp_id=<?php echo $camp['id']; ?>" class="text-blue-600 hover:underline">Select This Camp</a>
                                 </div>
                             </div>
                         <?php endwhile; ?>

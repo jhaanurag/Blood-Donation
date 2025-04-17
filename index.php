@@ -11,8 +11,8 @@ include_once 'includes/auth.php';
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">Give the Gift of Life</h1>
                 <p class="text-xl mb-6">Your blood donation can save up to 3 lives. Join our community of donors today and make a difference.</p>
                 <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-                    <a href="/register.php" class="bg-white text-red-600 font-semibold px-6 py-3 rounded-md hover:bg-gray-100 transition text-center">Register as Donor</a>
-                    <a href="/request.php" class="border-2 border-white text-white font-semibold px-6 py-3 rounded-md hover:bg-red-700 transition text-center">Request Blood</a>
+                    <a href="<?php echo $base_url; ?>register.php" class="bg-white text-red-600 font-semibold px-6 py-3 rounded-md hover:bg-gray-100 transition text-center">Register as Donor</a>
+                    <a href="<?php echo $base_url; ?>request.php" class="border-2 border-white text-white font-semibold px-6 py-3 rounded-md hover:bg-red-700 transition text-center">Request Blood</a>
                 </div>
             </div>
             <div class="md:w-1/2">
@@ -88,7 +88,7 @@ include_once 'includes/auth.php';
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold">Upcoming Blood Camps</h2>
-            <a href="/camps.php" class="text-red-600 hover:underline font-semibold">View All <i class="fas fa-arrow-right ml-1"></i></a>
+            <a href="<?php echo $base_url; ?>camps.php" class="text-red-600 hover:underline font-semibold">View All <i class="fas fa-arrow-right ml-1"></i></a>
         </div>
         
         <?php

@@ -169,7 +169,7 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                     <button type="submit" name="filter" value="1" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
                         <i class="fas fa-search mr-2"></i> Filter Donors
                     </button>
-                    <a href="/search.php" class="ml-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Reset Filters</a>
+                    <a href="search.php" class="ml-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Reset Filters</a>
                 </div>
             </form>
         </div>
@@ -220,12 +220,12 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <?php // Check login status to show appropriate link ?>
                                             <?php if (is_donor_logged_in()): ?>
-                                                <a href="/contact_donor.php?id=<?php echo $donor['id']; ?>" class="text-green-600 hover:underline font-semibold">
+                                                <a href="<?php echo BASE_URL; ?>/contact_donor.php?id=<?php echo $donor['id']; ?>" class="text-green-600 hover:underline font-semibold">
                                                   <i class="fas fa-phone-alt mr-1"></i> Contact
                                                 </a>
                                             <?php else: ?>
                                                 <?php // Add redirect back to search after login ?>
-                                                <?php $login_url = "/login.php?redirect=" . urlencode($_SERVER['REQUEST_URI']); ?>
+                                                <?php $login_url = BASE_URL . "/login.php?redirect=" . urlencode($_SERVER['REQUEST_URI']); ?>
                                                 <a href="<?php echo $login_url; ?>" class="text-blue-600 hover:underline">
                                                   <i class="fas fa-sign-in-alt mr-1"></i> Login to Contact
                                                 </a>

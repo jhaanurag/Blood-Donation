@@ -7,7 +7,7 @@ include_once 'mail/send.php'; // Include the mail function
 
 // If user is already logged in, redirect to dashboard
 if (is_donor_logged_in()) {
-    header("Location: /dashboard/donor.php");
+    header("Location: dashboard/donor.php");
     exit;
 }
 
@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message = "Dear " . htmlspecialchars($name) . ",<br><br>Thank you for registering as a blood donor. Your commitment helps save lives!<br><br>You can now log in to your dashboard to book appointments and manage your profile.<br><br>Best regards,<br>The Blood Donation Team";
             send_email($email, $subject, $message);
             
-            header("Location: /dashboard/donor.php");
+            header("Location: dashboard/donor.php");
             exit;
         } else {
             $errors[] = "Registration failed. Please try again later.";
@@ -202,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 
                 <p class="text-center text-gray-600">
-                    Already have an account? <a href="/login.php" class="text-red-600 hover:underline">Login here</a>
+                    Already have an account? <a href="login.php" class="text-red-600 hover:underline">Login here</a>
                 </p>
             </form>
         </div>

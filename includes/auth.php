@@ -15,7 +15,7 @@ function is_donor_logged_in() {
 function require_donor_login() {
     if (!is_donor_logged_in()) {
         $_SESSION['error'] = "You must be logged in to view that page.";
-        header("Location: /login.php");
+        header("Location: login.php");
         exit;
     }
 }
