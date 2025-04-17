@@ -14,3 +14,31 @@
 * {
     animation: perspec 0.4s ease forwards;
 }
+
+#mouse-follower {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px; /* Adjust size as needed */
+    height: 60px; /* Adjust size as needed */
+    background-color: rgba(255, 227, 227, 0.466); /* White with some transparency */
+    border-top-left-radius: 70%;
+    border-bottom-left-radius: 55%;
+    border-bottom-right-radius: 70%;
+    transform: translate(-50%, -50%);
+    pointer-events: none; /* Ignore mouse events on the blob itself */
+    z-index: 9999; /* Ensure it's on top */
+    filter: blur(2px);
+    /* transform: translate(-50%, -50%); Remove this */
+    /* transition: transform 0.1s ease-out; Remove this */
+    transition: top 0.1s ease-out, left 0.1s ease-out; /* Add this */
+    /* will-change: transform; Remove this */
+    will-change: top, left; /* Add this */
+    opacity: 0; /* Start hidden */
+    backdrop-filter: blur(3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+*:hover #mouse-follower {
+    opacity: 1; /* Show when mouse is over body */
+}

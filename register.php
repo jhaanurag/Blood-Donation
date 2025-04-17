@@ -54,10 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if (empty($phone)) {
         $errors[] = "Phone number is required.";
+    } elseif (!preg_match('/^\d{10}$/', $phone)) { // Basic validation for 10 digits
+        $errors[] = "Invalid phone number format. Please enter 10 digits.";
     }
     
     if (empty($age) || $age < 18) {
         $errors[] = "Age must be 18 or above.";
+    } elseif ($age > 100) { // Optional: Add a reasonable upper limit for age
+        $errors[] = "Please enter a valid age.";
     }
     
     if (empty($blood_group)) {
@@ -99,7 +103,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Send welcome email
             $subject = "Welcome to the Blood Donation System!";
             $message = "Dear " . htmlspecialchars($name) . ",<br><br>Thank you for registering as a blood donor. Your commitment helps save lives!<br><br>You can now log in to your dashboard to book appointments and manage your profile.<br><br>Best regards,<br>The Blood Donation Team";
-            send_email($email, $subject, $message);
+            
+            // Check if email sending was successful
+            if (!send_email($email, $subject, $message)) {
+                // Log the error or store a temporary message for debugging
+                // Note: The user is redirected immediately after, so they won't see this directly
+                // You might want to log this to a file instead for better debugging
+                error_log("Registration email failed to send to: " . $email); 
+                // Optionally set a session variable if you want to try and display a message later,
+                // though it might be cleared or overwritten by the redirect target page.
+                // $_SESSION['warning'] = "Registration successful, but the welcome email could not be sent.";
+            }
             
             header("Location: /dashboard/donor.php");
             exit;
