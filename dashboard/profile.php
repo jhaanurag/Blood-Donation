@@ -6,7 +6,7 @@ include_once '../includes/auth.php';
 // Check if user is logged in
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to access your profile.";
-    header("Location: login.php");
+    header("Location: /login.php");
     exit;
 }
 
@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $success = true;
             $_SESSION['donor_name'] = $name; // Update session name
             $_SESSION['success'] = "Your profile has been updated successfully.";
-            header("Location: dashboard/donor.php");
+            header("Location: /dashboard/donor.php");
             exit;
         } else {
             $errors[] = "Failed to update your profile. Please try again.";
@@ -124,7 +124,7 @@ include_once '../includes/header.php';
         <div class="max-w-2xl mx-auto">
             <div class="flex items-center justify-between mb-6">
                 <h1 class="text-2xl font-bold">Edit Your Profile</h1>
-                <a href="dashboard/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
+                <a href="/dashboard/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
                     <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
                 </a>
             </div>

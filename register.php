@@ -7,7 +7,7 @@ include_once 'mail/send.php'; // Include the mail function
 
 // If user is already logged in, redirect to dashboard
 if (is_donor_logged_in()) {
-    header("Location: dashboard/donor.php");
+    header("Location: /dashboard/donor.php");
     exit;
 }
 
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // $_SESSION['warning'] = "Registration successful, but the welcome email could not be sent.";
             }
             
-            header("Location: dashboard/donor.php");
+            header("Location: /dashboard/donor.php");
             exit;
         } else {
             $errors[] = "Registration failed. Please try again later.";
@@ -216,7 +216,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 
                 <p class="text-center text-gray-600">
-                    Already have an account? <a href="login.php" class="text-red-600 hover:underline">Login here</a>
+                    Already have an account? <a href="/login.php" class="text-red-600 hover:underline">Login here</a>
                 </p>
             </form>
         </div>

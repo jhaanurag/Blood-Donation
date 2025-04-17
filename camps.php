@@ -44,11 +44,11 @@ $result = mysqli_query($conn, $query);
                             </div>
 
                             <?php if (is_donor_logged_in()): ?>
-                                <a href="<?php echo BASE_URL; ?>/dashboard/appointments.php?camp_id=<?= $camp['id'] ?>" class="block text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition">
+                                <a href="/dashboard/appointments.php?camp_id=<?= $camp['id'] ?>" class="block text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition">
                                     Book Appointment
                                 </a>
                             <?php else: ?>
-                                <a href="<?php echo BASE_URL; ?>/login.php" class="block text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition">
+                                <a href="/login.php" class="block text-center bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 transition">
                                     Login to Book Appointment
                                 </a>
                             <?php endif; ?>
@@ -59,7 +59,7 @@ $result = mysqli_query($conn, $query);
         <?php else: ?>
             <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-6 rounded text-center">
                 <p class="text-lg">No upcoming blood donation camps at the moment.</p>
-                <p>Please check back later or <a href="<?php echo BASE_URL; ?>/register.php" class="text-red-600 hover:underline">register</a> to be notified when new camps are scheduled.</p>
+                <p>Please check back later or <a href="/register.php" class="text-red-600 hover:underline">register</a> to be notified when new camps are scheduled.</p>
             </div>
         <?php endif; ?>
         

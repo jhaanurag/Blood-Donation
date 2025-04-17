@@ -51,7 +51,7 @@ if ($target_donor_id <= 0) {
                     <span class="block sm:inline"><?php echo htmlspecialchars($error_message); ?></span>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="search.php" class="text-blue-600 hover:underline">« Back to Search</a>
+                    <a href="/search.php" class="text-blue-600 hover:underline">« Back to Search</a>
                 </div>
             <?php elseif ($donor_details): ?>
                 <div class="mb-4 p-4 border rounded bg-gray-50">
@@ -83,9 +83,9 @@ if ($target_donor_id <= 0) {
                 </div>
 
                 <div class="text-center mt-6">
-                    <a href="search.php" class="text-blue-600 hover:underline">« Back to Search</a>
+                    <a href="/search.php" class="text-blue-600 hover:underline">« Back to Search</a>
                     <span class="mx-2 text-gray-400">|</span>
-                    <a href="dashboard/donor.php" class="text-blue-600 hover:underline">My Dashboard »</a>
+                    <a href="/dashboard/donor.php" class="text-blue-600 hover:underline">My Dashboard »</a>
                 </div>
 
             <?php else: // Should not happen if error_message is empty, but as a fallback ?>
@@ -93,7 +93,7 @@ if ($target_donor_id <= 0) {
                     <span class="block sm:inline">Could not load donor details. Please try again.</span>
                 </div>
                  <div class="text-center mt-4">
-                    <a href="search.php" class="text-blue-600 hover:underline">« Back to Search</a>
+                    <a href="/search.php" class="text-blue-600 hover:underline">« Back to Search</a>
                 </div>
             <?php endif; ?>
 
