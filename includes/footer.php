@@ -50,24 +50,22 @@
 
         // Mouse follower logic
         const follower = document.getElementById('mouse-follower');
-        const followerSize = 30; // Match the CSS width/height
         if (follower) {
             document.addEventListener('mousemove', (e) => {
-                // Use requestAnimationFrame for smoother animation
                 requestAnimationFrame(() => {
-                    follower.style.left = `${e.clientX - followerSize / 2}px`; // Set left position, adjusting for centering
-                    follower.style.top = `${e.clientY - followerSize / 2}px`; // Set top position, adjusting for centering
+                    // Use pageX/pageY for correct positioning during scroll
+                    follower.style.left = `${e.pageX}px`;
+                    follower.style.top = `${e.pageY}px`;
+                    follower.style.opacity = '1';
                 });
             });
 
-            // Hide follower when mouse leaves the window
             document.addEventListener('mouseleave', () => {
-                 follower.style.opacity = '0';
+                follower.style.opacity = '0';
             });
 
-             // Show follower when mouse enters the window
             document.addEventListener('mouseenter', () => {
-                 follower.style.opacity = '1';
+                follower.style.opacity = '1';
             });
         }
     </script>

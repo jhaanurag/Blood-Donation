@@ -4,7 +4,7 @@ include_once 'includes/auth.php';
 ?>
 
 <!-- Hero Section -->
-<section class="bg-red-600 text-white py-16 px-8 rounded-lg shadow-lg">
+<section class="bg-red-500 text-white py-16 px-8 rounded-lg shadow-lg">
     <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 mb-8 md:mb-0">
@@ -16,7 +16,7 @@ include_once 'includes/auth.php';
                 </div>
             </div>
             <div class="md:w-1/2">
-                <img src="image.png" alt="Blood Donation" class="rounded-lg shadow-xl">
+                <img src="phot2.jpg" alt="Blood Donation" class="rounded-lg shadow-xl">
             </div>
         </div>
     </div>
