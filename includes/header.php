@@ -14,7 +14,7 @@ include_once 'includes/db.php';
 </head>
 <body class="bg-gray-50 min-h-screen">
     
-    <nav class="bg-red-600 text-white shadow-lg">
+    <nav class="bg-red-600/80 backdrop-blur-sm text-white shadow-lg" style="position: sticky; top: 0; z-index: 100;">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
