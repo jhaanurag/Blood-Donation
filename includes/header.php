@@ -49,19 +49,39 @@ $base_url = BASE_URL . '/';
                         <i class="fas fa-heartbeat mr-2"></i>LifeFlow
                     </a>
                 </div>
-                <div class="hidden md:flex space-x-6 items-center">
-                    <a href="<?php echo $base_url; ?>index.php" class="hover:text-red-200 transition">Home</a>
-                    <a href="<?php echo $base_url; ?>search.php" class="hover:text-red-200 transition">Donor Search</a>
-                    <a href="<?php echo $base_url; ?>camps.php" class="hover:text-red-200 transition">Blood Camps</a>
-                    <a href="<?php echo $base_url; ?>request.php" class="hover:text-red-200 transition">Request Blood</a>
-                    <a href="<?php echo $base_url; ?>chatbot/index.php" class="hover:text-red-200 transition">Ask Assistant</a>
-                    <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="hover:text-red-200 transition">Eligibility Check</a>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="<?php echo $base_url; ?>index.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                    <a href="<?php echo $base_url; ?>search.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-search"></i> Donor Search
+                    </a>
+                    <a href="<?php echo $base_url; ?>camps.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-tint"></i> Blood Camps
+                    </a>
+                    <a href="<?php echo $base_url; ?>request.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-hand-holding-medical"></i> Request Blood
+                    </a>
+                    <a href="<?php echo $base_url; ?>chatbot/index.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-robot"></i> Ask Assistant
+                    </a>
+                    <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-clipboard-check"></i> Eligibility Check
+                    </a>
                     <?php if(isset($_SESSION['donor_id'])): ?>
-                        <a href="<?php echo $base_url; ?>dashboard/donor.php" class="hover:text-red-200 transition">My Dashboard</a>
-                        <a href="<?php echo $base_url; ?>logout.php" class="hover:text-red-200 transition">Logout</a>
+                        <a href="<?php echo $base_url; ?>dashboard/donor.php" class="px-3 py-2 rounded hover:bg-red-700/80 hover:text-white transition font-medium flex items-center gap-1">
+                            <i class="fas fa-user"></i> My Dashboard
+                        </a>
+                        <a href="<?php echo $base_url; ?>logout.php" class="px-3 py-2 rounded hover:bg-gray-800/80 hover:text-white transition font-medium flex items-center gap-1">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
                     <?php else: ?>
-                        <a href="<?php echo $base_url; ?>login.php" class="hover:text-red-200 transition">Login</a>
-                        <a href="<?php echo $base_url; ?>register.php" class="hover:text-red-200 transition">Register</a>
+                        <a href="<?php echo $base_url; ?>login.php" class="px-3 py-2 rounded hover:bg-gray-800/80 hover:text-white transition font-medium flex items-center gap-1">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                        <a href="<?php echo $base_url; ?>register.php" class="px-3 py-2 rounded bg-white text-red-700 hover:bg-red-100 transition font-medium border border-red-200 flex items-center gap-1">
+                            <i class="fas fa-user-plus"></i> Register
+                        </a>
                     <?php endif; ?>
                     <!-- Dark mode toggle button -->
                     <button id="darkModeToggle" class="text-white p-2 rounded-full hover:bg-red-700 dark:hover:bg-red-800 focus:outline-none ml-2">
