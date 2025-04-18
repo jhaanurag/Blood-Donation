@@ -14,18 +14,34 @@ require_once INCLUDES_PATH . 'db.php';
 $base_url = BASE_URL . '/';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo APP_NAME; ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Add Tailwind dark mode configuration
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    // Custom theme extensions if needed
+                    colors: {
+                        'dark-bg': '#121212',
+                        'dark-card': '#1E1E1E',
+                        'dark-border': '#333333'
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="<?php echo $base_url; ?>assets/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
     
-    <nav class="bg-red-600/80 backdrop-blur-sm text-white shadow-lg" style="position: sticky; top: 0; z-index: 100;">
+    <nav class="bg-red-600/80 backdrop-blur-sm text-white shadow-lg dark:bg-red-900 transition-colors duration-200" style="position: sticky; top: 0; z-index: 100;">
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
@@ -33,11 +49,13 @@ $base_url = BASE_URL . '/';
                         <i class="fas fa-heartbeat mr-2"></i>LifeFlow
                     </a>
                 </div>
-                <div class="hidden md:flex space-x-6">
+                <div class="hidden md:flex space-x-6 items-center">
                     <a href="<?php echo $base_url; ?>index.php" class="hover:text-red-200 transition">Home</a>
                     <a href="<?php echo $base_url; ?>search.php" class="hover:text-red-200 transition">Donor Search</a>
                     <a href="<?php echo $base_url; ?>camps.php" class="hover:text-red-200 transition">Blood Camps</a>
                     <a href="<?php echo $base_url; ?>request.php" class="hover:text-red-200 transition">Request Blood</a>
+                    <a href="<?php echo $base_url; ?>chatbot/index.php" class="hover:text-red-200 transition">Ask Assistant</a>
+                    <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="hover:text-red-200 transition">Eligibility Check</a>
                     <?php if(isset($_SESSION['donor_id'])): ?>
                         <a href="<?php echo $base_url; ?>dashboard/donor.php" class="hover:text-red-200 transition">My Dashboard</a>
                         <a href="<?php echo $base_url; ?>logout.php" class="hover:text-red-200 transition">Logout</a>
@@ -45,8 +63,16 @@ $base_url = BASE_URL . '/';
                         <a href="<?php echo $base_url; ?>login.php" class="hover:text-red-200 transition">Login</a>
                         <a href="<?php echo $base_url; ?>register.php" class="hover:text-red-200 transition">Register</a>
                     <?php endif; ?>
+                    <!-- Dark mode toggle button -->
+                    <button id="darkModeToggle" class="text-white p-2 rounded-full hover:bg-red-700 dark:hover:bg-red-800 focus:outline-none ml-2">
+                        <i id="darkModeIcon" class="fas fa-moon"></i>
+                    </button>
                 </div>
-                <div class="md:hidden">
+                <div class="md:hidden flex items-center">
+                    <!-- Dark mode toggle for mobile -->
+                    <button id="darkModeToggleMobile" class="text-white p-2 rounded-full hover:bg-red-700 dark:hover:bg-red-800 focus:outline-none mr-2">
+                        <i id="darkModeIconMobile" class="fas fa-moon"></i>
+                    </button>
                     <button id="mobile-menu-button" class="text-white focus:outline-none">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
@@ -58,6 +84,8 @@ $base_url = BASE_URL . '/';
                 <a href="<?php echo $base_url; ?>search.php" class="block py-2 hover:text-red-200 transition">Donor Search</a>
                 <a href="<?php echo $base_url; ?>camps.php" class="block py-2 hover:text-red-200 transition">Blood Camps</a>
                 <a href="<?php echo $base_url; ?>request.php" class="block py-2 hover:text-red-200 transition">Request Blood</a>
+                <a href="<?php echo $base_url; ?>chatbot/index.php" class="block py-2 hover:text-red-200 transition">Ask Assistant</a>
+                <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="block py-2 hover:text-red-200 transition">Eligibility Check</a>
                 <?php if(isset($_SESSION['donor_id'])): ?>
                     <a href="<?php echo $base_url; ?>dashboard/donor.php" class="block py-2 hover:text-red-200 transition">My Dashboard</a>
                     <a href="<?php echo $base_url; ?>logout.php" class="block py-2 hover:text-red-200 transition">Logout</a>
@@ -68,4 +96,9 @@ $base_url = BASE_URL . '/';
             </div>
         </div>
     </nav>
-    <main class="container mx-auto px-4 py-6">
+    <main class="container mx-auto px-4 py-6"><?php // Main content starts here ?>
+    
+    <?php 
+    // Include the floating chatbot component
+    include_once INCLUDES_PATH . 'components/floating_chatbot.php';
+    ?>

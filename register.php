@@ -125,15 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<div class="bg-gray-100 py-12">
+<div class="bg-gray-100 dark:bg-gray-800 py-12">
     <div class="container mx-auto px-4">
-        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-            <h2 class="text-2xl font-bold text-center text-red-600 mb-6">Register as a Blood Donor</h2>
+        <div class="max-w-md mx-auto bg-white dark:bg-gray-700 p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center text-red-600 dark:text-red-400 mb-6">Register as a Blood Donor</h2>
             
             <?php 
             // Display any errors
             if (!empty($errors)) {
-                echo '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">';
+                echo '<div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded relative mb-4" role="alert">';
                 echo '<ul class="list-disc list-inside">';
                 foreach ($errors as $error) {
                     echo '<li>' . htmlspecialchars($error) . '</li>';
@@ -147,44 +147,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Full Name</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="name">Full Name</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="text" name="name" id="name" value="<?php echo htmlspecialchars($name); ?>" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email Address</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="email">Email Address</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="password">Password</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="password" name="password" id="password" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm_password">Confirm Password</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="confirm_password">Confirm Password</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="password" name="confirm_password" id="confirm_password" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">Phone Number</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="phone">Phone Number</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="tel" name="phone" id="phone" value="<?php echo htmlspecialchars($phone); ?>" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="age">Age</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="age">Age</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="number" name="age" id="age" min="18" value="<?php echo htmlspecialchars($age); ?>" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="blood_group">Blood Group</label>
-                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="blood_group">Blood Group</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                             name="blood_group" id="blood_group" required>
                         <option value="" disabled <?php echo empty($blood_group) ? 'selected' : ''; ?>>Select Blood Group</option>
                         <option value="A+" <?php echo $blood_group === 'A+' ? 'selected' : ''; ?>>A+</option>
@@ -199,24 +199,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="city">City</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="city">City</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="text" name="city" id="city" value="<?php echo htmlspecialchars($city); ?>" required>
                 </div>
                 
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="state">State</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="state">State</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="text" name="state" id="state" value="<?php echo htmlspecialchars($state); ?>" required>
                 </div>
                 
                 <div class="mb-6">
-                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50" 
+                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50" 
                             type="submit">Register</button>
                 </div>
                 
-                <p class="text-center text-gray-600">
-                    Already have an account? <a href="login.php" class="text-red-600 hover:underline">Login here</a>
+                <p class="text-center text-gray-600 dark:text-gray-300">
+                    Already have an account? <a href="login.php" class="text-red-600 dark:text-red-400 hover:underline">Login here</a>
                 </p>
             </form>
         </div>

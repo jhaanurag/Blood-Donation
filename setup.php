@@ -1,6 +1,74 @@
 <?php
 // setup.php - Configuration testing and setup script for Blood Donation System
 
+// Check if the user requested a database import
+$importStatus = '';
+$importSuccess = false;
+
+if (isset($_POST['import_database'])) {
+    require_once './includes/config.php';
+    
+    // Attempt to connect to MySQL server (without selecting a database)
+    $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS);
+    
+    if (!$conn) {
+        $importStatus = "Failed to connect to database server: " . mysqli_connect_error();
+    } else {
+        // Check if database exists, create it if it doesn't
+        $dbExists = mysqli_select_db($conn, DB_NAME);
+        
+        if (!$dbExists) {
+            $createDbResult = mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS " . DB_NAME);
+            if (!$createDbResult) {
+                $importStatus = "Failed to create database: " . mysqli_error($conn);
+                mysqli_close($conn);
+                exit;
+            }
+            mysqli_select_db($conn, DB_NAME);
+        }
+        
+        // Read the SQL file
+        $sqlFile = file_get_contents('blood_donation.sql');
+        
+        if ($sqlFile === false) {
+            $importStatus = "Could not read blood_donation.sql file";
+        } else {
+            // Split the SQL file into individual queries
+            $sqlQueries = explode(';', $sqlFile);
+            
+            try {
+                // Execute each query
+                $success = true;
+                mysqli_begin_transaction($conn);
+                
+                foreach ($sqlQueries as $query) {
+                    $query = trim($query);
+                    if (!empty($query)) {
+                        $result = mysqli_query($conn, $query);
+                        if (!$result) {
+                            $success = false;
+                            $importStatus = "Error importing database: " . mysqli_error($conn);
+                            break;
+                        }
+                    }
+                }
+                
+                if ($success) {
+                    mysqli_commit($conn);
+                    $importStatus = "Database imported successfully!";
+                    $importSuccess = true;
+                } else {
+                    mysqli_rollback($conn);
+                }
+            } catch (Exception $e) {
+                mysqli_rollback($conn);
+                $importStatus = "Exception during import: " . $e->getMessage();
+            }
+        }
+        mysqli_close($conn);
+    }
+}
+
 // Check PHP version
 $requiredPhpVersion = '7.4.0';
 $phpVersionCheck = version_compare(PHP_VERSION, $requiredPhpVersion, '>=');
@@ -12,32 +80,24 @@ $mysqlExtensionCheck = extension_loaded('mysqli');
 $includesPermissionCheck = is_readable('./includes') && is_writable('./includes');
 $mailPermissionCheck = is_readable('./mail') && is_writable('./mail');
 
-// Database connection test (using values from includes/db.php)
+// Database connection test (using values from includes/config.php)
 $dbConnectionCheck = false;
 $dbErrorMessage = '';
-if (file_exists('./includes/db.php')) {
-    // Get database config (without executing the entire file)
-    $dbConfigContent = file_get_contents('./includes/db.php');
-    preg_match('/\$host\s*=\s*"([^"]+)"/', $dbConfigContent, $hostMatches);
-    preg_match('/\$username\s*=\s*"([^"]+)"/', $dbConfigContent, $usernameMatches);
-    preg_match('/\$password\s*=\s*"([^"]*)"/', $dbConfigContent, $passwordMatches);
-    preg_match('/\$database\s*=\s*"([^"]+)"/', $dbConfigContent, $databaseMatches);
-    
-    $host = isset($hostMatches[1]) ? $hostMatches[1] : 'localhost';
-    $username = isset($usernameMatches[1]) ? $usernameMatches[1] : 'root';
-    $password = isset($passwordMatches[1]) ? $passwordMatches[1] : '';
-    $database = isset($databaseMatches[1]) ? $databaseMatches[1] : 'blood_donation';
+$dbExistsCheck = false;
+$tablesExistCheck = false;
+
+if (file_exists('./includes/config.php')) {
+    require_once './includes/config.php';
     
     // Try to connect
-    $conn = @mysqli_connect($host, $username, $password);
+    $conn = @mysqli_connect(DB_HOST, DB_USER, DB_PASS);
     if ($conn) {
         $dbConnectionCheck = true;
         
         // Check if database exists
-        $dbExistsCheck = mysqli_select_db($conn, $database);
+        $dbExistsCheck = mysqli_select_db($conn, DB_NAME);
         
         // Check if tables exist
-        $tablesExistCheck = false;
         if ($dbExistsCheck) {
             $result = mysqli_query($conn, "SHOW TABLES");
             $tablesExistCheck = mysqli_num_rows($result) > 0;
@@ -133,6 +193,10 @@ $serverProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'Unknown';
             border-radius: 3px;
             text-decoration: none;
             cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #c9302c;
         }
         code {
             background: #f0f0f0;
@@ -140,11 +204,33 @@ $serverProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'Unknown';
             border-radius: 3px;
             font-family: monospace;
         }
+        .success-message {
+            padding: 10px;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .error-message {
+            padding: 10px;
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            color: #a94442;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Blood Donation System - Setup</h1>
+        
+        <?php if (!empty($importStatus)): ?>
+            <div class="<?php echo $importSuccess ? 'success-message' : 'error-message'; ?>">
+                <?php echo $importStatus; ?>
+            </div>
+        <?php endif; ?>
         
         <div class="check-item info">
             This script checks your system configuration to ensure the Blood Donation System will run correctly.
@@ -215,26 +301,24 @@ $serverProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'Unknown';
             <strong>Database Connection:</strong> <?php echo $dbConnectionCheck ? 'Connected Successfully' : 'Connection Failed'; ?>
             <?php if (!$dbConnectionCheck): ?>
                 <p>Could not connect to the database server. Error: <?php echo $dbErrorMessage; ?></p>
-                <p>Please check your database settings in <code>includes/db.php</code>.</p>
+                <p>Please check your database settings in <code>includes/config.php</code>.</p>
             <?php endif; ?>
         </div>
         
         <?php if ($dbConnectionCheck): ?>
         <div class="check-item <?php echo $dbExistsCheck ? 'pass' : 'fail'; ?>">
-            <strong>Database '<?php echo $database; ?>':</strong> <?php echo $dbExistsCheck ? 'Exists' : 'Does Not Exist'; ?>
+            <strong>Database '<?php echo DB_NAME; ?>':</strong> <?php echo $dbExistsCheck ? 'Exists' : 'Does Not Exist'; ?>
             <?php if (!$dbExistsCheck): ?>
-                <p>The database '<?php echo $database; ?>' does not exist. Please create it or update the database name in <code>includes/db.php</code>.</p>
+                <p>The database '<?php echo DB_NAME; ?>' does not exist.</p>
             <?php endif; ?>
         </div>
         
-        <?php if ($dbExistsCheck): ?>
         <div class="check-item <?php echo $tablesExistCheck ? 'pass' : 'warning'; ?>">
             <strong>Database Tables:</strong> <?php echo $tablesExistCheck ? 'Exist' : 'Not Found'; ?>
             <?php if (!$tablesExistCheck): ?>
-                <p>No tables found in the database. You need to import the database schema from <code>blood_donation.sql</code>.</p>
+                <p>No tables found in the database. You need to import the database schema.</p>
             <?php endif; ?>
         </div>
-        <?php endif; ?>
         <?php endif; ?>
         
         <h2>Server Information</h2>
@@ -255,25 +339,11 @@ $serverProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'Unknown';
             <?php else: ?>
                 <p>Please fix the issues highlighted above before using the system.</p>
                 
-                <?php if (!$dbExistsCheck): ?>
-                <p><strong>To create the database:</strong></p>
-                <ol>
-                    <li>Access phpMyAdmin at <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a></li>
-                    <li>Click on "New" in the left sidebar</li>
-                    <li>Enter "blood_donation" as the database name</li>
-                    <li>Click "Create"</li>
-                </ol>
-                <?php endif; ?>
-                
-                <?php if ($dbExistsCheck && !$tablesExistCheck): ?>
-                <p><strong>To import the database schema:</strong></p>
-                <ol>
-                    <li>Access phpMyAdmin at <a href="http://localhost/phpmyadmin" target="_blank">http://localhost/phpmyadmin</a></li>
-                    <li>Click on "blood_donation" in the left sidebar</li>
-                    <li>Click on "Import" in the top menu</li>
-                    <li>Click "Choose File" and select the "blood_donation.sql" file from your project</li>
-                    <li>Click "Go" to import</li>
-                </ol>
+                <?php if ($dbConnectionCheck && (!$dbExistsCheck || !$tablesExistCheck)): ?>
+                <form method="post" action="setup.php">
+                    <button type="submit" name="import_database" class="btn">Create/Import Database</button>
+                </form>
+                <p><small>This will create the database if needed and import all required tables from blood_donation.sql</small></p>
                 <?php endif; ?>
                 
                 <p><a href="setup.php" class="btn">Refresh Check</a></p>
@@ -281,4 +351,4 @@ $serverProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'Unknown';
         </div>
     </div>
 </body>
-</html> 
+</html>

@@ -37,3 +37,282 @@
 }
 
 /* todo: add subtle move up animattion with transtion */
+
+html.dark #mouse-follower {
+    background-color: rgba(255, 69, 69, 0.3); /* Darker red with some transparency for dark mode */
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
+}
+
+*:hover #mouse-follower {
+    opacity: 1; /* Show when mouse is over body */
+}
+
+/* Additional Dark Mode Styles */
+html.dark {
+    color-scheme: dark;
+}
+
+/* Box Hover Animation - Makes boxes pop out with red tint on edges when hovered */
+/* Remove the generic selectors that affect all boxes */
+/* .bg-white, 
+[class*="bg-gray-"], 
+[class*="rounded-lg"],
+.rounded-lg {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bg-white:hover, 
+[class*="bg-gray-"]:hover, 
+[class*="rounded-lg"]:hover,
+.rounded-lg:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3), 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode version of the hover effect */
+/*html.dark .bg-white:hover, 
+html.dark [class*="bg-gray-"]:hover, 
+html.dark [class*="rounded-lg"]:hover,
+html.dark .rounded-lg:hover {
+    box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.4), 0 10px 20px -5px rgba(0, 0, 0, 0.4);
+} */
+
+/* Target only the small blood type boxes specifically */
+/* These are the boxes in the blood type section that contain blood type information */
+.container .grid .bg-white, 
+.container .grid [class*="bg-gray-"] {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: visible;
+}
+
+/* Remove the centered light source pseudo-element */
+/* .container .grid .bg-white::before, 
+.container .grid [class*="bg-gray-"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    opacity: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at center, rgba(255, 0, 0, 0.35) 0%, rgba(255, 0, 0, 0) 70%);
+    filter: blur(8px);
+    transform: scale(1.1);
+    transition: opacity 0.3s ease;
+}
+
+.container .grid .bg-white:hover::before, 
+.container .grid [class*="bg-gray-"]:hover::before {
+    opacity: 1;
+} */
+
+.container .grid .bg-white:hover, 
+.container .grid [class*="bg-gray-"]:hover {
+    transform: translateY(-5px) scale(1.02);
+    /* Modified shadow to create edge glow without center light source */
+    box-shadow: 
+        0 0 0 3px rgba(220, 38, 38, 0.25), 
+        0 0 12px 2px rgba(255, 0, 0, 0.25),
+        0 10px 20px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode version of the hover effect for small blood type boxes */
+/* html.dark .container .grid .bg-white::before, 
+html.dark .container .grid [class*="bg-gray-"]::before {
+    background: radial-gradient(circle at center, rgba(255, 60, 60, 0.45) 0%, rgba(255, 40, 40, 0) 70%);
+    filter: blur(10px);
+} */
+
+html.dark .container .grid .bg-white:hover, 
+html.dark .container .grid [class*="bg-gray-"]:hover {
+    /* Edge glow effect in dark mode */
+    box-shadow: 
+        0 0 0 3px rgba(248, 113, 113, 0.3),
+        0 0 12px 3px rgba(255, 40, 40, 0.35),  
+        0 10px 20px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Improve dark mode transitions */
+body, nav, div, main, footer, a, button, input, select, textarea {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom dark mode toggle button styling */
+#darkModeToggle, #darkModeToggleMobile {
+    transition: transform 0.3s ease;
+}
+
+#darkModeToggle:hover, #darkModeToggleMobile:hover {
+    transform: rotate(45deg);
+}
+
+/* Form inputs in dark mode */
+html.dark input, 
+html.dark select, 
+html.dark textarea {
+    background-color: #374151;
+    border-color: #4B5563;
+    color: #F9FAFB;
+}
+
+html.dark input:focus, 
+html.dark select:focus, 
+html.dark textarea:focus {
+    border-color: #991B1B;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
+}
+
+/* Links in dark mode */
+html.dark a:not([class]) {
+    color: #fb7185;
+}
+
+html.dark a:not([class]):hover {
+    color: #f43f5e;
+}
+
+/* Tables in dark mode */
+html.dark table {
+    border-color: #374151;
+}
+
+/* Focus outline for dark mode accessibility */
+html.dark :focus {
+    outline: 2px solid rgba(239, 68, 68, 0.6);
+    outline-offset: 2px;
+}
+
+/* Buttons in dark mode */
+html.dark .btn-primary {
+    background-color: #991B1B;
+}
+
+html.dark .btn-primary:hover {
+    background-color: #7F1D1D;
+}
+
+/* Placeholder text in dark mode */
+html.dark ::placeholder {
+    color: #9CA3AF;
+}
+
+/* Fix for dark mode text visibility issues */
+html.dark h1, 
+html.dark h2, 
+html.dark h3, 
+html.dark h4, 
+html.dark h5, 
+html.dark h6,
+html.dark p,
+html.dark li,
+html.dark label,
+html.dark span:not([class*="text-"]) {
+    color: #f3f4f6;
+}
+
+/* Fix for card elements in dark mode */
+html.dark .bg-white {
+    color: #f3f4f6;
+}
+
+/* Fix for stat cards and info boxes */
+html.dark .text-gray-800 {
+    color: #f3f4f6 !important;
+}
+
+html.dark .text-gray-700 {
+    color: #e5e7eb !important;
+}
+
+html.dark .text-gray-600 {
+    color: #d1d5db !important;
+}
+
+/* Fix for tables in dark mode */
+html.dark tbody tr {
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+html.dark th {
+    color: #d1d5db !important;
+}
+
+/* Fix for form labels */
+html.dark label {
+    color: #e5e7eb !important;
+}
+
+/* Fix for alerts and notifications */
+html.dark .bg-blue-50 {
+    background-color: #172554;
+}
+
+html.dark .bg-green-50 {
+    background-color: #14532d;
+}
+
+html.dark .bg-yellow-50 {
+    background-color: #713f12;
+}
+
+html.dark .bg-red-50 {
+    background-color: #7f1d1d;
+}
+
+html.dark .border-blue-200 {
+    border-color: #1e3a8a;
+}
+
+html.dark .border-green-200 {
+    border-color: #166534;
+}
+
+html.dark .border-yellow-200 {
+    border-color: #854d0e;
+}
+
+html.dark .border-red-200 {
+    border-color: #991b1b;
+}
+
+/* Donor search table row hover animation */
+.donor-search-table tbody tr {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.donor-search-table tbody tr:hover {
+    transform: translateY(-4px) scale(1.01);
+    background-color: rgba(255, 240, 240, 0.2); /* Subtle highlight color */
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 0, 0, 0.05);
+    z-index: 2; /* Ensures the row appears above others when hovering */
+}
+
+html.dark .donor-search-table tbody tr:hover {
+    background-color: rgba(255, 50, 50, 0.1); /* Subtle red tint for dark mode */
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 50, 50, 0.1);
+}
+
+/* Add slight delay to the first and last cells for a more dynamic effect */
+.donor-search-table tbody tr td:first-child {
+    transition-delay: 0.05s;
+}
+
+.donor-search-table tbody tr td:last-child {
+    transition-delay: 0.1s;
+}
+
+/* Blood type label enhanced hover effect */
+.donor-search-table .blood-type-label {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.donor-search-table tbody tr:hover .blood-type-label {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+}
