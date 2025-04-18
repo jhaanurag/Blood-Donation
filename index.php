@@ -8,7 +8,59 @@ include_once 'includes/auth.php';
     <div class="container mx-auto px-4">
         <div class="flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 mb-8 md:mb-0">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">Give the Gift of Life</h1>
+                <div class="typewriter">
+                    <h1 class="text-4xl text-left md:text-5xl font-bold mb-4" id="typewriter-text"></h1>
+                </div>
+                <style>
+                .typewriter {
+                  max-width: 100%;
+                  display: inline-block;
+                }
+                .typewriter h1 {
+                  overflow: hidden;
+                  border-right: .1em solid orange;
+                  white-space: nowrap;
+                  margin: 0;
+                  letter-spacing: .02em;
+                  width: fit-content;
+                  min-height: 3rem;
+                  animation: blink-caret .75s step-end infinite;
+                }
+                @keyframes blink-caret {
+                  from, to { border-color: transparent }
+                  50% { border-color: orange; }
+                }
+                </style>
+                <script>
+                // Typewriter loop effect
+                const text = "Give the Gift of Life";
+                const el = document.getElementById('typewriter-text');
+                let i = 0;
+                let typing = true;
+
+                function typeWriter() {
+                    if (typing) {
+                        if (i <= text.length) {
+                            el.textContent = text.substring(0, i);
+                            i++;
+                            setTimeout(typeWriter, 80);
+                        } else {
+                            typing = false;
+                            setTimeout(typeWriter, 1500);
+                        }
+                    } else {
+                        if (i >= 0) {
+                            el.textContent = text.substring(0, i);
+                            i--;
+                            setTimeout(typeWriter, 30);
+                        } else {
+                            typing = true;
+                            setTimeout(typeWriter, 500);
+                        }
+                    }
+                }
+                typeWriter();
+                </script>
                 <p class="text-xl mb-6">Your blood donation can save up to 3 lives. Join our community of donors today and make a difference.</p>
                 <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                     <a href="/register.php" class="bg-white text-red-600 font-semibold px-6 py-3 rounded-md hover:bg-gray-100 transition text-center">Register as Donor</a>

@@ -32,8 +32,10 @@
     will-change: top, left, opacity; /* Add this */
     opacity: 0; /* Start hidden */
     backdrop-filter: blur(1px);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.301);
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.39);
     transform: translate(-50%, -50%);
 }
+
+
 
 /* todo: add subtle move up animattion with transtion */
