@@ -36,7 +36,4 @@
     transform: translate(-50%, -50%);
 }
 
-/* Remove opacity on hover, JS will handle it */
-/* // *:hover #mouse-follower { */
-/* //     opacity: 1; */
-/* // } */
+/* todo: add subtle move up animattion with transtion */
