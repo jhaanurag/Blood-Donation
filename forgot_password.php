@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once 'includes/db.php';
-include_once 'includes/header.php';
 include_once 'includes/auth.php';
 include_once 'mail/send.php'; // Include the mail function
 
@@ -86,6 +85,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
 }
+
+// Include header AFTER all possible redirects
+include_once 'includes/header.php';
 ?>
 
 <div class="bg-gray-100 min-h-screen py-12">
@@ -154,4 +156,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 
-<?php include_once 'includes/footer.php'; ?> 
+<?php include_once 'includes/footer.php'; ?>

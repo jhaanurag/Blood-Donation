@@ -82,10 +82,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<div class="bg-gray-100 dark:bg-gray-800 py-12">
+<div class="min-h-screen py-12 dark:bg-gray-900">
     <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto">
-            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
                 <h1 class="text-3xl font-bold text-center text-red-600 dark:text-red-400 mb-6">Request Blood</h1>
                 
                 <?php if ($success): ?>

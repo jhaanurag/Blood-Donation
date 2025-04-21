@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once 'includes/db.php';
-include_once 'includes/header.php'; // Make sure header does NOT call session_start() again
 include_once 'includes/auth.php';
 
 // Get redirect URL if set from GET parameter first
@@ -92,6 +91,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+// Include the header AFTER all session and header manipulations
+include_once 'includes/header.php';
 ?>
 
 <div class="bg-gray-100 dark:bg-gray-800 min-h-screen py-12">

@@ -4,24 +4,27 @@
  * Contains global settings, paths, and other configuration variables
  */
 
+// Load environment variables from .env file
+require_once __DIR__ . '/env.php';
+
 // Define application paths
-define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'] . '/Blood-Donation/');
+define('ROOT_PATH', getenv('ROOT_PATH') ?: $_SERVER['DOCUMENT_ROOT'] . '/Blood-Donation/');
 define('INCLUDES_PATH', ROOT_PATH . 'includes/');
 define('DASHBOARD_PATH', ROOT_PATH . 'dashboard/');
 
 // URL paths (without trailing slash)
-define('BASE_URL', '/Blood-Donation');
-define('DASHBOARD_URL', BASE_URL . '/dashboard');
+define('BASE_URL', getenv('BASE_URL') ?: '/Blood-Donation');
+define('DASHBOARD_URL', getenv('DASHBOARD_URL') ?: BASE_URL . '/dashboard');
 
 // Database configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'blood_donation');
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'blood_donation');
 
 // Application settings
-define('APP_NAME', 'Blood Donation System');
-define('APP_EMAIL', 'noreply@blooddonate.local');
+define('APP_NAME', getenv('APP_NAME') ?: 'Blood Donation System');
+define('APP_EMAIL', getenv('APP_EMAIL') ?: 'noreply@blooddonate.local');
 
 // Function to convert a path to a URL
 function path_to_url($path) {
@@ -56,4 +59,4 @@ function get_relative_path($from, $to) {
     
     return rtrim($path, '/');
 }
-?> 
+?>

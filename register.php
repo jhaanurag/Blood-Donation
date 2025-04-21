@@ -1,7 +1,6 @@
 <?php
 session_start();
 include_once 'includes/db.php';
-include_once 'includes/header.php';
 include_once 'includes/auth.php';
 include_once 'mail/send.php'; // Include the mail function
 
@@ -10,6 +9,9 @@ if (is_donor_logged_in()) {
     header("Location: dashboard/donor.php");
     exit;
 }
+
+// Include header after potential redirects
+include_once 'includes/header.php';
 
 $errors = [];
 $name = $email = $phone = $age = $blood_group = $city = $state = '';

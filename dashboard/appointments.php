@@ -120,12 +120,12 @@ $camps_result = mysqli_query($conn, $camps_query);
 include_once '../includes/header.php';
 ?>
 
-<div class="bg-gray-100 min-h-screen py-8">
+<div class="bg-gray-100 dark:bg-gray-900 min-h-screen py-8">
     <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto">
             <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold">Book Blood Donation Appointment</h1>
-                <a href="<?php echo DASHBOARD_URL; ?>/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded">
+                <h1 class="text-2xl font-bold dark:text-white">Book Blood Donation Appointment</h1>
+                <a href="<?php echo DASHBOARD_URL; ?>/donor.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 font-semibold py-2 px-4 rounded">
                     <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
                 </a>
             </div>
@@ -133,13 +133,13 @@ include_once '../includes/header.php';
             <?php echo display_alerts(); ?>
             
             <?php if (!$is_eligible): ?>
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                <div class="bg-yellow-50 dark:bg-yellow-900 border-l-4 border-yellow-400 p-4 mb-6">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <i class="fas fa-exclamation-circle text-yellow-400"></i>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm text-yellow-700">
+                            <p class="text-sm text-yellow-700 dark:text-yellow-200">
                                 <strong>You are not currently eligible to donate blood.</strong>
                                 For health reasons, donors must wait at least 3 months between donations.
                                 You will be eligible to donate again in <?php echo $days_until_eligible; ?> days.
@@ -149,10 +149,10 @@ include_once '../includes/header.php';
                 </div>
             <?php endif; ?>
             
-            <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                 <?php 
                 if (!empty($errors)) {
-                    echo '<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">';
+                    echo '<div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded relative mb-4" role="alert">';
                     echo '<ul class="list-disc list-inside">';
                     foreach ($errors as $error) {
                         echo '<li>' . htmlspecialchars($error) . '</li>';
@@ -166,11 +166,11 @@ include_once '../includes/header.php';
                     <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                     
                     <?php if ($camp_data): ?>
-                        <div class="mb-6 bg-blue-50 p-4 rounded">
-                            <h3 class="font-semibold text-lg mb-2"><?php echo htmlspecialchars($camp_data['title']); ?></h3>
-                            <p class="mb-1"><strong>Date:</strong> <?php echo date("F j, Y", strtotime($camp_data['date'])); ?></p>
-                            <p class="mb-1"><strong>Location:</strong> <?php echo htmlspecialchars($camp_data['location']); ?></p>
-                            <p><strong>City:</strong> <?php echo htmlspecialchars($camp_data['city']) . ', ' . htmlspecialchars($camp_data['state']); ?></p>
+                        <div class="mb-6 bg-blue-50 dark:bg-blue-900 p-4 rounded">
+                            <h3 class="font-semibold text-lg mb-2 dark:text-white"><?php echo htmlspecialchars($camp_data['title']); ?></h3>
+                            <p class="mb-1 dark:text-gray-200"><strong>Date:</strong> <?php echo date("F j, Y", strtotime($camp_data['date'])); ?></p>
+                            <p class="mb-1 dark:text-gray-200"><strong>Location:</strong> <?php echo htmlspecialchars($camp_data['location']); ?></p>
+                            <p class="dark:text-gray-200"><strong>City:</strong> <?php echo htmlspecialchars($camp_data['city']) . ', ' . htmlspecialchars($camp_data['state']); ?></p>
                             <input type="hidden" name="appointment_date" value="<?php echo $camp_data['date']; ?>">
                             <div class="mt-4">
                                 <iframe
@@ -186,18 +186,18 @@ include_once '../includes/header.php';
                         </div>
                     <?php else: ?>
                         <div class="mb-6">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="appointment_date">Select Appointment Date</label>
-                            <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
+                            <label class="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2" for="appointment_date">Select Appointment Date</label>
+                            <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-600" 
                                    type="date" name="appointment_date" id="appointment_date" 
                                    min="<?php echo date('Y-m-d', strtotime('+1 day')); ?>"
                                    required <?php echo $is_eligible ? '' : 'disabled'; ?>>
-                            <p class="text-sm text-gray-600 mt-1">Please select a date for your blood donation appointment.</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Please select a date for your blood donation appointment.</p>
                         </div>
                     <?php endif; ?>
                     
                     <div class="mb-6">
-                        <p class="text-sm text-gray-700 mb-2"><strong>Important Information:</strong></p>
-                        <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
+                        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2"><strong>Important Information:</strong></p>
+                        <ul class="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400">
                             <li>Please bring a valid ID to your appointment</li>
                             <li>Eat a healthy meal before donating</li>
                             <li>Stay hydrated by drinking plenty of water</li>
@@ -212,7 +212,7 @@ include_once '../includes/header.php';
                             Schedule Appointment
                         </button>
                         <?php if (!$is_eligible): ?>
-                            <p class="text-sm text-red-600 mt-2 text-center">You are not currently eligible to make an appointment</p>
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-2 text-center">You are not currently eligible to make an appointment</p>
                         <?php endif; ?>
                     </div>
                 </form>
@@ -220,16 +220,16 @@ include_once '../includes/header.php';
             
             <?php if (!$camp_data && mysqli_num_rows($camps_result) > 0): ?>
             <div class="mt-8">
-                <h2 class="text-xl font-bold mb-4">Upcoming Blood Donation Camps</h2>
-                <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4 dark:text-white">Upcoming Blood Donation Camps</h2>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <?php while ($camp = mysqli_fetch_assoc($camps_result)): ?>
-                            <div class="border rounded p-4">
-                                <h3 class="font-semibold"><?php echo htmlspecialchars($camp['title']); ?></h3>
-                                <p class="text-sm text-gray-600"><?php echo date("F j, Y", strtotime($camp['date'])); ?></p>
-                                <p class="text-sm text-gray-500"><?php echo htmlspecialchars($camp['location']); ?></p>
+                            <div class="border rounded p-4 dark:border-gray-700">
+                                <h3 class="font-semibold dark:text-white"><?php echo htmlspecialchars($camp['title']); ?></h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400"><?php echo date("F j, Y", strtotime($camp['date'])); ?></p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($camp['location']); ?></p>
                                 <div class="mt-2">
-                                    <a href="appointments.php?camp_id=<?php echo $camp['id']; ?>" class="text-blue-600 hover:underline">Select This Camp</a>
+                                    <a href="appointments.php?camp_id=<?php echo $camp['id']; ?>" class="text-blue-600 dark:text-blue-400 hover:underline">Select This Camp</a>
                                 </div>
                             </div>
                         <?php endwhile; ?>
