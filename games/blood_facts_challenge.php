@@ -9,23 +9,26 @@ $user_id = $user_logged_in ? $_SESSION['donor_id'] : '';
 ?>
 
 <style>
-/* Fix navbar z-index to ensure it stays on top */
-nav.bg-gradient-to-r {
-    position: sticky !important;
-    top: 0;
-    z-index: 1000 !important;
+/* Fix for navigation bar buttons */
+nav .hidden.md\:flex {
+    display: flex !important;
 }
-
-/* Make sure dropdown menu is visible */
-#hamburger-dropdown {
-    z-index: 1001 !important;
+nav .md\:hidden {
+    display: none !important;
 }
-
-/* Mobile menu z-index */
-#mobile-menu {
-    z-index: 1001 !important;
+nav .md\:block {
+    display: block !important;
 }
+/* Ensure dropdown menus appear properly */
+nav #hamburger-dropdown:not(.hidden) {
+    display: block !important;
+}
+nav #mobile-menu:not(.hidden) {
+    display: block !important;
+}
+</style>
 
+<style>
 /* Game specific styles */
 .game-container {
     max-width: 800px;
@@ -440,77 +443,6 @@ nav.bg-gradient-to-r {
 
 <!-- Simple confetti effect container -->
 <div id="confetti-container" class="confetti-container"></div>
-
-<!-- Add JavaScript to ensure navbar functionality works -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Hamburger menu toggle for desktop
-        const hamburgerMenu = document.getElementById('hamburger-menu');
-        const hamburgerDropdown = document.getElementById('hamburger-dropdown');
-        
-        if(hamburgerMenu) {
-            hamburgerMenu.addEventListener('click', function(e) {
-                e.stopPropagation();
-                hamburgerDropdown.classList.toggle('hidden');
-            });
-        }
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            if(hamburgerDropdown && !hamburgerDropdown.classList.contains('hidden')) {
-                hamburgerDropdown.classList.add('hidden');
-            }
-        });
-        
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        if(mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-        
-        // Dark mode toggle functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
-        const darkModeIcon = document.getElementById('darkModeIcon');
-        const darkModeIconMobile = document.getElementById('darkModeIconMobile');
-        const html = document.documentElement;
-        
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        
-        if(savedTheme) {
-            html.classList.toggle('dark', savedTheme === 'dark');
-            updateIcons(savedTheme === 'dark');
-        } else if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            html.classList.add('dark');
-            updateIcons(true);
-        }
-        
-        function updateIcons(isDark) {
-            if(darkModeIcon) darkModeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-            if(darkModeIconMobile) darkModeIconMobile.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-        }
-        
-        function toggleDarkMode() {
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            updateIcons(isDark);
-        }
-        
-        if(darkModeToggle) {
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-        }
-        
-        if(darkModeToggleMobile) {
-            darkModeToggleMobile.addEventListener('click', toggleDarkMode);
-        }
-    });
-</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -996,6 +928,81 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize leaderboard on page load
     fetchLeaderboard();
+});
+</script>
+
+<!-- Add navigation and dark mode toggle functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+    
+    // Hamburger menu dropdown
+    const hamburgerButton = document.getElementById('hamburger-menu');
+    const hamburgerDropdown = document.getElementById('hamburger-dropdown');
+    
+    if (hamburgerButton && hamburgerDropdown) {
+        hamburgerButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            hamburgerDropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            if (!hamburgerDropdown.classList.contains('hidden')) {
+                hamburgerDropdown.classList.add('hidden');
+            }
+        });
+    }
+    
+    // Dark mode toggle functionality
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const darkModeIconMobile = document.getElementById('darkModeIconMobile');
+    const html = document.documentElement;
+    
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        if (html.classList.contains('dark')) {
+            html.classList.remove('dark');
+            localStorage.setItem('darkMode', 'light');
+            if (darkModeIcon) darkModeIcon.className = 'fas fa-moon';
+            if (darkModeIconMobile) darkModeIconMobile.className = 'fas fa-moon';
+        } else {
+            html.classList.add('dark');
+            localStorage.setItem('darkMode', 'dark');
+            if (darkModeIcon) darkModeIcon.className = 'fas fa-sun';
+            if (darkModeIconMobile) darkModeIconMobile.className = 'fas fa-sun';
+        }
+    }
+    
+    // Check for saved user preference
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme === 'dark') {
+        html.classList.add('dark');
+        if (darkModeIcon) darkModeIcon.className = 'fas fa-sun';
+        if (darkModeIconMobile) darkModeIconMobile.className = 'fas fa-sun';
+    } else {
+        if (darkModeIcon) darkModeIcon.className = 'fas fa-moon';
+        if (darkModeIconMobile) darkModeIconMobile.className = 'fas fa-moon';
+    }
+    
+    // Add event listeners for dark mode toggle
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+    
+    if (darkModeToggleMobile) {
+        darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+    }
 });
 </script>
 

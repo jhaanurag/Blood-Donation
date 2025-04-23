@@ -96,9 +96,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 include_once 'includes/header.php';
 ?>
 
-<div class="bg-gray-100 dark:bg-gray-800 min-h-screen py-12">
+<div class="bg-gray-100 dark:bg-gray-900 min-h-screen py-12">
     <div class="container mx-auto px-4">
-        <div class="max-w-md mx-auto bg-white dark:bg-gray-700 p-8 rounded-lg shadow-md">
+        <div class="max-w-md mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
             <h2 class="text-2xl font-bold text-center text-red-600 dark:text-red-400 mb-6">Login to Your Donor Account</h2>
 
             <?php echo display_alerts(); ?>
@@ -123,19 +123,19 @@ include_once 'includes/header.php';
 
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="email">Email Address</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white"
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:focus:ring-red-400 dark:bg-gray-700 dark:text-white"
                            type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
 
                 <div class="mb-6">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="password">Password</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white"
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:focus:ring-red-400 dark:bg-gray-700 dark:text-white"
                            type="password" name="password" id="password" required>
                     <p class="text-right text-sm mt-1"><a href="forgot_password.php" class="text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</a></p>
                 </div>
 
                 <div class="mb-6">
-                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"
+                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50 dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-400"
                             type="submit">Login</button>
                 </div>
 

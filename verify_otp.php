@@ -63,12 +63,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 include_once 'includes/header.php';
 ?>
 
-<div class="bg-gray-100 min-h-screen py-12">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
     <div class="container mx-auto px-4">
-        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="max-w-md mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-red-600">Verify OTP</h2>
-                <a href="forgot_password.php" class="text-sm text-blue-600 hover:underline">
+                <h2 class="text-2xl font-bold text-red-600 dark:text-red-400">Verify OTP</h2>
+                <a href="forgot_password.php" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
                     <i class="fas fa-arrow-left mr-1"></i> Back to Request OTP
                 </a>
             </div>
@@ -76,7 +76,7 @@ include_once 'includes/header.php';
             <?php echo display_alerts(); ?>
 
             <?php if (!empty($errors)): ?>
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div class="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 px-4 py-3 rounded relative mb-4" role="alert">
                     <ul class="list-disc list-inside">
                         <?php foreach ($errors as $error): ?>
                             <li><?php echo htmlspecialchars($error); ?></li>
@@ -90,41 +90,41 @@ include_once 'includes/header.php';
                     <div class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center mr-2">
                         <i class="fas fa-check"></i>
                     </div>
-                    <p class="font-semibold text-gray-700">Request OTP</p>
+                    <p class="font-semibold text-gray-700 dark:text-gray-200">Request OTP</p>
                 </div>
                 <div class="flex items-center mb-4">
                     <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center mr-2">2</div>
-                    <p class="font-semibold text-gray-700">Verify OTP</p>
+                    <p class="font-semibold text-gray-700 dark:text-gray-200">Verify OTP</p>
                 </div>
                 <div class="flex items-center opacity-50">
                     <div class="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center mr-2">3</div>
-                    <p class="font-semibold text-gray-700">Reset Password</p>
+                    <p class="font-semibold text-gray-700 dark:text-gray-200">Reset Password</p>
                 </div>
             </div>
 
-            <p class="mb-6 text-gray-600">An OTP has been sent to <strong><?php echo htmlspecialchars($email); ?></strong>. Please enter the 6-digit code below.</p>
+            <p class="mb-6 text-gray-600 dark:text-gray-300">An OTP has been sent to <strong class="dark:text-gray-200"><?php echo htmlspecialchars($email); ?></strong>. Please enter the 6-digit code below.</p>
 
             <form method="POST" action="">
                 <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
 
                 <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="otp">OTP Code</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 text-center tracking-widest font-mono text-xl"
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="otp">OTP Code</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:focus:ring-red-400 text-center tracking-widest font-mono text-xl"
                            type="text" name="otp" id="otp" maxlength="6" pattern="\d{6}" placeholder="Enter 6-digit OTP" required>
-                    <p class="text-xs text-gray-500 mt-1">The OTP is valid for 2 minutes.</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">The OTP is valid for 2 minutes.</p>
                 </div>
 
                 <div class="mb-6">
-                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"
+                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 dark:hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"
                             type="submit">Verify OTP</button>
                 </div>
 
-                <div class="text-center text-gray-600">
+                <div class="text-center text-gray-600 dark:text-gray-300">
                     <p class="mb-2">
-                        Didn't receive the OTP? <a href="forgot_password.php" class="text-red-600 hover:underline">Request again</a>
+                        Didn't receive the OTP? <a href="forgot_password.php" class="text-red-600 dark:text-red-400 hover:underline">Request again</a>
                     </p>
                     <p>
-                        Remember your password? <a href="login.php" class="text-red-600 hover:underline">Login here</a>
+                        Remember your password? <a href="login.php" class="text-red-600 dark:text-red-400 hover:underline">Login here</a>
                     </p>
                 </div>
             </form>

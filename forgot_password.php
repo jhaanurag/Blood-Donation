@@ -90,12 +90,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 include_once 'includes/header.php';
 ?>
 
-<div class="bg-gray-100 min-h-screen py-12">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
     <div class="container mx-auto px-4">
-        <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+        <div class="max-w-md mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-red-600">Forgot Password</h2>
-                <a href="login.php" class="text-sm text-blue-600 hover:underline">
+                <h2 class="text-2xl font-bold text-red-600 dark:text-red-400">Forgot Password</h2>
+                <a href="login.php" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">
                     <i class="fas fa-arrow-left mr-1"></i> Back to Login
                 </a>
             </div>
@@ -103,7 +103,7 @@ include_once 'includes/header.php';
             <?php echo display_alerts(); ?>
 
             <?php if (!empty($errors)): ?>
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div class="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-300 px-4 py-3 rounded relative mb-4" role="alert">
                     <ul class="list-disc list-inside">
                         <?php foreach ($errors as $error): ?>
                             <li><?php echo htmlspecialchars($error); ?></li>
@@ -115,40 +115,40 @@ include_once 'includes/header.php';
             <div class="mb-6">
                 <div class="flex items-center mb-4">
                     <div class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center mr-2">1</div>
-                    <p class="font-semibold text-gray-700">Request OTP</p>
+                    <p class="font-semibold text-gray-700 dark:text-gray-200">Request OTP</p>
                 </div>
                 <div class="flex items-center mb-4 opacity-50">
                     <div class="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center mr-2">2</div>
-                    <p class="font-semibold text-gray-700">Verify OTP</p>
+                    <p class="font-semibold text-gray-700 dark:text-gray-200">Verify OTP</p>
                 </div>
                 <div class="flex items-center opacity-50">
                     <div class="w-8 h-8 rounded-full bg-gray-400 text-white flex items-center justify-center mr-2">3</div>
-                    <p class="font-semibold text-gray-700">Reset Password</p>
+                    <p class="font-semibold text-gray-700 dark:text-gray-200">Reset Password</p>
                 </div>
             </div>
 
-            <p class="mb-6 text-gray-600">Enter your email address below, and we'll send you an OTP to reset your password.</p>
+            <p class="mb-6 text-gray-600 dark:text-gray-300">Enter your email address below, and we'll send you an OTP to reset your password.</p>
 
             <form method="POST" action="">
                 <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
 
                 <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">Email Address</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600"
+                    <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="email">Email Address</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:focus:ring-red-400"
                            type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
 
                 <div class="mb-6">
-                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"
+                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 dark:hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"
                             type="submit">Send OTP</button>
                 </div>
 
-                <div class="text-center text-gray-600">
+                <div class="text-center text-gray-600 dark:text-gray-300">
                     <p class="mb-2">
-                        Remember your password? <a href="login.php" class="text-red-600 hover:underline">Login here</a>
+                        Remember your password? <a href="login.php" class="text-red-600 dark:text-red-400 hover:underline">Login here</a>
                     </p>
                     <p>
-                        Don't have an account? <a href="register.php" class="text-red-600 hover:underline">Register here</a>
+                        Don't have an account? <a href="register.php" class="text-red-600 dark:text-red-400 hover:underline">Register here</a>
                     </p>
                 </div>
             </form>

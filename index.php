@@ -390,11 +390,12 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Blood facts animation
     const facts = document.querySelectorAll('.blood-fact');
-    let currentFactIndex = 0;
+    let currentStartIndex = 0;
     let factsContainer = document.querySelector('.blood-facts-wrapper');
+    const factsPerGroup = 3; // Show 3 facts at a time
     
     if (facts.length > 0 && factsContainer) {
-        // Set up the facts for proper display
+        // Set up all facts to be hidden initially
         facts.forEach((fact, index) => {
             fact.style.opacity = '0';
             fact.style.display = 'none';
@@ -404,37 +405,55 @@ document.addEventListener('DOMContentLoaded', function() {
             fact.style.width = '100%';
         });
         
-        // Show first fact
-        facts[0].style.opacity = '1';
-        facts[0].style.position = 'relative';
-        facts[0].style.display = 'block';
+        // Show initial group of facts
+        for (let i = 0; i < factsPerGroup; i++) {
+            if (i < facts.length) {
+                facts[i].style.opacity = '1';
+                facts[i].style.position = 'relative';
+                facts[i].style.display = 'block';
+                facts[i].style.marginBottom = i < factsPerGroup - 1 ? '1rem' : '0'; // Add margin between facts
+            }
+        }
         
-        // Function to rotate through facts
-        function rotateFacts() {
-            // Hide current fact with fade out
-            facts[currentFactIndex].style.opacity = '0';
-            facts[currentFactIndex].style.transform = 'translateY(20px)';
+        // Function to rotate through fact groups
+        function rotateFactGroups() {
+            // Hide current facts with fade out
+            for (let i = 0; i < factsPerGroup; i++) {
+                const factIndex = (currentStartIndex + i) % facts.length;
+                facts[factIndex].style.opacity = '0';
+                facts[factIndex].style.transform = 'translateY(20px)';
+            }
             
             setTimeout(() => {
                 // After fade out, change display and position
-                facts[currentFactIndex].style.display = 'none';
-                facts[currentFactIndex].style.position = 'absolute';
+                for (let i = 0; i < factsPerGroup; i++) {
+                    const factIndex = (currentStartIndex + i) % facts.length;
+                    facts[factIndex].style.display = 'none';
+                    facts[factIndex].style.position = 'absolute';
+                }
                 
-                // Move to next fact or reset to first
-                currentFactIndex = (currentFactIndex + 1) % facts.length;
+                // Move to next group of facts
+                currentStartIndex = (currentStartIndex + factsPerGroup) % facts.length;
                 
-                // Show next fact with fade in
-                facts[currentFactIndex].style.display = 'block';
-                facts[currentFactIndex].style.position = 'relative';
-                setTimeout(() => {
-                    facts[currentFactIndex].style.opacity = '1';
-                    facts[currentFactIndex].style.transform = 'translateY(0)';
-                }, 50);
+                // Show next group of facts with fade in
+                for (let i = 0; i < factsPerGroup; i++) {
+                    const factIndex = (currentStartIndex + i) % facts.length;
+                    if (factIndex < facts.length) {
+                        facts[factIndex].style.display = 'block';
+                        facts[factIndex].style.position = 'relative';
+                        facts[factIndex].style.marginBottom = i < factsPerGroup - 1 ? '1rem' : '0';
+                        
+                        setTimeout(() => {
+                            facts[factIndex].style.opacity = '1';
+                            facts[factIndex].style.transform = 'translateY(0)';
+                        }, 50);
+                    }
+                }
             }, 800);
         }
         
         // Start rotation with interval
-        setInterval(rotateFacts, 5000);
+        setInterval(rotateFactGroups, 6000); // Slightly longer interval to give readers more time
     }
 });
 </script>

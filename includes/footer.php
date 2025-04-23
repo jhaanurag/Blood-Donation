@@ -1,33 +1,36 @@
 </main>
-
     <!-- Footer -->
-    <footer class="bg-gray-100 dark:bg-gray-800 py-8 mt-12 border-t border-gray-200 dark:border-gray-700 transition-colors duration-200">
+    <footer class="bg-red-600 dark:bg-red-900 text-white py-6 mt-12 transition-colors duration-200">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-lg font-bold mb-4 text-red-600 dark:text-red-500">LifeFlow Blood Donation</h3>
-                    <p class="text-gray-700 dark:text-gray-300">Connecting donors with those in need. Every donation counts and can save up to three lives.</p>
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-xl font-bold mb-3">LifeFlow</h3>
+                    <p class="max-w-xs">Connecting blood donors with those in need. Save lives through the gift of blood donation.</p>
                 </div>
-                <div>
-                    <h3 class="text-lg font-bold mb-4 text-red-600 dark:text-red-500">Quick Links</h3>
-                    <ul class="space-y-2 text-gray-700 dark:text-gray-300">
-                        <li><a href="<?php echo $base_url; ?>index.php" class="hover:text-red-600 dark:hover:text-red-500 transition">Home</a></li>
-                        <li><a href="<?php echo $base_url; ?>search.php" class="hover:text-red-600 dark:hover:text-red-500 transition">Find Donors</a></li>
-                        <li><a href="<?php echo $base_url; ?>request.php" class="hover:text-red-600 dark:hover:text-red-500 transition">Request Blood</a></li>
-                        <li><a href="<?php echo $base_url; ?>camps.php" class="hover:text-red-600 dark:hover:text-red-500 transition">Blood Camps</a></li>
+                <div class="mb-6 md:mb-0">
+                    <h4 class="font-semibold mb-3">Quick Links</h4>
+                    <ul>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>index.php" class="hover:text-red-200 transition">Home</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>search.php" class="hover:text-red-200 transition">Search Donors</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>camps.php" class="hover:text-red-200 transition">Blood Camps</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>request.php" class="hover:text-red-200 transition">Request Blood</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold mb-4 text-red-600 dark:text-red-500">Contact</h3>
-                    <ul class="space-y-2 text-gray-700 dark:text-gray-300">
-                        <li><i class="fas fa-envelope mr-2 text-red-600 dark:text-red-500"></i> info@lifeflow.org</li>
-                        <li><i class="fas fa-phone mr-2 text-red-600 dark:text-red-500"></i> +1 (555) 123-4567</li>
-                        <li><i class="fas fa-map-marker-alt mr-2 text-red-600 dark:text-red-500"></i> 123 Health Street, Medical City</li>
+                    <h4 class="font-semibold mb-3">Contact</h4>
+                    <ul>
+                        <li class="mb-2"><i class="fas fa-envelope mr-2"></i> contact@lifeflow.org</li>
+                        <li class="mb-2"><i class="fas fa-phone mr-2"></i> +1-800-BLOOD-HELP</li>
                     </ul>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="hover:text-red-200 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-red-200 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-red-200 transition"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
             </div>
-            <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center text-gray-600 dark:text-gray-400">
-                <p>&copy; <?php echo date('Y'); ?> LifeFlow Blood Donation. All rights reserved.</p>
+            <div class="border-t border-red-500 dark:border-red-800 mt-6 pt-6 text-center">
+                <p>&copy; <?php echo date('Y'); ?> Blood Donation Management System. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -45,107 +48,113 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 
     <script>
-        // Dark mode toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const darkModeToggles = [document.getElementById('darkModeToggle'), document.getElementById('darkModeToggleMobile')];
-            const darkModeIcons = [document.getElementById('darkModeIcon'), document.getElementById('darkModeIconMobile')];
+        // Dark Mode Toggle Functionality
+        function initializeDarkMode() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            const darkModeIconMobile = document.getElementById('darkModeIconMobile');
+            const htmlElement = document.documentElement;
             
-            // Check for saved theme preference or use system preference
-            const savedTheme = localStorage.getItem('theme') || 
-                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            // Function to set the dark mode state
+            function setDarkMode(isDark) {
+                if (isDark) {
+                    htmlElement.classList.add('dark');
+                    darkModeIcon?.classList.replace('fa-moon', 'fa-sun');
+                    darkModeIconMobile?.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('darkMode', 'enabled');
+                } else {
+                    htmlElement.classList.remove('dark');
+                    darkModeIcon?.classList.replace('fa-sun', 'fa-moon');
+                    darkModeIconMobile?.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('darkMode', 'disabled');
+                }
+            }
             
-            // Apply the saved theme
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                darkModeIcons.forEach(icon => {
-                    if (icon) icon.classList.replace('fa-moon', 'fa-sun');
-                });
+            // Check for saved user preference
+            const savedDarkMode = localStorage.getItem('darkMode');
+            
+            // Set the initial state based on saved preference or system preference
+            if (savedDarkMode === 'enabled') {
+                setDarkMode(true);
+            } else if (savedDarkMode === 'disabled') {
+                setDarkMode(false);
             } else {
-                document.documentElement.classList.remove('dark');
-                darkModeIcons.forEach(icon => {
-                    if (icon) icon.classList.replace('fa-sun', 'fa-moon');
+                // If no saved preference, check system preference
+                const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                setDarkMode(prefersDarkMode);
+            }
+            
+            // Add event listeners to toggle buttons
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', () => {
+                    const isDarkMode = htmlElement.classList.contains('dark');
+                    setDarkMode(!isDarkMode);
                 });
             }
             
-            // Toggle theme when buttons are clicked
-            darkModeToggles.forEach((toggle, index) => {
-                if (toggle) toggle.addEventListener('click', function() {
-                    document.documentElement.classList.toggle('dark');
-                    
-                    if (document.documentElement.classList.contains('dark')) {
-                        localStorage.setItem('theme', 'dark');
-                        if (darkModeIcons[index]) darkModeIcons[index].classList.replace('fa-moon', 'fa-sun');
-                    } else {
-                        localStorage.setItem('theme', 'light');
-                        if (darkModeIcons[index]) darkModeIcons[index].classList.replace('fa-sun', 'fa-moon');
-                    }
+            if (darkModeToggleMobile) {
+                darkModeToggleMobile.addEventListener('click', () => {
+                    const isDarkMode = htmlElement.classList.contains('dark');
+                    setDarkMode(!isDarkMode);
                 });
+            }
+            
+            // Listen for system preference changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (localStorage.getItem('darkMode') === null) {
+                    // Only auto-switch if the user hasn't set a preference
+                    setDarkMode(e.matches);
+                }
+            });
+        }
+        
+        // Initialize dark mode functionality
+        initializeDarkMode();
+
+        // Hamburger menu toggle for desktop
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const hamburgerDropdown = document.getElementById('hamburger-dropdown');
+        
+        if (hamburgerMenu && hamburgerDropdown) {
+            // Click event
+            hamburgerMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+                hamburgerDropdown.classList.toggle('hidden');
             });
             
-            // Mobile menu functionality
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
+            // Add hover event listeners
+            hamburgerMenu.addEventListener('mouseenter', function() {
+                hamburgerDropdown.classList.remove('hidden');
+            });
             
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
+            // Add event listener to the dropdown to keep it open when hovered
+            hamburgerDropdown.addEventListener('mouseenter', function() {
+                hamburgerDropdown.classList.remove('hidden');
+            });
+            
+            // Hide dropdown when mouse leaves both the hamburger menu and the dropdown
+            hamburgerDropdown.addEventListener('mouseleave', function() {
+                hamburgerDropdown.classList.add('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                if (hamburgerDropdown && !hamburgerDropdown.classList.contains('hidden')) {
+                    hamburgerDropdown.classList.add('hidden');
+                }
+            });
+        }
 
-            // Hamburger menu hover behavior
-            const hamburgerMenu = document.getElementById('hamburger-menu');
-            const hamburgerDropdown = document.getElementById('hamburger-dropdown');
-            
-            if (hamburgerMenu && hamburgerDropdown) {
-                let timeoutId;
-                
-                // Show dropdown on hover
-                hamburgerMenu.addEventListener('mouseenter', function() {
-                    clearTimeout(timeoutId);
-                    hamburgerDropdown.classList.remove('hidden');
-                });
-                
-                // Allow moving to dropdown items by keeping menu open
-                hamburgerDropdown.addEventListener('mouseenter', function() {
-                    clearTimeout(timeoutId);
-                });
-                
-                // Hide dropdown after delay when mouse leaves both menu and dropdown
-                hamburgerMenu.addEventListener('mouseleave', function(event) {
-                    // Check if we're not moving to the dropdown
-                    if (!event.relatedTarget || !hamburgerDropdown.contains(event.relatedTarget)) {
-                        timeoutId = setTimeout(() => {
-                            // Only hide if mouse isn't over dropdown
-                            if (!hamburgerDropdown.matches(':hover')) {
-                                hamburgerDropdown.classList.add('hidden');
-                            }
-                        }, 300); // Small delay to allow mouse movement to dropdown
-                    }
-                });
-                
-                hamburgerDropdown.addEventListener('mouseleave', function() {
-                    timeoutId = setTimeout(() => {
-                        // Only hide if mouse isn't over hamburger button
-                        if (!hamburgerMenu.querySelector('button').matches(':hover')) {
-                            hamburgerDropdown.classList.add('hidden');
-                        }
-                    }, 300);
-                });
-                
-                // Also handle click for mobile devices
-                hamburgerMenu.querySelector('button').addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent document click from immediately closing it
-                    hamburgerDropdown.classList.toggle('hidden');
-                });
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!hamburgerMenu.contains(e.target) && !hamburgerDropdown.contains(e.target)) {
-                        hamburgerDropdown.classList.add('hidden');
-                    }
-                });
-            }
-        });
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
 
         // Mouse follower logic
         const follower = document.getElementById('mouse-follower');

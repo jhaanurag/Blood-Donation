@@ -49,7 +49,7 @@ $base_url = BASE_URL . '/';
                 <div class="flex items-center gap-2">
                     <!-- Hamburger menu with improved hover behavior - hidden on mobile -->
                     <div class="relative hidden md:block" id="hamburger-menu">
-                        <button class="text-white p-2 rounded hover:bg-red-500/30 focus:outline-none">
+                        <button class="text-white p-2 rounded hover:bg-red-500/30 focus:outline-none cursor-pointer">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
                         <!-- Dropdown menu with improved spacing and hover behavior -->
@@ -127,7 +127,7 @@ $base_url = BASE_URL . '/';
                     <button id="darkModeToggleMobile" class="text-white p-2 rounded-full hover:bg-red-500/30 dark:hover:bg-red-700 focus:outline-none mr-2">
                         <i id="darkModeIconMobile" class="fas fa-moon"></i>
                     </button>
-                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none cursor-pointer hover:bg-red-500/30 p-2 rounded">
                         <i class="fas fa-bars text-xl"></i>
                     </button>
                 </div>

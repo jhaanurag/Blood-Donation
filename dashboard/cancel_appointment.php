@@ -6,7 +6,7 @@ include_once '../includes/auth.php';
 // Check if user is logged in
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to cancel appointments.";
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -16,7 +16,7 @@ $appointment_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 // Check if appointment ID is valid
 if ($appointment_id <= 0) {
     $_SESSION['error'] = "Invalid appointment ID.";
-    header("Location: dashboard/donor.php");
+    header("Location: donor.php");
     exit;
 }
 
@@ -30,7 +30,7 @@ $result = $stmt->get_result();
 // If appointment not found, doesn't belong to user, or is not in pending status
 if ($result->num_rows === 0) {
     $_SESSION['error'] = "Appointment not found or cannot be cancelled.";
-    header("Location: dashboard/donor.php");
+    header("Location: donor.php");
     exit;
 }
 
@@ -46,6 +46,6 @@ if ($delete_stmt->execute()) {
 }
 
 // Redirect back to dashboard
-header("Location: dashboard/donor.php");
+header("Location: donor.php");
 exit;
 ?>

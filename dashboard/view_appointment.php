@@ -6,7 +6,7 @@ include_once '../includes/auth.php';
 
 if (!is_donor_logged_in()) {
     $_SESSION['error'] = "Please login to view your appointments.";
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
 
@@ -16,7 +16,7 @@ $appointment_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($appointment_id <= 0) {
     $_SESSION['error'] = "Invalid appointment ID.";
-    header("Location: dashboard/donor.php");
+    header("Location: donor.php");
     exit;
 }
 
@@ -33,7 +33,7 @@ $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     $_SESSION['error'] = "Appointment not found.";
-    header("Location: dashboard/donor.php");
+    header("Location: donor.php");
     exit;
 }
 
@@ -65,7 +65,7 @@ switch ($appointment['status']) {
 // Check if appointment exists and belongs to the logged-in donor
 if (!$appointment || $appointment['user_id'] !== $donor_id) {
     $_SESSION['error'] = "Appointment not found or you don't have permission to view it.";
-    header("Location: " . DASHBOARD_URL . "/donor.php");
+    header("Location: donor.php");
     exit;
 }
 
@@ -185,7 +185,7 @@ include_once '../includes/header.php';
                         
                         <?php if ($appointment['status'] === 'pending'): ?>
                             <div class="mt-6">
-                                <a href="dashboard/cancel_appointment.php?id=<?php echo $appointment_id; ?>" class="inline-block bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700" onclick="return confirm('Are you sure you want to cancel this appointment?');">
+                                <a href="cancel_appointment.php?id=<?php echo $appointment_id; ?>" class="inline-block bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700" onclick="return confirm('Are you sure you want to cancel this appointment?');">
                                     <i class="fas fa-times mr-1"></i> Cancel Appointment
                                 </a>
                             </div>
