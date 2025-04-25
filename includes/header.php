@@ -18,8 +18,9 @@ $base_url = BASE_URL . '/';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="<?php echo $base_url; ?>assets/heart.svg" type="image/svg+xml">
     <title><?php echo APP_NAME; ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script> <!-- TODO: Install Tailwind locally for production -->
     <script>
         // Add Tailwind dark mode configuration
         tailwind.config = {
@@ -136,6 +137,9 @@ $base_url = BASE_URL . '/';
                                 <a href="<?php echo $base_url; ?>request.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
                                     <i class="fas fa-hand-holding-medical w-5 text-center"></i> <span>Request Blood</span>
                                 </a>
+                                <a href="<?php echo $base_url; ?>share.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
+                                    <i class="fas fa-share-alt w-5 text-center"></i> <span>Share Benefits</span>
+                                </a>
                                 <a href="<?php echo $base_url; ?>chatbot/index.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
                                     <i class="fas fa-robot w-5 text-center"></i> <span>Ask Assistant</span>
                                 </a>
@@ -170,6 +174,9 @@ $base_url = BASE_URL . '/';
                     </a>
                     <a href="<?php echo $base_url; ?>request.php" class="px-2 py-2 rounded hover:bg-red-500/30 hover:text-white transition font-medium flex items-center gap-1">
                         <i class="fas fa-hand-holding-medical"></i> Request
+                    </a>
+                     <a href="<?php echo $base_url; ?>share.php" class="px-2 py-2 rounded hover:bg-red-500/30 hover:text-white transition font-medium flex items-center gap-1">
+                        <i class="fas fa-share-alt"></i> Share
                     </a>
                     <?php if(isset($_SESSION['donor_id'])): ?>
                         <a href="<?php echo $base_url; ?>dashboard/donor.php" class="px-2 py-2 rounded hover:bg-red-500/30 hover:text-white transition font-medium flex items-center gap-1">
@@ -207,6 +214,7 @@ $base_url = BASE_URL . '/';
                 <a href="<?php echo $base_url; ?>search.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Donor Search</a>
                 <a href="<?php echo $base_url; ?>camps.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Blood Camps</a>
                 <a href="<?php echo $base_url; ?>request.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Request Blood</a>
+                <a href="<?php echo $base_url; ?>share.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Share Benefits</a>
                 <a href="<?php echo $base_url; ?>chatbot/index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Ask Assistant</a>
                 <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Eligibility Check</a>
                 <a href="<?php echo $base_url; ?>games/index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Blood Donation Games</a>
