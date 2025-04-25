@@ -360,3 +360,94 @@ html.dark .donor-search-table tbody tr:hover {
 .card:hover::before {
     opacity: 1;
 }
+
+/* 3D Carousel Styles from reference */
+.banner{
+    width: 100%;
+    /* height: 100vh; */ /* Adjusted height */
+    height: 450px; /* Or adjust as needed */
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    margin-top: 2rem; /* Add some space above */
+    margin-bottom: 1rem; /* Add some space below */
+}
+.banner .slider{
+    position: absolute;
+    width: 200px; /* Adjust size */
+    height: 250px; /* Adjust size */
+    top: 10%;
+    left: calc(50% - 100px); /* Center based on width */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    animation: autoRun 25s linear infinite; /* Slower animation */
+    z-index: 2;
+}
+@keyframes autoRun{
+    from{
+        transform: perspective(1000px) rotateX(-10deg) rotateY(0deg); /* Less tilt */
+    }to{
+        transform: perspective(1000px) rotateX(-10deg) rotateY(360deg); /* Less tilt */
+    }
+}
+
+.banner .slider .item{
+    position: absolute;
+    inset: 0 0 0 0;
+    transform:
+        rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+        translateZ(350px); /* Adjust distance */
+    background-color: #fff; /* Add background for visibility */
+    border-radius: 10px; /* Add rounded corners */
+    overflow: hidden; /* Ensure image stays within bounds */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border: 1px solid #eee;
+}
+.dark .banner .slider .item {
+    background-color: #374151; /* Dark background */
+    border: 1px solid #4b5563;
+}
+
+.banner .slider .item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Changed to cover */
+}
+
+/* Remove .content and .model styles if not used, or adapt them */
+/* .banner .content{ ... } */
+/* .banner .content h1{ ... } */
+/* .banner .content .author{ ... } */
+/* .banner .content .model{ ... } */
+
+/* Responsive adjustments for carousel */
+@media screen and (max-width: 1023px) {
+    .banner {
+        height: 400px; /* Adjust height */
+    }
+    .banner .slider{
+        width: 160px;
+        height: 200px;
+        left: calc(50% - 80px);
+    }
+    .banner .slider .item{
+        transform:
+            rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(280px); /* Adjust distance */
+    }
+}
+@media screen and (max-width: 767px) {
+     .banner {
+        height: 350px; /* Adjust height */
+    }
+    .banner .slider{
+        width: 120px;
+        height: 160px;
+        left: calc(50% - 60px);
+    }
+    .banner .slider .item{
+        transform:
+            rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
+            translateZ(200px); /* Adjust distance */
+    }
+}

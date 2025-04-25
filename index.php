@@ -328,21 +328,14 @@ document.addEventListener('DOMContentLoaded', function() {
   cards.forEach(card => {
     cardObserver.observe(card);
   });
-});
 
-// Animation for cards in "Why Donate" section
-document.addEventListener('DOMContentLoaded', function() {
-  // Skip this section if it was already executed
-  if (window.animationInitialized) return;
-  window.animationInitialized = true;
-  
   // Animation for cards with staggered delay
   const animateCards = () => {
     // Intersection Observer configuration
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 1.20
+        threshold: 0.1 // Use a more common threshold like 0.1
     };
     
     // Select all cards with animate-on-scroll class
@@ -357,6 +350,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 entry.target.style.opacity = '1';
                 entry.target.style.transform = 'translateY(0)';
                 observer.unobserve(entry.target);
+            } else {
+                // Optional: Reset if needed when scrolling out of view
+                // entry.target.style.opacity = '0';
+                // entry.target.style.transform = 'translateY(30px)';
             }
         });
     }, observerOptions);
@@ -364,21 +361,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set initial styles and observe each card
     cards.forEach(card => {
         // Set initial hidden state
-        card.style.opacity = '100';
+        card.style.opacity = '0'; // Correct initial opacity for fade-in
         card.style.transform = 'translateY(30px)';
         card.style.transition = 'all 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
         card.style.transitionDelay = `${delay}ms`;
         
         // Add hover effects but ensure we don't duplicate them
-        if (!card.classList.contains('hover:scale-105')) {
-            card.classList.add('hover:scale-105');
-        }
+        // Tailwind classes like hover:scale-105 should ideally be in the HTML/CSS,
+        // but adding dynamically is possible if needed.
+        // if (!card.classList.contains('hover:scale-105')) {
+        //     card.classList.add('hover:scale-105');
+        // }
         
         // Observe the card
         observer.observe(card);
         
         // Increment delay for staggered animation
-        delay += 30;
+        delay += 100; // Increased delay for better visual staggering
     });
   };
 
