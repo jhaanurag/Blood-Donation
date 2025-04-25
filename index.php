@@ -166,7 +166,7 @@ include_once 'includes/auth.php';
   height: 100%;
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, transparent 50%);
   z-index: -1;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.2s ease;
   opacity: 0;
 }
 
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(card);
         
         // Increment delay for staggered animation
-        delay += 100; // Increased delay for better visual staggering
+        delay += 0; // Increased delay for better visual staggering
     });
   };
 

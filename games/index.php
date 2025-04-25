@@ -95,6 +95,46 @@ $user_id = $user_logged_in ? $_SESSION['donor_id'] : '';
                     </a>
                 </div>
             </div>
+
+            <!-- Blood Cell Defenders Game Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <div class="relative">
+                    <div class="bg-blue-600 h-48 flex items-center justify-center">
+                        <i class="fas fa-shield-virus text-white text-6xl"></i>
+                    </div>
+                    <div class="absolute top-4 right-4 bg-blue-400 text-blue-900 text-xs font-bold px-3 py-1 rounded-full">
+                        Tower Defense
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Blood Cell Defenders</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Protect the bloodstream by placing "defender cells" to stop infections. Upgrade your defenders and learn about blood components while playing!
+                    </p>
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">Played by <?php
+                            // Count unique players
+                            $query = "SELECT COUNT(DISTINCT user_id) as player_count FROM game_scores WHERE game_type = 'blood_cell_defenders'";
+                            $result = $conn->query($query);
+                            if ($result && $row = $result->fetch_assoc()) {
+                                echo number_format($row['player_count']);
+                            } else {
+                                echo "0";
+                            }
+                        ?> donors</span>
+                    </div>
+                    <a href="blood_cell_defenders.php" class="inline-block w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg text-center">
+                        Play Now
+                    </a>
+                </div>
+            </div>
         </div>
         
         <?php if (!$user_logged_in): ?>

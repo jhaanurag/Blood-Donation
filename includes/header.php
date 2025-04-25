@@ -117,13 +117,19 @@ $base_url = BASE_URL . '/';
         <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <!-- Hamburger menu with improved hover behavior - hidden on mobile -->
-                    <div class="relative hidden md:block" id="hamburger-menu">
+                    <!-- Hamburger menu with hover behavior - hidden on mobile -->
+                    <div class="relative hidden md:block group" id="hamburger-menu">
                         <button class="text-white p-2 rounded hover:bg-red-500/30 focus:outline-none cursor-pointer">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <!-- Dropdown menu with improved spacing and hover behavior -->
-                        <div class="absolute left-0 top-full mt-1 w-64 bg-white dark:bg-gray-800 rounded shadow-lg hidden z-50 pb-2" id="hamburger-dropdown">
+                        <!-- Dropdown menu that shows on hover -->
+                        <div class="absolute left-0 top-full mt-1 w-64 bg-white dark:bg-gray-800 rounded shadow-lg hidden group-hover:block z-50 pb-2" id="hamburger-dropdown" style="max-height: 80vh; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;">
+                            <!-- Add CSS to hide the scrollbar but keep scrolling functionality -->
+                            <style>
+                                #hamburger-dropdown::-webkit-scrollbar {
+                                    display: none;
+                                }
+                            </style>
                             <div class="p-4 text-gray-800 dark:text-white space-y-3">
                                 <a href="<?php echo $base_url; ?>index.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
                                     <i class="fas fa-home w-5 text-center"></i> <span>Home</span>
@@ -203,31 +209,99 @@ $base_url = BASE_URL . '/';
                     <button id="darkModeToggleMobile" class="text-white p-2 rounded-full hover:bg-red-500/30 dark:hover:bg-red-700 focus:outline-none mr-2">
                         <i id="darkModeIconMobile" class="fas fa-moon"></i>
                     </button>
-                    <button id="mobile-menu-button" class="text-white focus:outline-none cursor-pointer hover:bg-red-500/30 p-2 rounded">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
+                    <!-- Mobile menu button -->
+                    <div class="relative">
+                        <button id="mobile-menu-button" class="text-white focus:outline-none cursor-pointer hover:bg-red-500/30 p-2 rounded">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <!-- Mobile menu that shows on click or hover -->
+                        <div id="mobile-menu" class="hidden">
+                            <div class="py-2">
+                                <a href="<?php echo $base_url; ?>index.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-home w-5 text-center"></i> Home
+                                </a>
+                                <a href="<?php echo $base_url; ?>search.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-search w-5 text-center"></i> Donor Search
+                                </a>
+                                <a href="<?php echo $base_url; ?>camps.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-tint w-5 text-center"></i> Blood Camps
+                                </a>
+                                <a href="<?php echo $base_url; ?>request.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-hand-holding-medical w-5 text-center"></i> Request Blood
+                                </a>
+                                <a href="<?php echo $base_url; ?>share.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-share-alt w-5 text-center"></i> Share Benefits
+                                </a>
+                                <a href="<?php echo $base_url; ?>chatbot/index.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-robot w-5 text-center"></i> Ask Assistant
+                                </a>
+                                <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-clipboard-check w-5 text-center"></i> Eligibility Check
+                                </a>
+                                <a href="<?php echo $base_url; ?>games/index.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                    <i class="fas fa-gamepad w-5 text-center"></i> Blood Donation Games
+                                </a>
+                                <?php if(isset($_SESSION['donor_id'])): ?>
+                                    <a href="<?php echo $base_url; ?>dashboard/donor.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                        <i class="fas fa-user w-5 text-center"></i> My Dashboard
+                                    </a>
+                                    <a href="<?php echo $base_url; ?>dashboard/analytics.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                        <i class="fas fa-chart-bar w-5 text-center"></i> Analytics
+                                    </a>
+                                    <a href="<?php echo $base_url; ?>logout.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                        <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
+                                    </a>
+                                <?php else: ?>
+                                    <a href="<?php echo $base_url; ?>login.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                        <i class="fas fa-sign-in-alt w-5 text-center"></i> Login
+                                    </a>
+                                    <a href="<?php echo $base_url; ?>register.php" class="block py-2 hover:bg-red-500/20 rounded px-4 transition text-gray-800 dark:text-white">
+                                        <i class="fas fa-user-plus w-5 text-center"></i> Register
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div id="mobile-menu" class="md:hidden hidden pt-4 pb-2">
-                <a href="<?php echo $base_url; ?>index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Home</a>
-                <a href="<?php echo $base_url; ?>search.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Donor Search</a>
-                <a href="<?php echo $base_url; ?>camps.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Blood Camps</a>
-                <a href="<?php echo $base_url; ?>request.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Request Blood</a>
-                <a href="<?php echo $base_url; ?>share.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Share Benefits</a>
-                <a href="<?php echo $base_url; ?>chatbot/index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Ask Assistant</a>
-                <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Eligibility Check</a>
-                <a href="<?php echo $base_url; ?>games/index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Blood Donation Games</a>
-                <?php if(isset($_SESSION['donor_id'])): ?>
-                    <a href="<?php echo $base_url; ?>dashboard/donor.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">My Dashboard</a>
-                    <a href="<?php echo $base_url; ?>dashboard/analytics.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Analytics</a>
-                    <a href="<?php echo $base_url; ?>logout.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Logout</a>
-                <?php else: ?>
-                    <a href="<?php echo $base_url; ?>login.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Login</a>
-                    <a href="<?php echo $base_url; ?>register.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition font-medium">Register</a>
-                <?php endif; ?>
             </div>
         </div>
     </nav>
     
     <main class="container mx-auto px-4 py-6"><?php // Main content starts here ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+        
+        // Dark mode toggle functionality
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+        }
+        
+        if (darkModeToggleMobile) {
+            darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+        }
+        
+        // Add touch support for mobile hover menus
+        if ('ontouchstart' in window) {
+            // For desktop hamburger menu
+            const hamburgerButton = document.querySelector('#hamburger-menu button');
+            if (hamburgerButton) {
+                hamburgerButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('#hamburger-dropdown').classList.toggle('block');
+                });
+            }
+            
+            // For mobile hamburger menu
+            const mobileButton = document.querySelector('#mobile-menu-button');
+            if (mobileButton) {
+                mobileButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector('#mobile-menu').classList.toggle('block');
+                });
+            }
+        }
+    });
+</script>

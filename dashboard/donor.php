@@ -66,10 +66,10 @@ $dashboard_path = DASHBOARD_URL . '/';
     <div class="container mx-auto px-4 py-8">
         
         <!-- Dashboard Header -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 dashboard-header">
             <div class="flex flex-col md:flex-row justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Welcome, <?php echo htmlspecialchars($donor['name']); ?></h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Welcome, <?php echo htmlspecialchars($donor['name']); ?></h1>
                     <p class="text-gray-600 dark:text-gray-300">
                         <span class="inline-block bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 px-2 py-1 rounded font-semibold mr-2">
                             <?php echo htmlspecialchars($donor['blood_group']); ?>
@@ -80,11 +80,11 @@ $dashboard_path = DASHBOARD_URL . '/';
                     </p>
                 </div>
                 
-                <div class="mt-4 md:mt-0">
-                    <a href="<?php echo $dashboard_url; ?>/profile.php" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded mr-2">
+                <div class="mt-4 md:mt-0 flex flex-col sm:flex-row gap-2">
+                    <a href="<?php echo $dashboard_url; ?>/profile.php" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded text-center">
                         <i class="fas fa-user mr-1"></i> Edit Profile
                     </a>
-                    <a href="<?php echo $dashboard_url; ?>/appointments.php" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded">
+                    <a href="<?php echo $dashboard_url; ?>/appointments.php" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded text-center">
                         <i class="fas fa-calendar-plus mr-1"></i> Book Appointment
                     </a>
                 </div>
@@ -100,7 +100,7 @@ $dashboard_path = DASHBOARD_URL . '/';
                 <!-- Upcoming Appointments Section -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md mb-6">
                     <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-                        <h2 class="text-xl font-bold dark:text-white">Your Upcoming Appointments</h2>
+                        <h2 class="text-lg md:text-xl font-bold dark:text-white">Your Upcoming Appointments</h2>
                     </div>
                     <div class="p-4">
                         <?php if ($appointments->num_rows > 0): ?>

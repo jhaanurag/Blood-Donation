@@ -303,7 +303,7 @@ html.dark .donor-search-table tbody tr:hover {
 
 /* Add slight delay to the first and last cells for a more dynamic effect */
 .donor-search-table tbody tr td:first-child {
-    transition-delay: 0.05s;
+    transition-delay: 0.05s;I
 }
 
 .donor-search-table tbody tr td:last-child {
@@ -452,4 +452,146 @@ html.dark .donor-search-table tbody tr:hover {
             rotateY(calc( (var(--position) - 1) * (360 / var(--quantity)) * 1deg))
             translateZ(200px); /* Adjust distance */
     }
+}
+
+/* Additional responsive styles */
+@media screen and (max-width: 640px) {
+  /* Improve form elements on mobile */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+  
+  /* Adjust padding for smaller screens */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Make buttons more tappable on mobile */
+  button, .button, a.button, input[type="submit"] {
+    min-height: 44px;
+  }
+  
+  /* Fix any potential overflow issues */
+  body, main {
+    overflow-x: hidden;
+  }
+  
+  /* Ensure tables are responsive */
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* Fix any specifics for extra small devices */
+@media screen and (max-width: 375px) {
+  h1, .h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  h2, .h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Adjust spacing on very small devices */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Dashboard responsive fixes */
+@media screen and (max-width: 640px) {
+  /* Improve dashboard header layout on small screens */
+  .dashboard-header .flex-col {
+    gap: 0.5rem;
+  }
+  
+  /* Make buttons stack properly on small screens */
+  .dashboard-header a {
+    display: block;
+    margin: 0.5rem 0;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Ensure action buttons in tables don't wrap awkwardly */
+  .whitespace-nowrap .text {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Fix navbar scrolling - hide scrollbar but keep functionality */
+.md\:flex.items-center.space-x-2.flex-nowrap.overflow-x-auto.whitespace-nowrap {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.md\:flex.items-center.space-x-2.flex-nowrap.overflow-x-auto.whitespace-nowrap::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile hamburger menu fix - ensure vertical layout */
+#mobile-menu {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background-color: transparent;
+  position: absolute; /* Position it absolutely */
+  top: 100%; /* Position below the navbar */
+  left: 0;
+  right: 0;
+  z-index: 100; /* Ensure it appears above other content */
+}
+
+#mobile-menu.show {
+  max-height: 100vh; /* Return to normal full length */
+  overflow-y: auto; /* Allow scrolling if menu is tall */
+  background-color: white; /* Light mode background */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+html.dark #mobile-menu.show {
+  background-color: #1F2937; /* Dark mode background */
+  border: 1px solid #374151;
+}
+
+#mobile-menu a {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.25rem;
+  text-align: left;
+  font-size: 1rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.3s ease;
+  white-space: normal; /* Allow text to wrap */
+  word-break: break-word; /* Break long words if necessary */
+}
+
+#mobile-menu a:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Hide scrollbar while keeping scroll functionality for mobile menu */
+#mobile-menu::-webkit-scrollbar {
+  display: none;
+}
+
+#mobile-menu {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Ensure the navbar container position is relative for absolute positioning of mobile menu */
+nav, .navbar-container {
+  position: relative;
 }

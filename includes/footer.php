@@ -87,8 +87,57 @@
         const mobileMenu = document.getElementById('mobile-menu');
         
         if (mobileMenuButton && mobileMenu) {
+            // Click event for mobile menu
             mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+                // Toggle show class for animation instead of just hidden
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    // Give a tiny delay before adding show class to trigger transition
+                    setTimeout(() => {
+                        mobileMenu.classList.add('show');
+                    }, 10);
+                } else {
+                    mobileMenu.classList.remove('show');
+                    // Wait for animation to complete before hiding
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300); // Match this with the CSS transition duration
+                }
+            });
+            
+            // Add hover functionality for mobile menu
+            mobileMenuButton.addEventListener('mouseenter', () => {
+                mobileMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    mobileMenu.classList.add('show');
+                }, 10);
+            });
+            
+            // Keep the menu open when hovering over it
+            mobileMenu.addEventListener('mouseenter', () => {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('show');
+            });
+            
+            // Hide menu when mouse leaves both the button and menu
+            mobileMenu.addEventListener('mouseleave', () => {
+                // Only hide if we're not on a touch device that just triggered hover
+                if (!('ontouchstart' in window)) {
+                    mobileMenu.classList.remove('show');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.remove('show');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
+                }
             });
         }
 
