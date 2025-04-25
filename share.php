@@ -1,11 +1,11 @@
 <?php
 // Define benefits - limit to 5
 $benefits = [
-    ["img" => "assets/benefits/ben1.png", "title" => "Saves Lives", "description" => "Your donation can save up to three lives."],
-    ["img" => "assets/benefits/ben2.png", "title" => "Health Check-up", "description" => "Get a mini-health check, including pulse, blood pressure, and hemoglobin levels."],
-    ["img" => "assets/benefits/ben3.png", "title" => "Boosts Heart Health", "description" => "Helps regulate iron and supports heart wellness."],
-    ["img" => "assets/benefits/ben4.png", "title" => "Feels Good to Help Others", "description" => "Increases happiness and reduces stress."],
-    ["img" => "assets/benefits/ben5.png", "title" => "Stimulates Blood Cell Production", "description" => "Encourages the body to make fresh blood cells."],
+    ["img" => "assets/benefits/ben1.png", "title" => "Saves Lives", "description" => "Save up to three lives."],
+    ["img" => "assets/benefits/ben2.png", "title" => "Health Check-up", "description" => "Get a mini-health check"],
+    ["img" => "assets/benefits/ben3.png", "title" => "Boosts Heart Health", "description" => "Helps regulate iron."],
+    ["img" => "assets/benefits/ben4.png", "title" => "Feels Good to Help Others", "description" => "Increases happiness."],
+    ["img" => "assets/benefits/ben5.png", "title" => "Stimulates Blood Cell Production", "description" => "Body makes fresh blood cells."],
 ];
 $num_benefits = count($benefits); // This will be 5
 
@@ -58,7 +58,6 @@ $share_text = urlencode("Learn how donating blood saves lives and benefits your 
             color: #333; /* Default text color */
         }
 
-        /* Removed body::before rule referencing images/bg.png */
 
         .banner{
             width: 100%;
