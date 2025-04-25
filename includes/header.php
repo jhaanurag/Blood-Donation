@@ -14,7 +14,7 @@ require_once INCLUDES_PATH . 'db.php';
 $base_url = BASE_URL . '/';
 ?>
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en" class="<?php echo isset($_COOKIE['darkMode']) && $_COOKIE['darkMode'] === 'dark' ? 'dark' : 'light'; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +35,75 @@ $base_url = BASE_URL . '/';
                 }
             }
         }
+
+        // Ensure dark mode is set properly on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('darkMode');
+            const html = document.documentElement;
+            
+            if (savedTheme === 'dark') {
+                html.classList.add('dark');
+                document.cookie = "darkMode=dark; path=/; max-age=31536000"; // 1 year
+                updateDarkModeIcons('dark');
+            } else {
+                html.classList.remove('dark');
+                document.cookie = "darkMode=light; path=/; max-age=31536000"; // 1 year
+                updateDarkModeIcons('light');
+            }
+            
+            // Initialize dark mode toggle functionality
+            initDarkModeToggle();
+        });
+
+        // Function to toggle dark mode that can be used across all pages
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                // Switch to light mode
+                html.classList.remove('dark');
+                localStorage.setItem('darkMode', 'light');
+                document.cookie = "darkMode=light; path=/; max-age=31536000"; // 1 year
+                updateDarkModeIcons('light');
+            } else {
+                // Switch to dark mode
+                html.classList.add('dark');
+                localStorage.setItem('darkMode', 'dark');
+                document.cookie = "darkMode=dark; path=/; max-age=31536000"; // 1 year
+                updateDarkModeIcons('dark');
+            }
+        }
+        
+        // Function to update all dark mode icons
+        function updateDarkModeIcons(mode) {
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            const darkModeIconMobile = document.getElementById('darkModeIconMobile');
+            
+            if (mode === 'dark') {
+                if (darkModeIcon) darkModeIcon.className = 'fas fa-sun';
+                if (darkModeIconMobile) darkModeIconMobile.className = 'fas fa-sun';
+            } else {
+                if (darkModeIcon) darkModeIcon.className = 'fas fa-moon';
+                if (darkModeIconMobile) darkModeIconMobile.className = 'fas fa-moon';
+            }
+        }
+        
+        // Function to initialize dark mode toggle buttons
+        function initDarkModeToggle() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+            
+            // Add event listeners to toggle buttons
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', toggleDarkMode);
+            }
+            
+            if (darkModeToggleMobile) {
+                darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+            }
+        }
+        
+        // Make toggleDarkMode globally accessible
+        window.toggleDarkMode = toggleDarkMode;
     </script>
     <!-- Chart.js Library for data visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -73,8 +142,8 @@ $base_url = BASE_URL . '/';
                                 <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
                                     <i class="fas fa-clipboard-check w-5 text-center"></i> <span>Eligibility Check</span>
                                 </a>
-                                <a href="<?php echo $base_url; ?>games/blood_facts_challenge.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
-                                    <i class="fas fa-gamepad w-5 text-center"></i> <span>Blood Facts Game</span>
+                                <a href="<?php echo $base_url; ?>games/index.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
+                                    <i class="fas fa-gamepad w-5 text-center"></i> <span>Blood Donation Games</span>
                                 </a>
                                 <?php if(isset($_SESSION['donor_id'])): ?>
                                 <a href="<?php echo $base_url; ?>dashboard/donor.php" class="block px-3 py-3 rounded hover:bg-red-500/20 dark:hover:bg-red-700/30 transition flex items-center gap-2">
@@ -140,7 +209,7 @@ $base_url = BASE_URL . '/';
                 <a href="<?php echo $base_url; ?>request.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Request Blood</a>
                 <a href="<?php echo $base_url; ?>chatbot/index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Ask Assistant</a>
                 <a href="<?php echo $base_url; ?>chatbot/eligibility.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Eligibility Check</a>
-                <a href="<?php echo $base_url; ?>games/blood_facts_challenge.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Blood Facts Game</a>
+                <a href="<?php echo $base_url; ?>games/index.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Blood Donation Games</a>
                 <?php if(isset($_SESSION['donor_id'])): ?>
                     <a href="<?php echo $base_url; ?>dashboard/donor.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">My Dashboard</a>
                     <a href="<?php echo $base_url; ?>dashboard/analytics.php" class="block py-2 hover:bg-red-500/20 rounded px-2 transition">Analytics</a>

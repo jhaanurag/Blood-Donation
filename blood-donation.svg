@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <style>
+    .bg { fill: #f9f9f9; }
+    .text { font-family: Arial, sans-serif; fill: #d62828; font-size: 28px; font-weight: bold; }
+    .subtitle { font-size: 14px; fill: #555; }
+    .bloodbag { fill: #d62828; stroke: #000; stroke-width: 2; }
+    .drop { fill: #fff; }
+    .tube { fill: none; stroke: #000; stroke-width: 2; }
+    .arm { fill: #ffe0bd; stroke: #000; stroke-width: 1.5; }
+    .button { fill: #d62828; rx: 5; ry: 5; }
+    .button-text { fill: white; font-size: 14px; font-family: Arial, sans-serif; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" class="bg" />
+
+  <!-- Text -->
+  <text x="20" y="40" class="text">Donate Blood</text>
+  <text x="20" y="65" class="subtitle">Be a hero. Save lives. One donation at a time.</text>
+
+  <!-- Blood Bag -->
+  <rect x="280" y="40" width="60" height="90" class="bloodbag" rx="8" ry="8" />
+  <path d="M310 70 Q305 75 310 80 Q315 85 310 90" class="drop" />
+
+  <!-- Tube -->
+  <path d="M310 130 C 310 160, 250 150, 250 180" class="tube" />
+
+  <!-- Arm -->
+  <ellipse cx="250" cy="200" rx="50" ry="15" class="arm" />
+  <circle cx="250" cy="180" r="3" fill="#000" />
+
+  <!-- Button -->
+  <rect x="20" y="100" width="120" height="35" class="button" />
+  <text x="35" y="123" class="button-text">LEARN MORE</text>
+</svg>

@@ -58,13 +58,45 @@
     /* Ensure chatbot container is always visible and positioned at the lower right */
     #floating-chatbot-container {
         position: fixed !important;
-        bottom: 30px !important;
-        right: 30px !important;
-        z-index: 99999 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        transform: none !important;
-        pointer-events: auto !important;
+        bottom: 24px !important;    /* Distance from the bottom of viewport */
+        right: 24px !important;     /* Distance from the right of viewport */
+        width: 56px !important;
+        height: 56px;
+        background-color: #ff4b4b;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        cursor: pointer;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000; /* Higher z-index to ensure it stays on top */
+        transition: background 0.2s;
+    }
+
+    .call-button:hover {
+        background-color: #e53935;
+    }
+    
+    /* Make sure the container doesn't affect positioning */
+    #floating-chatbot-container {
+        position: static;
+        pointer-events: none; /* Allow clicks to pass through the container */
+    }
+    
+    /* But keep pointer events on the button itself */
+    #chatbot-toggle-button {
+        pointer-events: auto;
+    }
+
+    /* Make sure the chat panel also has pointer events */
+    #floating-chat-panel {
+        pointer-events: auto;
+        position: fixed; /* Fix chat panel to viewport */
+        bottom: 90px;   /* Position above the button */
+        right: 24px;
     }
     
     /* Animations for the typing indicator */

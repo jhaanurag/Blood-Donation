@@ -10,9 +10,6 @@ if (is_donor_logged_in()) {
     exit;
 }
 
-// Include header after potential redirects
-include_once 'includes/header.php';
-
 $errors = [];
 $name = $email = $phone = $age = $blood_group = $city = $state = '';
 
@@ -125,6 +122,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->close();
     }
 }
+
+// Include header AFTER all potential redirects
+include_once 'includes/header.php';
 ?>
 
 <div class="bg-gray-100 dark:bg-gray-800 py-12">
@@ -164,6 +164,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="password">Password</label>
                     <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
                            type="password" name="password" id="password" required>
+                    <div class="mt-1" id="password-strength-container">
+                        <div class="h-2 w-full bg-gray-200 dark:bg-gray-600 rounded-full">
+                            <div id="password-strength-meter" class="h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                        <p id="password-strength-text" class="text-xs mt-1 text-gray-600 dark:text-gray-300"></p>
+                    </div>
                 </div>
                 
                 <div class="mb-4">
@@ -224,5 +230,97 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const strengthMeter = document.getElementById('password-strength-meter');
+    const strengthText = document.getElementById('password-strength-text');
+    
+    // Colors for different strength levels
+    const strengthColors = {
+        1: 'bg-red-500',   // Very weak
+        2: 'bg-orange-500', // Weak
+        3: 'bg-yellow-500', // Medium
+        4: 'bg-blue-500',   // Strong
+        5: 'bg-green-500'   // Very strong
+    };
+    
+    // Password strength levels text descriptions
+    const strengthLevels = {
+        0: 'Enter a password',
+        1: 'Very weak - Use 8+ characters with letters, numbers & symbols',
+        2: 'Weak - Add more character types',
+        3: 'Medium - Add more complexity',
+        4: 'Strong - Good password!',
+        5: 'Very strong - Excellent password!'
+    };
+    
+    // Listen for password input changes
+    passwordInput.addEventListener('input', updateStrength);
+    
+    function updateStrength() {
+        const password = passwordInput.value;
+        let strength = calculatePasswordStrength(password);
+        
+        // Update the strength meter width
+        strengthMeter.style.width = strength * 20 + '%'; // 0-100% in 20% increments
+        
+        // Remove any previous color classes
+        Object.values(strengthColors).forEach(color => {
+            strengthMeter.classList.remove(color);
+        });
+        
+        // Add current strength color class
+        if (password.length > 0) {
+            strengthMeter.classList.add(strengthColors[strength] || 'bg-gray-300');
+        } else {
+            strengthMeter.classList.add('bg-gray-300');
+        }
+        
+        // Update strength text
+        strengthText.textContent = strengthLevels[strength] || '';
+    }
+    
+    function calculatePasswordStrength(password) {
+        if (!password) return 0;
+        
+        let score = 0;
+        
+        // Length check
+        if (password.length > 0) score += 1;
+        if (password.length >= 8) score += 1;
+        if (password.length >= 12) score += 1;
+        
+        // Complexity checks
+        const hasLower = /[a-z]/.test(password);
+        const hasUpper = /[A-Z]/.test(password);
+        const hasNumber = /\d/.test(password);
+        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+        
+        // Add 1 point if multiple character types are used
+        if ((hasLower && hasUpper) || 
+            (hasLower && hasNumber) || 
+            (hasLower && hasSpecial) || 
+            (hasUpper && hasNumber) || 
+            (hasUpper && hasSpecial) || 
+            (hasNumber && hasSpecial)) {
+            score += 1;
+        }
+        
+        // Add 1 point for having 3 or more character types
+        const charTypesCount = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
+        if (charTypesCount >= 3) {
+            score += 1;
+        }
+        
+        // Ensure max score is 5
+        return Math.min(score, 5);
+    }
+    
+    // Initialize strength display
+    updateStrength();
+});
+</script>
 
 <?php include_once 'includes/footer.php'; ?>

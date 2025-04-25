@@ -79,9 +79,9 @@ html.dark .rounded-lg:hover {
 } */
 
 /* Target only the small blood type boxes specifically */
-/* These are the boxes in the blood type section that contain blood type information */
-.container .grid .bg-white, 
-.container .grid [class*="bg-gray-"] {
+.container .grid .blood-type-box,
+.donor-info .container .grid .bg-white, 
+.donor-info .container .grid [class*="bg-gray-"] {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: visible;
@@ -110,8 +110,9 @@ html.dark .rounded-lg:hover {
     opacity: 1;
 } */
 
-.container .grid .bg-white:hover, 
-.container .grid [class*="bg-gray-"]:hover {
+.donor-info .container .grid .bg-white:hover, 
+.donor-info .container .grid [class*="bg-gray-"]:hover,
+.container .grid .blood-type-box:hover {
     transform: translateY(-5px) scale(1.02);
     /* Modified shadow to create edge glow without center light source */
     box-shadow: 
@@ -127,8 +128,9 @@ html.dark .container .grid [class*="bg-gray-"]::before {
     filter: blur(10px);
 } */
 
-html.dark .container .grid .bg-white:hover, 
-html.dark .container .grid [class*="bg-gray-"]:hover {
+html.dark .donor-info .container .grid .bg-white:hover, 
+html.dark .donor-info .container .grid [class*="bg-gray-"]:hover,
+html.dark .container .grid .blood-type-box:hover {
     /* Edge glow effect in dark mode */
     box-shadow: 
         0 0 0 3px rgba(248, 113, 113, 0.3),

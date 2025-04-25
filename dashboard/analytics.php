@@ -21,7 +21,6 @@ function fetchAPIData($url, $fallbackData = []) {
             // If API request fails, return fallback data
             return $fallbackData;
         }
-        
         $data = json_decode($response, true);
         return $data ?: $fallbackData;
     } catch (Exception $e) {
