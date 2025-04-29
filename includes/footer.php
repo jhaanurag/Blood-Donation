@@ -1,6 +1,6 @@
 </main>
     <!-- Footer -->
-    <footer class="bg-red-600 dark:bg-red-900 text-white py-6 mt-12 transition-colors duration-200">
+    <footer class="bg-primary-dark dark:bg-[#1E1E1E] text-white py-6 mt-12 transition-colors duration-200">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between">
                 <div class="mb-6 md:mb-0">
@@ -10,10 +10,10 @@
                 <div class="mb-6 md:mb-0">
                     <h4 class="font-semibold mb-3">Quick Links</h4>
                     <ul>
-                        <li class="mb-2"><a href="<?php echo $base_url; ?>index.php" class="hover:text-red-200 transition">Home</a></li>
-                        <li class="mb-2"><a href="<?php echo $base_url; ?>search.php" class="hover:text-red-200 transition">Search Donors</a></li>
-                        <li class="mb-2"><a href="<?php echo $base_url; ?>camps.php" class="hover:text-red-200 transition">Blood Camps</a></li>
-                        <li class="mb-2"><a href="<?php echo $base_url; ?>request.php" class="hover:text-red-200 transition">Request Blood</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>index.php" class="hover:text-accent-light transition">Home</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>search.php" class="hover:text-accent-light transition">Search Donors</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>camps.php" class="hover:text-accent-light transition">Blood Camps</a></li>
+                        <li class="mb-2"><a href="<?php echo $base_url; ?>request.php" class="hover:text-accent-light transition">Request Blood</a></li>
                     </ul>
                 </div>
                 <div>
@@ -23,13 +23,13 @@
                         <li class="mb-2"><i class="fas fa-phone mr-2"></i> +1-800-BLOOD-HELP</li>
                     </ul>
                     <div class="flex space-x-4 mt-4">
-                        <a href="#" class="hover:text-red-200 transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-red-200 transition"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-red-200 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-accent-light transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-accent-light transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-accent-light transition"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-red-500 dark:border-red-800 mt-6 pt-6 text-center">
+            <div class="border-t border-primary-light/30 dark:border-gray-700 mt-6 pt-6 text-center">
                 <p>&copy; <?php echo date('Y'); ?> Blood Donation Management System. All rights reserved.</p>
             </div>
         </div>

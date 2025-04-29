@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en" class="light scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LifeFlow - A modern blood donation platform connecting donors with those in need">
+    <meta name="keywords" content="blood donation, donor, blood bank, save lives, plasma donation">
+    <title>LifeFlow - Blood Donation Platform</title>
+
+    <!-- External CDNs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind Configuration - Color system with CSS variables -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': {
+                            light: 'var(--primary-light)',  // #6366F1 (Indigo)
+                            DEFAULT: 'var(--primary-light)',
+                            dark: 'var(--primary-dark)'     // #4F46E5 (Deeper Indigo)
+                        },
+                        'accent': {
+                            light: 'var(--accent-light)',   // #F97316 (Orange)
+                            DEFAULT: 'var(--accent-light)',
+                            dark: 'var(--accent-dark)'      // #EA580C (Deep Orange)
+                        },
+                        'secondary': 'var(--secondary)',    // #EC4899 (Pink)
+                        'success': 'var(--success)',        // #22C55E (Green)
+                        'danger': 'var(--danger)',          // #EF4444 (Red)
+                        'dark-bg1': 'var(--dark-bg1)',      // #121212 (Near Black)
+                        'dark-bg2': 'var(--dark-bg2)',      // #1E1E1E (Dark Gray)
+                        'card-dark': 'var(--card-dark)',    // #252525 (Dark Card BG)
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Core Styles - Theme, Components, Animations -->
+    <style>
+        /* --- Color System & Theme Variables --- */
+        :root {
+            /* Primary Colors */
+            --primary-light: #6366F1; /* Bright indigo */
+            --primary-dark: #4F46E5;  /* Deep indigo */
+            --accent-light: #F97316;  /* Coral orange */
+            --accent-dark: #EA580C;   /* Deep coral */
+            --secondary: #EC4899;     /* Pink */
+            --success: #22C55E;       /* Green */
+            --danger: #EF4444;        /* Red */
+
+            /* Dark Mode Colors */
+            --dark-bg1: #121212;      /* Nearly black base */
+            --dark-bg2: #1E1E1E;      /* Slightly lighter neutral */
+            --card-dark: #252525;     /* Card background */
+            --border-dark: #373737;   /* Subtle border for dark cards */
+
+            /* Light Shades - For subtle backgrounds */
+            --primary-lighter: #EEF2FF; /* Light indigo bg */
+            --accent-lighter: #FFF7ED; /* Light orange bg */
+        }
+
+        /* --- Dark Mode Base Styles --- */
+        .dark body {
+            background-color: var(--dark-bg1);
+            color: #D1D5DB; /* Gray-300 */
+        }
+        .dark .dark-bg2-section {
+            background-color: var(--dark-bg2);
+        }
+        .dark {
+            color: #D1D5DB; /* Gray-300 */
+        }
+        .dark h1, .dark h2, .dark h3, .dark h4, .dark .dark-text-strong {
+             color: #F9FAFB; /* Gray-50 */
+        }
+        .dark .dark-text-medium {
+            color: #9CA3AF; /* Gray-400 */
+        }
+
+        /* --- Hero Section Gradient & Fade Effects --- */
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Hero background gradient */
+        .hero-bg-gradient {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+        }
+        
+        .dark .hero-bg-gradient {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #3730A3 100%);
+        }
+        
+        /* Hero fade-out to next section */
+        .hero-fade-bottom {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom, transparent, #ffffff);
+            z-index: 2;
+        }
+        
+        .dark .hero-fade-bottom {
+            background: linear-gradient(to bottom, transparent, var(--dark-bg1));
+        }
+        
+        /* Wave overlay for hero section */
+        .hero-wave-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+            z-index: 1;
+        }
+        
+        .hero-wave-overlay svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 70px;
+        }
+        
+        .hero-wave-overlay .shape-fill {
+            fill: #FFFFFF;
+        }
+        
+        .dark .hero-wave-overlay .shape-fill {
+            fill: var(--dark-bg1);
+        }
+        
+        /* --- Component Styles --- */
+        /* Typewriter Animation */
+        .typewriter { max-width: 100%; display: block; }
+        .typewriter h1 {
+            overflow: hidden;
+            border-right: .1em solid var(--accent-light);
+            white-space: nowrap; margin: 0; letter-spacing: .02em;
+            width: fit-content; min-height: 3rem;
+            animation: blink-caret .75s step-end infinite;
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-light); }
+        }
+        @media (max-width: 640px) { .typewriter h1 { font-size: 1.875rem; min-height: 2.5rem; } }
+
+        /* Icon Containers */
+        .glow-icon-container {
+            width: 5rem; height: 5rem; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.5rem;
+            background-color: var(--primary-lighter);
+            transition: all 0.3s ease;
+        }
+        .dark .glow-icon-container {
+            background-color: rgba(99, 102, 241, 0.15);
+        }
+        .glow-icon {
+            color: var(--primary-light);
+            font-size: 1.875rem;
+            transition: transform 0.3s ease;
+        }
+        .glow-icon-container:hover .glow-icon {
+            transform: scale(1.15);
+        }
+        /* Stats Section Specific Glow */
+        .stats-section .glow-icon-container {
+             animation: glow-pulse 1.5s infinite ease-in-out;
+        }
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(99, 102, 241, 0); opacity: 1;}
+            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.3); opacity: 0.85; }
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white; border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            padding: 1.5rem; position: relative; overflow: hidden; z-index: 1;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        .dark .dark-card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .dark .card:not(.dark-card) {
+            background-color: var(--dark-bg2);
+            border: 1px solid var(--border-dark);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+        }
+        .dark .card.dark-card:hover {
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.1);
+        }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, transparent 50%);
+            z-index: -1; transition: opacity 0.3s ease; opacity: 0;
+        }
+        .dark .card.dark-card::before {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+        }
+        .card:hover::before { opacity: 1; }
+
+        /* Animation & Utility Styles */
+        .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+        .blood-facts-wrapper { position: relative; overflow: hidden; min-height: 120px; }
+        .blood-facts-list { position: relative; }
+        .blood-fact { opacity: 0; transform: translateY(20px); position: absolute; width: 100%; left: 0; transition: opacity 0.8s ease, transform 0.8s ease; display: none; }
+        .blood-fact.active { opacity: 1; transform: translateY(0); position: relative; display: flex; }
+        .no-hover, .no-hover-effect, .blood-usage-stats { transform: none !important; transition: none !important; }
+        .no-hover:hover, .no-hover-effect:hover, .blood-usage-stats:hover { transform: none !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06) !important; }
+        .dark .no-hover:hover, .dark .no-hover-effect:hover, .dark .blood-usage-stats:hover { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important; }
+        .bg-transparent-section { background-color: transparent !important; }
+    </style>
+</head>
+<body class="antialiased text-gray-800">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 bg-white dark:bg-dark-bg2 shadow-sm z-50 border-b dark:border-border-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <i class="fas fa-tint text-primary text-2xl"></i>
+                        <span class="ml-2 text-xl font-semibold dark:text-white">LifeFlow</span>
+                    </a>
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex md:ml-10 space-x-4">
+                        <a href="#how-it-works" class="px-3 py-2 text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light text-sm font-medium">How It Works</a>
+                        <a href="#why-donate" class="px-3 py-2 text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light text-sm font-medium">Why Donate</a>
+                        <a href="#types" class="px-3 py-2 text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light text-sm font-medium">Blood Types</a>
+                        <a href="#camps" class="px-3 py-2 text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light text-sm font-medium">Camps</a>
+                        <a href="#footer" class="px-3 py-2 text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <!-- Right side -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#" class="px-4 py-2 text-gray-600 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light text-sm font-medium">Login</a>
+                    <a href="#" class="ml-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark text-sm font-medium shadow">Register</a>
+                     <button id="darkModeToggle" type="button" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-card-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-light">
+                         <i class="fas fa-moon dark:hidden text-lg"></i>
+                         <i class="fas fa-sun hidden dark:inline-block text-lg text-yellow-400"></i>
+                     </button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                     <button id="darkModeToggleMobile" type="button" class="p-2 mr-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-card-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-light">
+                         <i class="fas fa-moon dark:hidden text-lg"></i>
+                         <i class="fas fa-sun hidden dark:inline-block text-lg text-yellow-400"></i>
+                     </button>
+                    <button id="mobileMenuButton" class="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-primary-light">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+         <!-- Mobile Menu -->
+         <div id="mobileMenu" class="hidden md:hidden absolute top-16 inset-x-0 p-2 transition transform origin-top-right z-40">
+             <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white dark:bg-dark-bg2 divide-y divide-gray-100 dark:divide-border-dark">
+                <div class="px-5 pt-4 pb-3 space-y-1">
+                     <a href="#how-it-works" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary-light hover:bg-gray-50 dark:hover:bg-card-dark">How It Works</a>
+                     <a href="#why-donate" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary-light hover:bg-gray-50 dark:hover:bg-card-dark">Why Donate</a>
+                     <a href="#types" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary-light hover:bg-gray-50 dark:hover:bg-card-dark">Blood Types</a>
+                     <a href="#camps" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary-light hover:bg-gray-50 dark:hover:bg-card-dark">Camps</a>
+                     <a href="#footer" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary-light hover:bg-gray-50 dark:hover:bg-card-dark">Contact</a>
+                </div>
+                <div class="py-4 px-5 space-y-2">
+                     <a href="#" class="block text-center w-full px-5 py-2 border border-transparent rounded-md shadow text-base font-medium text-white bg-primary hover:bg-primary-dark">Register</a>
+                     <p class="mt-3 text-center text-base font-medium text-gray-500 dark:text-gray-400">
+                         Existing donor? <a href="#" class="text-primary hover:text-primary-dark dark:text-primary-light dark:hover:text-primary">Sign in</a>
+                     </p>
+                </div>
+             </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section hero-bg-gradient text-white py-16 md:py-20 px-4 md:px-8">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-10 md:mb-0 md:pr-8 text-center md:text-left">
+                        <div class="typewriter mb-4 inline-block">
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold" id="typewriter-text"></h1>
+                        </div>
+                        <p class="text-lg md:text-xl mb-8 max-w-xl mx-auto md:mx-0 opacity-90">Your blood donation can save up to 3 lives. Join our community of heroes today and make a life-changing difference.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <a href="#" class="bg-white dark:bg-gray-100 text-primary font-bold px-8 py-3 rounded-md hover:bg-gray-200 dark:hover:bg-white transition text-center shadow-md transform hover:scale-105">Register as Donor</a>
+                            <a href="#" class="border-2 border-white dark:border-indigo-100 text-white font-semibold px-8 py-3 rounded-md hover:bg-white/20 dark:hover:bg-white/10 transition text-center shadow-md transform hover:scale-105">Request Blood</a>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2">
+                        <img src="https://via.placeholder.com/600x400/FFFFFF/6366F1?text=Blood+Donation+Hero" alt="Blood donation illustration" class="rounded-lg shadow-xl w-full h-auto max-w-lg mx-auto transform hover:scale-102 transition duration-300">
+                    </div>
+                </div>
+            </div>
+            <!-- Wave overlay for a smooth transition to the next section -->
+            <div class="hero-wave-overlay">
+                <svg viewBox="0 0 1440 150" preserveAspectRatio="none">
+                    <path d="M0,49.98 C360,149.98 720,149.98 1080,49.98 C1440,-50.02 1440,99.98 1440,99.98 L0,149.98 Z" class="shape-fill"></path>
+                </svg>
+            </div>
+            <!-- Gradient fade overlay -->
+            <div class="hero-fade-bottom"></div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="py-16 md:py-20 bg-transparent-section stats-section">
+          <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center text-center -m-4">
+              <div class="w-full md:w-1/3 p-4">
+                <div class="flex justify-center"><div class="glow-icon-container"><i class="fas fa-tint glow-icon"></i></div></div>
+                <div class="counter text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2" data-target="50842" data-format="comma">0</div>
+                <p class="text-gray-600 dark:text-gray-400 font-medium">Total Donations</p>
+              </div>
+              <div class="w-full md:w-1/3 p-4">
+                <div class="flex justify-center"><div class="glow-icon-container"><i class="fas fa-heartbeat glow-icon"></i></div></div>
+                <div class="counter text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2" data-target="152526" data-format="comma">0</div>
+                <p class="text-gray-600 dark:text-gray-400 font-medium">Lives Saved (Est.)</p>
+              </div>
+              <div class="w-full md:w-1/3 p-4">
+                <div class="flex justify-center"><div class="glow-icon-container"><i class="fas fa-hospital glow-icon"></i></div></div>
+                <div class="counter text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2" data-target="12" data-format="plus">0</div>
+                <p class="text-gray-600 dark:text-gray-400 font-medium">Partner Centers</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-16 md:py-20 bg-gray-50 dark-bg2-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">Simple Steps to Save a Life</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 lg:gap-8">
+                    <div class="text-center animate-on-scroll">
+                        <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-user-plus glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Register</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">Quick online setup.</p>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="transition-delay: 50ms;">
+                        <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-clipboard-check glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Eligibility</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">Check if you qualify.</p>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="transition-delay: 100ms;">
+                         <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-calendar-check glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Schedule</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">Book your time slot.</p>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="transition-delay: 150ms;">
+                         <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-notes-medical glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Prepare</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">Hydrate & eat well.</p>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="transition-delay: 200ms;">
+                         <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-tint glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Donate</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">~10 minutes to give.</p>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="transition-delay: 250ms;">
+                         <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-cookie-bite glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Recover</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">Rest & refreshments.</p>
+                    </div>
+                    <div class="text-center animate-on-scroll" style="transition-delay: 300ms;">
+                         <div class="flex justify-center mb-4"><div class="glow-icon-container"><i class="fas fa-heart glow-icon"></i></div></div>
+                        <h3 class="text-lg font-bold mb-1 dark:text-white">Save Lives</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-xs">Feel amazing!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Donate Section -->
+        <section id="why-donate" class="py-16 md:py-20 bg-white dark-bg2-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">Why Your Donation Matters</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="card dark-card animate-on-scroll p-6 text-center">
+                        <i class="fas fa-heartbeat text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Save Lives</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Directly impact patients needing transfusions for surgery, illness, or trauma.</p>
+                    </div>
+                    <div class="card dark-card animate-on-scroll p-6 text-center" style="transition-delay: 100ms;">
+                         <i class="fas fa-stethoscope text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Health Check</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Receive a free mini-health screening (pulse, BP, iron levels) with each donation.</p>
+                    </div>
+                    <div class="card dark-card animate-on-scroll p-6 text-center" style="transition-delay: 200ms;">
+                         <i class="fas fa-users text-4xl text-primary mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-3 dark:text-white">Community Strength</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">Ensure a stable blood supply for your community during emergencies and everyday needs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         <!-- Blood Type Info Section -->
+        <section id="types" class="py-16 md:py-20 bg-gray-50 dark-bg2-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">Blood Types & Compatibility</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Blood Type Cards -->
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 0ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">A+</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">A+, AB+</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">A+, A-, O+, O-</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 50ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">A-</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">A+, A-, AB+, AB-</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">A-, O-</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 100ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">B+</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">B+, AB+</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">B+, B-, O+, O-</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 150ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">B-</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">B+, B-, AB+, AB-</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">B-, O-</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 200ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">AB+</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">AB+</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">All types (Universal Recipient)</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 250ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">AB-</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">AB+, AB-</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">A-, B-, AB-, O-</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 300ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">O+</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">A+, B+, AB+, O+</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">O+, O-</p>
+                    </div>
+                    
+                    <div class="card dark-card animate-on-scroll p-5" style="transition-delay: 350ms;">
+                        <div class="text-center mb-3">
+                            <span class="inline-block bg-accent-lighter dark:bg-accent-dark/20 text-accent-dark dark:text-accent-light text-2xl font-bold px-4 py-1.5 rounded-full">O-</span>
+                        </div>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Donate To:</p>
+                        <p class="dark:text-gray-300 text-sm mb-3">All types (Universal Donor)</p>
+                        <p class="mb-2 font-semibold dark:text-white text-xs uppercase tracking-wide">Can Receive From:</p>
+                        <p class="dark:text-gray-300 text-sm">O-</p>
+                    </div>
+                </div>
+                 <p class="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">Compatibility shown is for Red Blood Cells (RBCs). Plasma compatibility differs.</p>
+            </div>
+        </section>
+
+
+        <!-- Blood Usage Statistics Section -->
+        <section class="py-16 md:py-20 bg-white dark-bg2-section">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">Did You Know?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Progress Bars -->
+                    <div class="card dark-card p-6 animate-on-scroll blood-usage-stats no-hover">
+                        <h3 class="text-xl font-bold mb-6 dark:text-white">Common Blood Needs</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1"><span class="text-gray-700 dark:text-gray-300 text-sm">Cancer Treatment</span><span class="text-gray-700 dark:text-gray-300 font-medium text-sm">~25%</span></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2"><div class="bg-primary h-2 rounded-full" style="width: 25%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1"><span class="text-gray-700 dark:text-gray-300 text-sm">Trauma & Surgery</span><span class="text-gray-700 dark:text-gray-300 font-medium text-sm">~30%</span></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2"><div class="bg-primary h-2 rounded-full" style="width: 30%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1"><span class="text-gray-700 dark:text-gray-300 text-sm">Blood Disorders (e.g., Sickle Cell)</span><span class="text-gray-700 dark:text-gray-300 font-medium text-sm">~20%</span></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2"><div class="bg-primary h-2 rounded-full" style="width: 20%"></div></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1"><span class="text-gray-700 dark:text-gray-300 text-sm">Other Medical Needs</span><span class="text-gray-700 dark:text-gray-300 font-medium text-sm">~25%</span></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2"><div class="bg-primary h-2 rounded-full" style="width: 25%"></div></div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">Usage percentages are estimates and vary by region and time of year.</p>
+                    </div>
+
+                    <!-- Rotating Facts -->
+                    <div class="card dark-card p-6 animate-on-scroll blood-usage-stats no-hover relative" style="transition-delay: 100ms;">
+                        <h3 class="text-xl font-bold mb-6 dark:text-white">Quick Facts</h3>
+                        <div class="blood-facts-wrapper"> <!-- JS controls height -->
+                            <div class="blood-facts-list">
+                                <!-- Facts content - JS will cycle through these -->
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">Every 2 seconds, someone needs blood.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">Accident victims can require 100+ units.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">Less than 10% of eligible donors give blood annually.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">Blood cannot be manufactured, only donated.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">One donation can save up to 3 lives.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">Red cells can be donated every 56 days.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">Donated red cells last up to 42 days.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">O- is the universal red cell donor.</p></div>
+                                <div class="blood-fact"><i class="fas fa-check-circle text-primary dark:text-primary-light mr-3 pt-1"></i><p class="text-gray-700 dark:text-gray-300 text-sm">AB+ is the universal plasma donor.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upcoming Camps Preview -->
+        <section class="py-16 md:py-20 bg-gray-50 dark-bg2-section">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold dark:text-white mb-3 sm:mb-0">Upcoming Blood Drives</h2>
+                    <a href="#" class="text-primary dark:text-primary-light hover:underline font-semibold flex items-center text-sm">
+                        View All Drives <i class="fas fa-arrow-right ml-1.5"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Blood Drive 1 -->
+                    <div class="card dark-card animate-on-scroll overflow-hidden">
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg mb-2 dark:text-white">Community Center Drive</h3>
+                            <div class="mb-2 flex items-center text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                <i class="far fa-calendar-alt mr-1.5"></i>Thu, May 1, 2025
+                            </div>
+                            <div class="mb-3 flex items-start text-sm text-gray-600 dark:text-gray-300">
+                                <i class="fas fa-map-marker-alt mr-2 mt-1 text-primary dark:text-primary-light"></i>
+                                <span>123 Main St<br>Anytown, CA</span>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">Help support local patients! Join us at the community center.</p>
+                            <a href="#" class="text-primary dark:text-primary-light hover:underline text-sm font-semibold">Learn More & Sign Up <i class="fas fa-chevron-right text-xs ml-1"></i></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Blood Drive 2 -->
+                    <div class="card dark-card animate-on-scroll overflow-hidden" style="transition-delay: 100ms;">
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg mb-2 dark:text-white">University Campus Challenge</h3>
+                            <div class="mb-2 flex items-center text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                <i class="far fa-calendar-alt mr-1.5"></i>Thu, May 8, 2025
+                            </div>
+                            <div class="mb-3 flex items-start text-sm text-gray-600 dark:text-gray-300">
+                                <i class="fas fa-map-marker-alt mr-2 mt-1 text-primary dark:text-primary-light"></i>
+                                <span>Student Union Bldg<br>Collegeville, NY</span>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">Students and faculty, roll up your sleeves for a good cause.</p>
+                            <a href="#" class="text-primary dark:text-primary-light hover:underline text-sm font-semibold">Learn More & Sign Up <i class="fas fa-chevron-right text-xs ml-1"></i></a>
+                        </div>
+                    </div>
+                    
+                    <!-- Blood Drive 3 -->
+                    <div class="card dark-card animate-on-scroll overflow-hidden" style="transition-delay: 200ms;">
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg mb-2 dark:text-white">Corporate Partner Event</h3>
+                            <div class="mb-2 flex items-center text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                                <i class="far fa-calendar-alt mr-1.5"></i>Thu, May 16, 2025
+                            </div>
+                            <div class="mb-3 flex items-start text-sm text-gray-600 dark:text-gray-300">
+                                <i class="fas fa-map-marker-alt mr-2 mt-1 text-primary dark:text-primary-light"></i>
+                                <span>Tech Park Bldg 5<br>Innovate City, TX</span>
+                            </div>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">Hosted by XYZ Corp. Open to the public.</p>
+                            <a href="#" class="text-primary dark:text-primary-light hover:underline text-sm font-semibold">Learn More & Sign Up <i class="fas fa-chevron-right text-xs ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-gray-100 dark:bg-dark-bg2 border-t dark:border-border-dark mt-16 md:mt-20">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Brand & Social -->
+                <div>
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-tint text-primary text-2xl"></i>
+                        <span class="ml-2 text-xl font-semibold dark:text-white">LifeFlow</span>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Connecting donors with those in need, saving lives together.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary dark:hover:text-primary-light"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary dark:hover:text-primary-light"><i class="fab fa-twitter text-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary dark:hover:text-primary-light"><i class="fab fa-instagram text-lg"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary dark:hover:text-primary-light"><i class="fab fa-linkedin-in text-lg"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#how-it-works" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">How It Works</a></li>
+                        <li><a href="#why-donate" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Why Donate</a></li>
+                        <li><a href="#types" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Blood Types</a></li>
+                         <li><a href="#camps" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Find a Drive</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Resources</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Donor Portal</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Hospital Information</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Eligibility Quiz</a></li>
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light">Host a Blood Drive</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 dark:text-white">Contact Us</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <i class="fas fa-map-marker-alt mr-3 w-4 text-center text-primary dark:text-primary-light"></i>
+                            <span>123 LifeFlow Ave, Anytown</span>
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <i class="fas fa-phone-alt mr-3 w-4 text-center text-primary dark:text-primary-light"></i>
+                            <a href="tel:+15551234567" class="hover:text-primary dark:hover:text-primary-light">1-800-GIVE-LIFE</a>
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <i class="fas fa-envelope mr-3 w-4 text-center text-primary dark:text-primary-light"></i>
+                            <a href="mailto:info@lifeflow.demo" class="hover:text-primary dark:hover:text-primary-light">info@lifeflow.demo</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="mt-10 pt-8 border-t border-gray-200 dark:border-border-dark text-center md:text-left">
+                <div class="flex flex-col md:flex-row justify-between items-center text-xs">
+                    <p class="text-gray-500 dark:text-gray-400 mb-2 md:mb-0">© <span id="currentYear"></span> LifeFlow Demo. All rights reserved.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary-light">Privacy Policy</a>
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary-light">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Dark Mode Toggle ---
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
+            const html = document.documentElement;
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+            function setMode(mode) {
+                if (mode === 'dark') { 
+                    html.classList.add('dark'); 
+                    localStorage.theme = 'dark'; 
+                    // Update hero section wave fill color for dark mode
+                    document.querySelectorAll('.hero-wave-overlay .shape-fill').forEach(path => {
+                        path.style.fill = 'var(--dark-bg1)';
+                    });
+                }
+                else { 
+                    html.classList.remove('dark'); 
+                    localStorage.theme = 'light';
+                    // Update hero section wave fill color for light mode
+                    document.querySelectorAll('.hero-wave-overlay .shape-fill').forEach(path => {
+                        path.style.fill = '#FFFFFF';
+                    });
+                }
+            }
+            const currentTheme = localStorage.theme || (prefersDark.matches ? 'dark' : 'light');
+            setMode(currentTheme);
+
+            [darkModeToggle, darkModeToggleMobile].forEach(toggle => {
+                if(toggle) {
+                    toggle.addEventListener('click', () => {
+                        setMode(html.classList.contains('dark') ? 'light' : 'dark');
+                    });
+                }
+            });
+
+            // --- Mobile Menu ---
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    // Toggle aria-expanded attribute for accessibility
+                    const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+                    mobileMenuButton.setAttribute('aria-expanded', !expanded);
+                });
+                // Close on link click
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+                });
+                // Close when clicking outside
+                document.addEventListener('click', (event) => {
+                    if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target) && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+
+            // --- Improved Typewriter with Smoother Animation ---
+            const text = "Give the Gift of Life";
+            const el = document.getElementById('typewriter-text');
+            let i = 0;
+            let typing = true;
+            
+            function typeWriter() {
+                if (!el) return;
+                
+                if (typing) {
+                    if (i <= text.length) { 
+                        el.textContent = text.substring(0, i); 
+                        i++; 
+                        setTimeout(typeWriter, 100); // Slightly slower for better readability
+                    } else { 
+                        typing = false; 
+                        setTimeout(typeWriter, 3000); // Longer pause at end 
+                    }
+                } else {
+                    if (i > 0) { 
+                        el.textContent = text.substring(0, i); 
+                        i--; 
+                        setTimeout(typeWriter, 50); 
+                    } else { 
+                        typing = true; 
+                        setTimeout(typeWriter, 1000); // Pause before restarting
+                    }
+                }
+            }
+            
+            // Start the typewriter effect
+            setTimeout(typeWriter, 500); // Initial delay to let page load
+
+            // --- Enhanced Counter Animation ---
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    
+                    // Use easeOutQuad for smoother animation
+                    const easeProgress = 1 - (1 - progress) * (1 - progress);
+                    const currentValue = Math.floor(easeProgress * (end - start) + start);
+                    
+                    obj.innerHTML = currentValue.toLocaleString('en-US');
+                    
+                    if (progress < 1) { 
+                        window.requestAnimationFrame(step); 
+                    } else { 
+                        obj.innerHTML = end.toLocaleString('en-US');
+                        
+                        // Add format if specified
+                        const format = obj.getAttribute('data-format');
+                        if (format === 'plus') {
+                            obj.innerHTML += '+';
+                        }
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            // Use Intersection Observer for counters
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const targetValue = parseInt(counter.getAttribute('data-target').replace(/,/g, ''), 10);
+                        if (!isNaN(targetValue) && !counter.getAttribute('data-animated')) {
+                            counter.textContent = '0';
+                            animateValue(counter, 0, targetValue, 2000); // Slightly longer for smoother animation
+                            counter.setAttribute('data-animated', 'true');
+                        }
+                        observer.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.5, rootMargin: '0px 0px -10% 0px' });
+            
+            document.querySelectorAll('.counter[data-target]').forEach(counter => {
+                counterObserver.observe(counter);
+            });
+
+            // --- Enhanced Scroll Animations with Staggered Delay ---
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add visible class with a small delay if specified
+                        const delay = entry.target.getAttribute('style') ? 
+                            (parseFloat(entry.target.getAttribute('style').match(/transition-delay:\s*(\d+)ms/)?.[1]) || 0) : 0;
+                        
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, delay);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                scrollObserver.observe(el);
+            });
+
+            // --- Blood Facts Rotation with Smoother Transitions ---
+            const facts = document.querySelectorAll('.blood-fact');
+            let currentFactIndex = 0;
+            const factsContainer = document.querySelector('.blood-facts-wrapper');
+            
+            if (facts.length > 0 && factsContainer) {
+                // Calculate height based on the tallest fact
+                let containerHeight = 0;
+                
+                facts.forEach(fact => {
+                    fact.style.opacity = '0';
+                    fact.style.transform = 'translateY(15px)';
+                    fact.style.position = 'absolute';
+                    fact.style.width = '100%';
+                    fact.style.display = 'flex';
+                    
+                    containerHeight = Math.max(containerHeight, fact.offsetHeight + 10); // Add small padding
+                    fact.style.display = 'none';
+                });
+                
+                factsContainer.style.height = `${containerHeight}px`;
+
+                function showFact(index) {
+                    if (index < facts.length) {
+                        facts[index].classList.add('active');
+                    }
+                }
+                
+                function hideFact(index) {
+                    if (index < facts.length) {
+                        facts[index].classList.remove('active');
+                    }
+                }
+
+                // Show first fact immediately
+                showFact(currentFactIndex);
+
+                function rotateFacts() {
+                    hideFact(currentFactIndex);
+                    
+                    setTimeout(() => {
+                        currentFactIndex = (currentFactIndex + 1) % facts.length;
+                        showFact(currentFactIndex);
+                    }, 800);
+                }
+                
+                if (facts.length > 1) {
+                    setInterval(rotateFacts, 5000);
+                }
+            }
+
+            // --- Footer Year ---
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // --- Add Scroll Padding for Header Navigation ---
+            // This ensures that when users click on navigation links, the header doesn't overlap the section
+            document.documentElement.style.scrollPaddingTop = '64px';
+        });
+    </script>
+
+</body>
+</html>

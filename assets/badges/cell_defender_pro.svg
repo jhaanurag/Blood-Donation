@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3182ce" />
+      <stop offset="100%" stop-color="#1a365d" />
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="45" fill="url(#bg)" stroke="#fff" stroke-width="2" />
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="4 2" />
+  <g transform="translate(25, 25) scale(0.5)">
+    <path d="M50 10 L60 40 L90 40 L65 60 L75 90 L50 70 L25 90 L35 60 L10 40 L40 40 Z" fill="#ffffff" stroke="#1a365d" stroke-width="2" />
+    <circle cx="50" cy="50" r="15" fill="#ffffff" stroke="#1a365d" stroke-width="2" />
+    <path d="M48 40 L52 40 L52 60 L48 60 Z M40 48 L60 48 L60 52 L40 52 Z" fill="#3182ce" />
+    <circle cx="50" cy="50" r="7" fill="#3182ce" />
+  </g>
+  <text x="50" y="82" font-family="Arial, sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" font-weight="bold">PRO</text>
+</svg>

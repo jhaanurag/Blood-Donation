@@ -66,21 +66,69 @@ function check_donation_badges($user_id) {
  * 
  * @param int $user_id The user's ID
  * @param int $score The game score (out of 10)
+ * @param string $game_type The type of game played
  * @return array Newly awarded badges, if any
  */
-function check_knowledge_badges($user_id, $score) {
+function check_knowledge_badges($user_id, $score, $game_type = '') {
     global $conn;
     
-    // Get knowledge badges that the user qualifies for
+    $new_badges = [];
+    
+    // If game_type is specified, check for game-specific badges
+    if (!empty($game_type)) {
+        $badge_query = "";
+        
+        if ($game_type === 'blood_cell_defenders') {
+            // Check for Blood Cell Defenders badges
+            $badge_query = "SELECT id, name, requirement_count FROM badges 
+                        WHERE name LIKE 'Cell Defender%' AND requirement_count <= ?
+                        ORDER BY requirement_count ASC";
+        } elseif ($game_type === 'blood_word_guess') {
+            // Check for Blood Word Guess badges
+            $badge_query = "SELECT id, name, requirement_count FROM badges 
+                        WHERE name LIKE 'Word Guess%' AND requirement_count <= ?
+                        ORDER BY requirement_count ASC";
+        }
+        
+        // If we have a specific game type query, run it
+        if (!empty($badge_query)) {
+            $stmt = mysqli_prepare($conn, $badge_query);
+            mysqli_stmt_bind_param($stmt, "i", $score);
+            mysqli_stmt_execute($stmt);
+            $badges_result = mysqli_stmt_get_result($stmt);
+            
+            while ($badge = mysqli_fetch_assoc($badges_result)) {
+                // Check if user already has this badge
+                $check_query = "SELECT * FROM user_badges 
+                              WHERE user_id = ? AND badge_id = ?";
+                $stmt = mysqli_prepare($conn, $check_query);
+                mysqli_stmt_bind_param($stmt, "ii", $user_id, $badge['id']);
+                mysqli_stmt_execute($stmt);
+                $check_result = mysqli_stmt_get_result($stmt);
+                
+                if (mysqli_num_rows($check_result) == 0) {
+                    // Award new badge
+                    $award_query = "INSERT INTO user_badges (user_id, badge_id) 
+                                  VALUES (?, ?)";
+                    $stmt = mysqli_prepare($conn, $award_query);
+                    mysqli_stmt_bind_param($stmt, "ii", $user_id, $badge['id']);
+                    mysqli_stmt_execute($stmt);
+                    
+                    $new_badges[] = $badge;
+                }
+            }
+        }
+    }
+    
+    // Always check for general knowledge badges as well
     $badge_query = "SELECT id, name, requirement_count FROM badges 
-                   WHERE badge_type = 'knowledge' AND requirement_count <= ?
+                   WHERE badge_type = 'knowledge' AND name NOT LIKE 'Cell Defender%' 
+                   AND name NOT LIKE 'Word Guess%' AND requirement_count <= ?
                    ORDER BY requirement_count ASC";
     $stmt = mysqli_prepare($conn, $badge_query);
     mysqli_stmt_bind_param($stmt, "i", $score);
     mysqli_stmt_execute($stmt);
     $badges_result = mysqli_stmt_get_result($stmt);
-    
-    $new_badges = [];
     
     while ($badge = mysqli_fetch_assoc($badges_result)) {
         // Check if user already has this badge

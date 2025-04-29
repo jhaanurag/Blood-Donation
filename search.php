@@ -113,12 +113,12 @@ while ($row = mysqli_fetch_assoc($states_result)) {
         <h1 class="text-3xl font-bold text-center mb-8 dark:text-white">Find Blood Donors</h1>
 
         <!-- Search Form -->
-        <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6 mb-8">
+        <div class="bg-white dark:bg-[#252525] rounded-lg shadow-md p-6 mb-8">
             <form method="GET" action="" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="blood_group">Blood Group</label>
-                        <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" name="blood_group" id="blood_group">
+                        <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white" name="blood_group" id="blood_group">
                             <option value="" <?php echo empty($blood_group) ? 'selected' : ''; ?>>Any</option>
                             <option value="A+" <?php echo $blood_group === 'A+' ? 'selected' : ''; ?>>A+</option>
                             <option value="A-" <?php echo $blood_group === 'A-' ? 'selected' : ''; ?>>A-</option>
@@ -133,7 +133,7 @@ while ($row = mysqli_fetch_assoc($states_result)) {
 
                     <div>
                         <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="city">City</label>
-                        <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white"
+                        <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white"
                                type="text" name="city" id="city" value="<?php echo htmlspecialchars($city); ?>" placeholder="Any City" list="cities">
                         <datalist id="cities">
                             <?php foreach ($cities as $city_option): ?>
@@ -144,7 +144,7 @@ while ($row = mysqli_fetch_assoc($states_result)) {
 
                     <div>
                         <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="state">State</label>
-                        <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white"
+                        <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white"
                                type="text" name="state" id="state" value="<?php echo htmlspecialchars($state); ?>" placeholder="Any State" list="states">
                         <datalist id="states">
                             <?php foreach ($states as $state_option): ?>
@@ -156,36 +156,36 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                     <div>
                         <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2">Age Range</label>
                         <div class="flex items-center space-x-2">
-                            <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white"
+                            <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white"
                                    type="number" name="age_min" min="18" max="65" value="<?php echo htmlspecialchars($age_min_param); // Display the actual parameter value ?>" placeholder="Min (18)">
                             <span class="dark:text-gray-200">to</span>
-                            <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white"
+                            <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white"
                                    type="number" name="age_max" min="18" max="65" value="<?php echo htmlspecialchars($age_max_param); // Display the actual parameter value ?>" placeholder="Max (65)">
                         </div>
                     </div>
                 </div>
 
                 <div class="flex justify-center">
-                    <button type="submit" name="filter" value="1" class="bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white font-semibold py-2 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50">
+                    <button type="submit" name="filter" value="1" class="bg-primary-dark hover:bg-primary-light text-white font-semibold py-2 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-opacity-50 transition duration-200">
                         <i class="fas fa-search mr-2"></i> Filter Donors
                     </button>
-                    <a href="search.php" class="ml-4 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">Reset Filters</a>
+                    <a href="search.php" class="ml-4 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 transition duration-200">Reset Filters</a>
                 </div>
             </form>
         </div>
 
         <!-- Results Table -->
         <?php if ($search_performed): ?>
-            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md">
-                <div class="p-4 border-b bg-gray-50 dark:bg-gray-800 dark:border-gray-600">
-                    <h2 class="text-xl font-bold dark:text-white">Eligible Donors (<?php echo count($donors); ?> found)</h2>
+            <div class="bg-white dark:bg-[#252525] rounded-lg shadow-md">
+                <div class="p-4 border-b bg-gray-50 dark:bg-[#1E1E1E] dark:border-gray-600">
+                    <h2 class="text-xl font-bold text-primary-dark dark:text-primary-light">Eligible Donors (<?php echo count($donors); ?> found)</h2>
                     <p class="text-sm text-gray-600 dark:text-gray-400">Only donors eligible to donate (last donation over 3 months ago or never) are shown.</p>
                 </div>
 
                 <?php if (!empty($donors)): ?>
                     <div class="overflow-x-auto">
                         <table class="w-full donor-search-table">
-                            <thead class="bg-gray-50 dark:bg-gray-800">
+                            <thead class="bg-gray-50 dark:bg-[#1E1E1E]">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Blood Group</th>
@@ -196,12 +196,12 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                             </thead>
                             <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
                                 <?php foreach ($donors as $donor): ?>
-                                    <tr class="dark:bg-gray-700 dark:text-white">
+                                    <tr class="dark:bg-[#252525] dark:text-white">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <?php echo htmlspecialchars($donor['name']); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 blood-type-label">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light blood-type-label">
                                                 <?php echo htmlspecialchars($donor['blood_group']); ?>
                                             </span>
                                         </td>
@@ -220,13 +220,13 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <?php // Check login status to show appropriate link ?>
                                             <?php if (is_donor_logged_in()): ?>
-                                                <a href="<?php echo BASE_URL; ?>/contact_donor.php?id=<?php echo $donor['id']; ?>" class="text-green-600 dark:text-green-400 hover:underline font-semibold">
+                                                <a href="<?php echo BASE_URL; ?>/contact_donor.php?id=<?php echo $donor['id']; ?>" class="text-accent-dark dark:text-accent-light hover:underline font-semibold">
                                                   <i class="fas fa-phone-alt mr-1"></i> Contact
                                                 </a>
                                             <?php else: ?>
                                                 <?php // Add redirect back to search after login ?>
                                                 <?php $login_url = BASE_URL . "/login.php?redirect=" . urlencode($_SERVER['REQUEST_URI']); ?>
-                                                <a href="<?php echo $login_url; ?>" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                                <a href="<?php echo $login_url; ?>" class="text-primary-dark dark:text-primary-light hover:underline">
                                                   <i class="fas fa-sign-in-alt mr-1"></i> Login to Contact
                                                 </a>
                                             <?php endif; ?>
@@ -246,8 +246,8 @@ while ($row = mysqli_fetch_assoc($states_result)) {
 
         <!-- Blood Compatibility Information -->
         <div class="mt-8">
-            <h2 class="text-xl font-bold mb-4 dark:text-white">Blood Type Compatibility Guide</h2>
-            <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+            <h2 class="text-xl font-bold mb-4 text-primary-dark dark:text-primary-light">Blood Type Compatibility Guide</h2>
+            <div class="bg-white dark:bg-[#252525] rounded-lg shadow-md p-6">
                 <div class="overflow-x-auto">
                     <table class="w-full donor-search-table">
                         <thead class="bg-gray-50 dark:bg-gray-800">
@@ -258,43 +258,43 @@ while ($row = mysqli_fetch_assoc($states_result)) {
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">A+</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">A+</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">A+, AB+</td>
                                 <td class="px-4 py-3 dark:text-gray-200">A+, A-, O+, O-</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">A-</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">A-</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">A+, A-, AB+, AB-</td>
                                 <td class="px-4 py-3 dark:text-gray-200">A-, O-</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">B+</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">B+</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">B+, AB+</td>
                                 <td class="px-4 py-3 dark:text-gray-200">B+, B-, O+, O-</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">B-</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">B-</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">B+, B-, AB+, AB-</td>
                                 <td class="px-4 py-3 dark:text-gray-200">B-, O-</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">AB+</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">AB+</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">AB+ only</td>
                                 <td class="px-4 py-3 dark:text-gray-200">All blood types</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">AB-</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">AB-</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">AB+, AB-</td>
                                 <td class="px-4 py-3 dark:text-gray-200">AB-, A-, B-, O-</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">O+</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">O+</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">O+, A+, B+, AB+</td>
                                 <td class="px-4 py-3 dark:text-gray-200">O+, O-</td>
                             </tr>
-                            <tr class="dark:bg-gray-700">
-                                <td class="px-4 py-3"><span class="font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded blood-type-label">O-</span></td>
+                            <tr class="dark:bg-[#252525]">
+                                <td class="px-4 py-3"><span class="font-semibold bg-primary-light/10 text-primary-dark dark:bg-primary-dark/30 dark:text-primary-light px-2 py-1 rounded blood-type-label">O-</span></td>
                                 <td class="px-4 py-3 dark:text-gray-200">All blood types</td>
                                 <td class="px-4 py-3 dark:text-gray-200">O- only</td>
                             </tr>

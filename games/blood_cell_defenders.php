@@ -8,9 +8,128 @@ $user_name = $user_logged_in ? $_SESSION['donor_name'] : '';
 $user_id = $user_logged_in ? $_SESSION['donor_id'] : '';
 // Define base_url if not already defined (adjust path as needed)
 $base_url = isset($base_url) ? $base_url : '/';
+
+// Set a session variable to indicate we're in the blood game section
+$_SESSION['theme_active'] = 'coc-theme';
+
+// Add JavaScript to apply theme
+echo '<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add theme class to body when entering this page
+        document.body.classList.add("coc-theme");
+        
+        // Store theme preference in sessionStorage
+        sessionStorage.setItem("activeTheme", "coc-theme");
+        
+        // Add theme class to navbar
+        const navbar = document.querySelector("nav");
+        if (navbar) navbar.classList.add("coc-navbar");
+    });
+    
+    // Remove theme when leaving page
+    window.addEventListener("beforeunload", function() {
+        sessionStorage.removeItem("activeTheme");
+    });
+</script>';
 ?>
 
+<!-- Keep the existing styles -->
 <style>
+/* CoC Font Face Declaration */
+@font-face {
+    font-family: 'Supercell-Magic';
+    src: url('../assets/fonts/Supercell-magic-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* CoC Theme Styles - Applied when body has the coc-theme class */
+body.coc-theme {
+    background: linear-gradient(135deg, #4F46E5, #6366F1) !important;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.coc-theme nav {
+    background: linear-gradient(to right, #4F46E5, #6366F1) !important;
+    border-bottom: 3px solid #F97316 !important;
+}
+
+body.coc-theme nav a {
+    color: #fff !important;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+body.coc-theme nav button {
+    background-color: #F97316 !important;
+    border-color: #EA580C !important;
+}
+
+body.coc-theme h1, 
+body.coc-theme h2, 
+body.coc-theme .score-display,
+body.coc-theme button,
+body.coc-theme .stat-item,
+body.coc-theme .tower-info .name,
+body.coc-theme .leaderboard-container h2 {
+    font-family: 'Supercell-Magic', 'Arial Rounded MT Bold', 'Segoe UI', sans-serif;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+/* CoC Theme Color Scheme */
+.coc-theme {
+    --primary-light: #6366F1; /* Indigo light */
+    --primary-dark: #4F46E5; /* Deep indigo */
+    --accent-light: #F97316; /* Coral orange */
+    --accent-dark: #EA580C; /* Deep coral */
+    --secondary: #FB7185; /* Light pink */
+    --success: #22C55E; /* Green */
+    --danger: #EF4444; /* Red */
+    --light-bg1: #F9FAFB;
+    --light-bg2: #F3F4F6;
+    --dark-bg1: #121212; /* Neutral dark */
+    --dark-bg2: #1E1E1E; /* Slightly lighter neutral */
+    --card-light: rgba(255, 255, 255, 0.95);
+    --card-dark: #252525; /* Improved card dark */
+    --text-light: #1F2937;
+    --text-dark: #F9FAFB;
+}
+
+/* CoC Theme Button Styling */
+.coc-theme .btn {
+    background: linear-gradient(to bottom, var(--primary-light), var(--primary-dark));
+    border: 2px solid #4F46E5;
+    box-shadow: 0 3px 0 #4338CA, 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: all 0.2s;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.coc-theme .btn:hover {
+    background: linear-gradient(to bottom, #818CF8, #6366F1);
+    transform: translateY(-1px);
+}
+
+.coc-theme .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #4338CA;
+}
+
+.coc-theme .btn-secondary {
+    background: linear-gradient(to bottom, var(--accent-light), var(--accent-dark));
+    border: 2px solid #EA580C;
+    box-shadow: 0 3px 0 #C2410C, 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.coc-theme .btn-secondary:hover {
+    background: linear-gradient(to bottom, #FB923C, #F97316);
+}
+
 /* Fix for navigation bar buttons (Keep these as they are essential) */
 nav .hidden.md\:flex { display: flex !important; }
 nav .md\:hidden { display: none !important; }
@@ -226,9 +345,10 @@ main {
 }
 .tower-info { flex-grow: 1; } /* Allow info to take space */
 .tower-info .name { font-weight: 600; color: var(--text-light); }
-.dark .tower-info .name { color: var(--text-dark); }
-.tower-info .cost, .tower-info .stats { font-size: 0.8rem; color: #718096; } /* Even smaller */
-.dark .tower-info .cost, .dark .tower-info .stats { color: #a0aec0; }
+.dark .tower-info .name { color: #f7fafc !important; }
+.tower-info .name { color: #1a202c !important; } /* Added explicit color for light mode */
+.dark .tower-info .cost, .dark .tower-info .stats { color: #cbd5e0 !important; }
+.tower-info .cost, .tower-info .stats { color: #4a5568 !important; } /* Added darker color for light mode */
 
 /* Fact Box Styling */
 .fact-box {
@@ -247,271 +367,44 @@ main {
 .dark .fact-box h3 { color: #bee3f8; }
 .fact-box h3 i { margin-right: 0.5rem; color: var(--accent-light); }
 .dark .fact-box h3 i { color: var(--accent-dark); }
-.fact-box p { font-size: 0.9rem; color: #4a5568; line-height: 1.4; }
-.dark .fact-box p { color: #cbd5e0; }
-
-/* --- Leaderboard Styling (Using Table) --- */
-.leaderboard-container { /* Optional container card */
-     background-color: var(--card-light);
-     border-radius: 15px;
-     padding: 1.5rem; /* Less padding than main card */
-     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-     color: var(--text-light);
-     border: 1px solid var(--border-light);
-     margin-top: 2.5rem; /* More space above */
+.fact-box p { 
+    font-size: 0.95rem; 
+    line-height: 1.5;
+    font-weight: 400;
+    color: #2d3748; /* Added explicit color for light mode */
 }
-.dark .leaderboard-container {
-     background-color: var(--card-dark);
-     border-color: var(--border-dark);
-     color: var(--text-dark);
-     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-.leaderboard-container h2 {
-    margin-bottom: 1.5rem; /* Space between title and table */
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-light);
-}
-.dark .leaderboard-container h2 {
-    color: var(--accent-light);
+.dark .fact-box p {
+    color: #e2e8f0; /* Added explicit color for dark mode */
 }
 
-.leaderboard-table {
-    width: 100%;
-    border-collapse: collapse; /* Removes gaps between cells */
-    margin-top: 1rem;
-    background-color: rgba(255, 255, 255, 0.05); /* Subtle background */
-    border-radius: 10px; /* Apply radius to container if table has border */
-    overflow: hidden; /* Clip content to rounded corners */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Inner shadow */
-}
-.dark .leaderboard-table {
-    background-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.leaderboard-table th,
-.leaderboard-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
-    vertical-align: middle; /* Align content vertically */
-}
-.dark .leaderboard-table th,
-.dark .leaderboard-table td {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.leaderboard-table th {
-    background-color: rgba(106, 90, 205, 0.6); /* Header bg from dice game */
-    color: white;
-    font-weight: 600; /* Slightly less bold */
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.dark .leaderboard-table th {
-    background-color: rgba(72, 61, 139, 0.7); /* Darker header */
-}
-
-/* Column specific alignment/width */
-.leaderboard-table th:first-child,
-.leaderboard-table td:first-child { /* Rank */
-    text-align: center;
-    width: 60px; /* Fixed width for rank */
-    font-weight: bold;
-}
-.leaderboard-table th:last-child,
-.leaderboard-table td:last-child { /* Score */
-    text-align: right;
-    width: 100px; /* Fixed width for score */
-    font-weight: bold;
-    color: var(--primary-light);
-}
-.dark .leaderboard-table td:last-child {
-     color: var(--accent-light);
-}
-.leaderboard-table td:nth-child(2) { /* Name */
-    /* Allow name to take remaining space */
-    font-weight: 500;
-}
-
-
-.leaderboard-table tbody tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.04); /* Zebra striping */
-}
-.dark .leaderboard-table tbody tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.08);
-}
-
-.leaderboard-table tbody tr:hover {
-    background-color: rgba(106, 90, 205, 0.1); /* Hover effect */
-}
-.dark .leaderboard-table tbody tr:hover {
-    background-color: rgba(72, 61, 139, 0.3);
-}
-
-.leaderboard-table tr.current-user { /* Style for current user's score */
-    background-color: rgba(66, 153, 225, 0.15) !important; /* Use !important to override hover/zebra */
-    font-weight: bold;
-    border-left: 3px solid var(--primary-light); /* Accent border */
-}
-.dark .leaderboard-table tr.current-user {
-    background-color: rgba(42, 67, 101, 0.4) !important;
-    border-left-color: var(--accent-light);
-}
-
-/* Skeleton Loader for Leaderboard Table */
-.skeleton-item td div { /* Target divs inside skeleton tds */
-    background-color: #e2e8f0;
-    border-radius: 0.25rem;
-    height: 1rem;
-    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-.dark .skeleton-item td div { background-color: #4a5568; }
-.skeleton-item .rank-skel { width: 30px; margin: 0 auto; }
-.skeleton-item .name-skel { width: 70%; }
-.skeleton-item .score-skel { width: 50px; margin-left: auto; }
-
-
-/* Pause Menu */
-#pause-menu { backdrop-filter: blur(5px); }
-
-/* Buttons - Inspired by Dice Game */
-.btn {
-    background: linear-gradient(to right, var(--primary-light), var(--accent-light));
-    color: white; border: none; padding: 10px 20px; /* Slightly smaller padding */
-    font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer;
-    transition: all 0.3s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative; overflow: hidden; text-transform: uppercase; letter-spacing: 0.5px;
-}
-.dark .btn {
-     background: linear-gradient(to right, var(--primary-dark), var(--accent-dark));
-}
-
-.btn:hover {
-    transform: translateY(-2px); box-shadow: 0 7px 10px rgba(0, 0, 0, 0.15);
-}
-.dark .btn:hover {
-    box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
-}
-.btn:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
-
-/* Specific Button Colors */
-.btn-primary { /* Use default gradient */ }
-.btn-secondary {
-    background: linear-gradient(to right, #f59e0b, #f8b035); /* Fixed color value */
-}
-.dark .btn-secondary {
-    background: linear-gradient(to right, #d97706, #f59e0b);
-}
-.btn-danger {
-    background: linear-gradient(to right, #ef4444, #f87171); /* Red gradient */
-}
-.dark .btn-danger {
-     background: linear-gradient(to right, #dc2626, #ef4444);
-}
-.btn-success {
-    background: linear-gradient(to right, #10b981, #34d399); /* Green gradient */
-}
-.dark .btn-success {
-     background: linear-gradient(to right, #059669, #10b981);
-}
-.btn-sm { /* Modifier for smaller button */
-    padding: 8px 16px;
-    font-size: 0.9rem;
-}
-
-
-/* Badge notification styling (keep as is) */
-#badge-notification { animation-duration: 0.5s; }
-/* Animations */
-.animate-pulse { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-@keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
-@keyframes fade-in-up { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-.animate-fade-in-up { animation: fade-in-up 0.3s ease-out forwards; }
-
-
-/* Hit effects and animations */
-.hit-effect {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
-    transform: translate(-50%, -50%);
-    animation: hit-pulse 0.3s ease-out forwards;
-    z-index: 25;
-    pointer-events: none;
-}
-
-@keyframes hit-pulse {
-    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-}
-
-/* Confetti for victory/achievements */
-.confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    z-index: 1000;
-    animation: confetti-fall 4s ease-in-out forwards;
-    pointer-events: none;
-}
-
-@keyframes confetti-fall {
-    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-    80% { opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-}
-
-/* Bounce animation for score increases */
-@keyframes score-bounce {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
-}
-
-.score-bounce {
-    animation: score-bounce 0.4s ease-in-out;
-}
-
-/* New cursor styles when placing towers */
-#game-canvas.place-tower {
-    cursor: pointer;
-}
-#game-canvas.no-tower {
-    cursor: not-allowed;
-}
-
-/* Range indicator for tower placement */
-.range-indicator {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px dashed rgba(106, 90, 205, 0.4);
-    background-color: rgba(106, 90, 205, 0.1);
-    pointer-events: none;
-    z-index: 5;
-    transform: translate(-50%, -50%);
+/* Update leaderboard user names to use Clash of Clans font */
+.coc-theme .leaderboard-item .name {
+    font-family: 'Supercell-Magic', sans-serif;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 </style>
 
-<div class="py-8">
-    <!-- Title and Subtitle -->
-    <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800 dark:text-white">Blood Cell Defenders</h1>
-    <p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto text-lg">
-        <i class="fas fa-shield-virus text-blue-500 mr-2"></i>Defend the bloodstream! Place defender cells strategically to stop invading pathogens and learn cool facts about blood.
-    </p>
-
+<div class="py-8 coc-theme">
+    <!-- Hero Section with Blur Effect -->
+    <div class="relative overflow-hidden mb-8">
+        <!-- Blurred Background Element -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-purple-600/30 backdrop-blur-md"></div>
+        
+        <!-- Hero Content -->
+        <div class="relative z-10 max-w-4xl mx-auto px-4 py-10 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800 dark:text-white text-shadow-lg">Blood Cell Defenders</h1>
+            <p class="text-center text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto text-lg">
+                <i class="fas fa-shield-virus text-blue-500 mr-2"></i>Defend the bloodstream! Place defender cells strategically to stop invading pathogens and learn cool facts about blood.
+            </p>
+        </div>
+    </div>
+    
     <div class="game-container">
         <!-- Start Screen -->
         <div id="start-screen" class="text-center">
             <div class="game-card transform transition hover:scale-105">
                 <div class="mb-6">
-                    <!-- Fix the icon - replace with Font Awesome icon instead of external URL -->
                     <i class="fas fa-shield-virus text-blue-500 text-6xl"></i>
                 </div>
                 <h2 class="text-2xl font-bold mb-4">Ready to Defend?</h2>
@@ -521,7 +414,7 @@ main {
                 </button>
             </div>
         </div>
-
+        
         <!-- Game Screen -->
         <div id="game-screen" class="hidden">
             <!-- Stats Bar -->
@@ -582,7 +475,7 @@ main {
                 </div>
                 <p class="mb-1 text-xl">Your Final Score:</p>
                 <div class="text-4xl mb-4 font-bold text-blue-600 dark:text-blue-400"><span id="final-score">0</span></div>
-                <p id="result-message" class="mb-6 text-lg">Better luck next time!</p>
+                <p id="result-message" class="mb-6 text-lg">Better
 
                 <?php if($user_logged_in): ?>
                 <button id="save-score-btn" class="btn btn-success mb-4">
@@ -619,40 +512,151 @@ main {
                 </div>
             </div>
         </div>
-         <!-- Pause menu animation style -->
-         <style>
-            /* .animate-fade-in-up { animation: fade-in-up 0.3s ease-out forwards; } */
-         </style>
 
-        <!-- Leaderboard Section - Now uses a container card -->
-        <div class="leaderboard-container">
-            <h2>Top Defenders</h2>
-            <div class="overflow-x-auto"> <!-- Make table scrollable on small screens -->
-                <table class="leaderboard-table">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Name</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-list">
-                        <!-- Skeleton Loader Rows -->
-                        <tr class="skeleton-item"><td class="rank"><div class="rank-skel"></div></td><td><div class="name-skel"></div></td><td class="score"><div class="score-skel"></div></td></tr>
-                        <tr class="skeleton-item"><td class="rank"><div class="rank-skel"></div></td><td><div class="name-skel"></div></td><td class="score"><div class="score-skel"></div></td></tr>
-                        <tr class="skeleton-item"><td class="rank"><div class="rank-skel"></div></td><td><div class="name-skel"></div></td><td class="score"><div class="score-skel"></div></td></tr>
-                        <tr class="skeleton-item"><td class="rank"><div class="rank-skel"></div></td><td><div class="name-skel"></div></td><td class="score"><div class="score-skel"></div></td></tr>
-                        <tr class="skeleton-item"><td class="rank"><div class="rank-skel"></div></td><td><div class="name-skel"></div></td><td class="score"><div class="score-skel"></div></td></tr>
-                    </tbody>
-                </table>
+        <!-- Confetti Container -->
+        <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50"></div>
+
+        <!-- CoC-themed Leaderboard -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-6 text-center dark:text-white coc-font">Clan Leaderboard</h2>
+            <div class="leaderboard coc-leaderboard">
+                <div class="leaderboard-header">
+                    <div class="rank">#</div>
+                    <div class="name font-semibold">Warrior</div>
+                    <div class="score">Glory Points</div>
+                </div>
+                <div id="leaderboard-list">
+                    <!-- Skeleton Loader Rows -->
+                    <div class="leaderboard-item animate-pulse">
+                        <div class="rank">1</div>
+                        <div class="name">Loading...</div>
+                        <div class="score">-</div>
+                    </div>
+                    <div class="leaderboard-item animate-pulse">
+                        <div class="rank">2</div>
+                        <div class="name">Loading...</div>
+                        <div class="score">-</div>
+                    </div>
+                    <div class="leaderboard-item animate-pulse">
+                        <div class="rank">3</div>
+                        <div class="name">Loading...</div>
+                        <div class="score">-</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+.coc-theme .coc-leaderboard {
+    background-image: url('../assets/images/themes/coc-parchment.png');
+    background-size: cover;
+    border: 4px solid #8B4513;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.coc-theme .leaderboard-header {
+    background-color: rgba(139, 69, 19, 0.7);
+    color: #FFD700;
+    font-family: 'Supercell-Magic', sans-serif;
+    padding: 10px 15px;
+    border-bottom: 2px solid #FFD700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.coc-theme .leaderboard-item {
+    border-bottom: 1px solid rgba(139, 69, 19, 0.4);
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.coc-theme .leaderboard-item:nth-child(odd) {
+    background-color: rgba(218, 165, 32, 0.1);
+}
+
+.coc-theme .leaderboard-item.current-user {
+    background-color: rgba(79, 70, 229, 0.2);
+    border-left: 3px solid #4F46E5;
+}
+
+.coc-font {
+    font-family: 'Supercell-Magic', sans-serif;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Enhanced leaderboard styling for user names */
+.coc-theme .rank {
+    width: 40px;
+    font-weight: bold;
+    font-family: 'Supercell-Magic', sans-serif;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.coc-theme .name {
+    flex: 1;
+    text-align: center;
+    font-family: 'Supercell-Magic', sans-serif;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: 1.1em;
+    padding: 0 10px;
+}
+
+.coc-theme .score {
+    width: 120px;
+    text-align: right;
+    font-weight: bold;
+    font-family: 'Supercell-Magic', sans-serif;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Sound effect visual indicator for feedback */
+.sound-effect-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 9999;
+}
+
+.sound-effect-indicator.visible {
+    opacity: 1;
+}
+
+@keyframes float-down {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+</style>
+
+<!-- Add script to ensure proper game initialization -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // --- DOM Elements (Mostly the same) ---
+    console.log("Blood Cell Defenders game initializing...");
+    
+    // --- DOM Elements ---
     const startScreen = document.getElementById('start-screen');
     const gameScreen = document.getElementById('game-screen');
     const resultsScreen = document.getElementById('results-screen');
@@ -673,13 +677,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const waveNumberDisplay = document.getElementById('wave-number');
     const waveTimerDisplay = document.getElementById('wave-timer');
     const bloodFactDisplay = document.getElementById('blood-fact');
-    const leaderboardList = document.getElementById('leaderboard-list'); // This is now the <tbody>
+    const leaderboardList = document.getElementById('leaderboard-list');
     const towerSelectionContainer = document.getElementById('tower-selection');
     const resultTitle = document.getElementById('result-title');
     const resultIcon = document.getElementById('result-icon');
     const resultMessage = document.getElementById('result-message');
 
-    // --- Game State, Data, Facts (Keep as is) ---
+    // Log any missing elements to help debugging
+    if (!startButton) console.error("Start button not found!");
+    if (!gameCanvas) console.error("Game canvas not found!");
+    if (!pathContainer) console.error("Path container not found!");
+
+    // --- Game State & Data ---
     let score = 0;
     let health = 100;
     let resources = 150;
@@ -696,101 +705,253 @@ document.addEventListener('DOMContentLoaded', function() {
     const userLoggedIn = <?php echo $user_logged_in ? 'true' : 'false'; ?>;
     const userName = "<?php echo addslashes($user_name); ?>";
     const userId = "<?php echo addslashes($user_id); ?>";
-
-    const towerData = { // Keep existing data
+    // --- Tower and Enemy Data, Blood Facts ---
+    const towerData = {
         white: { name: 'White Cell', cost: 50, damage: 12, range: 110, fireRate: 1400, color: '#E2E8F0', borderColor: '#A0AEC0', icon: 'fa-shield-virus', description: 'Standard defender, balanced stats.' },
         red: { name: 'Red Cell', cost: 75, damage: 8, range: 160, fireRate: 900, color: '#FEB2B2', borderColor: '#F56565', icon: 'fa-tint', description: 'Fast firing, long range, lower damage.' },
         platelet: { name: 'Platelet', cost: 125, damage: 25, range: 90, fireRate: 2200, color: '#FEEBC8', borderColor: '#F6AD55', icon: 'fa-star', description: 'Slow firing, short range, high damage.' }
     };
-    const enemyData = { // Keep existing data
+    
+    const enemyData = {
         bacteria: { health: 35, speed: 0.9, damage: 5, color: '#68D391', points: 10, icon: 'fa-bacteria' },
         virus: { health: 25, speed: 1.4, damage: 8, color: '#F687B3', points: 15, icon: 'fa-virus' },
         parasite: { health: 60, speed: 0.6, damage: 12, color: '#9F7AEA', points: 25, icon: 'fa-bug' }
     };
-    const bloodFacts = [ // Keep existing data
-        "White blood cells (leukocytes) are part of the immune system and help fight infections.", "Red blood cells (erythrocytes) carry oxygen from the lungs to the body's tissues.", "Platelets (thrombocytes) are cell fragments that help blood clot to stop bleeding.", "Plasma is the liquid part of blood, making up about 55% of blood volume.", "A single drop of blood contains around 5 million red blood cells.", "The average adult has about 8-10 pints (4.5-5.7 liters) of blood in their body.", "Blood makes up approximately 7-8% of your total body weight.", "Blood cells are produced in the bone marrow, the soft tissue inside bones.", "Red blood cells live for about 120 days before being replaced.", "White blood cells can live from a few days to several months, depending on the type.", "There are five main types of white blood cells: neutrophils, lymphocytes, eosinophils, monocytes, and basophils.", "Blood type is determined by the presence or absence of certain antigens on red blood cells.", "AB+ is the universal recipient blood type, able to receive blood from any ABO/Rh type.", "O- is the universal donor blood type for red blood cells."
+    
+    const bloodFacts = [
+        "White blood cells (leukocytes) are part of the immune system and help fight infections.",
+        "Red blood cells (erythrocytes) carry oxygen from the lungs to the body's tissues.",
+        "Platelets (thrombocytes) are cell fragments that help blood clot to stop bleeding.",
+        "Plasma is the liquid part of blood, making up about 55% of blood volume.",
+        "A single drop of blood contains around 5 million red blood cells.",
+        "The average adult has about 8-10 pints (4.5-5.7 liters) of blood in their body.",
+        "Blood makes up approximately 7-8% of your total body weight.",
+        "Blood cells are produced in the bone marrow, the soft tissue inside bones.",
+        "Red blood cells live for about 120 days before being replaced.",
+        "White blood cells can live from a few days to several months, depending on the type.",
+        "There are five main types of white blood cells: neutrophils, lymphocytes, eosinophils, monocytes, and basophils.",
+        "Blood type is determined by the presence or absence of certain antigens on red blood cells.",
+        "AB+ is the universal recipient blood type, able to receive blood from any ABO/Rh type.",
+        "O- is the universal donor blood type for red blood cells."
     ];
     let path = [];
 
-    // --- Initialize Functions (Keep as is) ---
+    // --- Game Initialization & Path Functions ---
     function initializeGame() {
-        score = 0; health = 100; resources = 150; waveNumber = 0; waveTimer = 10;
-        towers = []; enemies = []; projectiles = []; selectedTowerType = 'white';
-        gameRunning = false; isPaused = false;
-        gameCanvas.innerHTML = ''; pathContainer.innerHTML = '';
-        // Delay calculation slightly
+        console.log("Initializing game...");
+        score = 0; 
+        health = 100; 
+        resources = 150; 
+        waveNumber = 0; 
+        waveTimer = 10;
+        towers = []; 
+        enemies = []; 
+        projectiles = []; 
+        selectedTowerType = 'white';
+        gameRunning = false; 
+        isPaused = false;
+        
+        // Clear game elements
+        if (gameCanvas) gameCanvas.innerHTML = '';
+        if (pathContainer) pathContainer.innerHTML = '';
+        
+        // Delay calculation slightly to ensure DOM is ready
         setTimeout(() => {
-            calculatePath(); drawPath(); renderTowerSelection(); updateUI();
-            startWaveTimer(); gameRunning = true;
-            if(gameInterval) clearInterval(gameInterval); // Clear previous interval if restarting
+            console.log("Setting up game elements...");
+            calculatePath(); 
+            drawPath(); 
+            renderTowerSelection(); 
+            updateUI();
+            startWaveTimer(); 
+            gameRunning = true;
+            if (gameInterval) clearInterval(gameInterval);
             gameInterval = setInterval(gameLoop, 16);
-            displayRandomFact(); fetchLeaderboard();
-        }, 50); // Reduced delay slightly
+            displayRandomFact(); 
+            fetchLeaderboard();
+            console.log("Game initialized successfully");
+        }, 100);
     }
 
     function calculatePath() {
-        const canvasWidth = gameCanvas.clientWidth;
-        const canvasHeight = gameCanvas.clientHeight;
-        if (canvasWidth === 0 || canvasHeight === 0) { // Prevent calculation if canvas not rendered
-             console.warn("Canvas dimensions not ready for path calculation.");
-             path = [{x:-30, y: 200}, {x: canvasWidth + 30, y: 200}]; // Simple default path
-             return;
+        console.log("Calculating path...");
+        const canvasWidth = gameCanvas ? gameCanvas.clientWidth : 800;
+        const canvasHeight = gameCanvas ? gameCanvas.clientHeight : 400;
+        
+        console.log(`Canvas dimensions: ${canvasWidth}x${canvasHeight}`);
+        
+        if (canvasWidth === 0 || canvasHeight === 0) {
+            console.warn("Canvas dimensions not ready for path calculation.");
+            path = [{x:-30, y: 200}, {x: 800, y: 200}]; // Simple default path with fixed width
+            return;
         }
-        path = [
-            { x: -30, y: canvasHeight * 0.4 }, { x: canvasWidth * 0.2, y: canvasHeight * 0.4 },
-            { x: canvasWidth * 0.2, y: canvasHeight * 0.15 }, { x: canvasWidth * 0.6, y: canvasHeight * 0.15 },
-            { x: canvasWidth * 0.6, y: canvasHeight * 0.7 }, { x: canvasWidth * 0.4, y: canvasHeight * 0.7 },
-            { x: canvasWidth * 0.4, y: canvasHeight * 0.5 }, { x: canvasWidth * 0.8, y: canvasHeight * 0.5 },
-            { x: canvasWidth * 0.8, y: canvasHeight * 0.3 }, { x: canvasWidth + 30, y: canvasHeight * 0.3 }
-        ];
+        
+        // Generate path points as in original code
+        const entryY = canvasHeight * (0.3 + Math.random() * 0.4);
+        const exitY = canvasHeight * (0.2 + Math.random() * 0.6);
+        path = [{ x: -30, y: entryY }];
+        const numWaypoints = 3 + Math.floor(Math.random() * 3);
+        const gridWidth = canvasWidth / (numWaypoints + 1);
+        
+        for (let i = 0; i < numWaypoints; i++) {
+            const xPos = gridWidth * (i + 1) * (0.8 + Math.random() * 0.4);
+            const yMultiplier = i % 2 === 0 ? 0.25 : 0.75;
+            const yPos = canvasHeight * (yMultiplier + (Math.random() * 0.3 - 0.15));
+            path.push({ x: xPos, y: yPos });
+        }
+        
+        path.push({ x: canvasWidth + 30, y: exitY });
+        console.log("Path calculated:", path);
     }
 
     function drawPath() {
-        if (path.length < 2 || !pathContainer) return;
+        console.log("Drawing path...");
+        if (path.length < 2 || !pathContainer) {
+            console.error("Cannot draw path: insufficient path points or missing container");
+            return;
+        }
+        
         const svgNS = "http://www.w3.org/2000/svg";
         const svg = document.createElementNS(svgNS, 'svg');
-        svg.setAttribute('width', '100%'); svg.setAttribute('height', '100%');
-        svg.style.position = 'absolute'; svg.style.top = '0'; svg.style.left = '0';
-        svg.style.zIndex = '1'; svg.style.pointerEvents = 'none';
+        svg.setAttribute('width', '100%');
+        svg.setAttribute('height', '100%');
+        svg.style.position = 'absolute';
+        svg.style.top = '0';
+        svg.style.left = '0';
+        svg.style.zIndex = '1';
+        svg.style.pointerEvents = 'none';
 
-        const pathLine = document.createElementNS(svgNS, 'path');
+        // Draw path connection points as circles with improved visibility
+        for (let i = 0; i < path.length; i++) {
+            const waypoint = document.createElementNS(svgNS, 'circle');
+            waypoint.setAttribute('cx', path[i].x);
+            waypoint.setAttribute('cy', path[i].y);
+            waypoint.setAttribute('r', '8'); // Increased size
+            waypoint.setAttribute('fill', 'rgba(66, 153, 225, 0.85)'); // More opaque
+            waypoint.setAttribute('stroke', 'white');
+            waypoint.setAttribute('stroke-width', '2'); // Thicker border
+            svg.appendChild(waypoint);
+        }
+        
+        // Create marker for directional arrows
+        const markerId = `arrow-${Date.now()}`;
+        const defs = document.createElementNS(svgNS, 'defs');
+        const marker = document.createElementNS(svgNS, 'marker');
+        marker.setAttribute('id', markerId);
+        marker.setAttribute('viewBox', '0 0 10 10');
+        marker.setAttribute('refX', '5');
+        marker.setAttribute('refY', '5');
+        marker.setAttribute('markerWidth', '8'); 
+        marker.setAttribute('markerHeight', '8'); 
+        marker.setAttribute('orient', 'auto-start-reverse');
+        
+        const arrow = document.createElementNS(svgNS, 'path');
+        arrow.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z');
+        arrow.setAttribute('fill', 'rgba(59, 130, 246, 0.95)'); 
+        
+        marker.appendChild(arrow);
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+
+        // Create path elements
         let pathD = `M ${path[0].x} ${path[0].y}`;
-        for (let i = 1; i < path.length; i++) { pathD += ` L ${path[i].x} ${path[i].y}`; }
-        pathLine.setAttribute('d', pathD); pathLine.setAttribute('stroke', 'currentColor');
-        pathLine.setAttribute('stroke-width', '15'); pathLine.setAttribute('stroke-dasharray', '10, 10');
+        for (let i = 1; i < path.length; i++) { 
+            pathD += ` L ${path[i].x} ${path[i].y}`; 
+        }
+        
+        // Main path with glow effect
+        const pathLine = document.createElementNS(svgNS, 'path');
+        pathLine.setAttribute('d', pathD); 
+        pathLine.setAttribute('stroke', 'rgba(59, 130, 246, 0.95)'); 
+        pathLine.setAttribute('stroke-width', '16'); 
+        pathLine.setAttribute('stroke-linecap', 'round');
+        pathLine.setAttribute('stroke-linejoin', 'round');
+        pathLine.setAttribute('marker-mid', `url(#${markerId})`);
+        pathLine.setAttribute('marker-end', `url(#${markerId})`);
         pathLine.setAttribute('fill', 'none');
-        pathLine.classList.add('text-blue-300', 'dark:text-gray-600', 'opacity-50'); // Adjusted colors/opacity
-
+        
+        // Add the path to the SVG
         svg.appendChild(pathLine);
-        pathContainer.appendChild(svg); // Add to pathContainer div
-        // No need to append pathContainer to gameCanvas again, it's already there in HTML
+        pathContainer.appendChild(svg);
+        
+        // Add information box about the path
+        const infoBox = document.createElement('div');
+        infoBox.className = 'absolute top-2 right-2 bg-white dark:bg-gray-800 p-3 rounded-md text-xs border-2 border-blue-500 dark:border-blue-400 shadow-lg opacity-90';
+        infoBox.innerHTML = `
+            <div class="font-bold mb-1 text-blue-600 dark:text-blue-400"><i class="fas fa-info-circle mr-1"></i>Strategy Tip</div>
+            <div class="text-gray-700 dark:text-gray-300">The blue path shows where germs will travel. Place defenders strategically!</div>
+        `;
+        
+        if (gameCanvas) {
+            gameCanvas.appendChild(infoBox);
+            
+            // Fade out the info box after 10 seconds
+            setTimeout(() => {
+                infoBox.style.transition = 'opacity 1s';
+                infoBox.style.opacity = '0';
+                setTimeout(() => infoBox.remove(), 1000);
+            }, 10000);
+        }
     }
 
-    // --- Game Loop & Wave Management (Keep as is) ---
-    function gameLoop() { if (!gameRunning || isPaused) return; updateEnemies(); updateTowers(); updateProjectiles(); checkGameOver(); }
+    // --- Game Loop & Wave Management ---
+    function gameLoop() { 
+        if (!gameRunning || isPaused) return; 
+        
+        updateEnemies(); 
+        updateTowers(); 
+        updateProjectiles(); 
+        checkGameOver(); 
+    }
+    
     function startWaveTimer() {
         if (waveInterval) clearInterval(waveInterval);
-        waveTimerDisplay.textContent = `${waveTimer}s`;
+        if (waveTimerDisplay) waveTimerDisplay.textContent = `${waveTimer}s`;
+        
         waveInterval = setInterval(() => {
             if (!gameRunning || isPaused) return;
-            waveTimer--; waveTimerDisplay.textContent = `${waveTimer}s`;
-            if (waveTimer <= 0) { clearInterval(waveInterval); startNewWave(); }
+            waveTimer--; 
+            if (waveTimerDisplay) waveTimerDisplay.textContent = `${waveTimer}s`;
+            if (waveTimer <= 0) { 
+                clearInterval(waveInterval); 
+                startNewWave(); 
+            }
         }, 1000);
     }
-    function startNewWave() { waveNumber++; waveTimer = 30; resources += 50 + Math.floor(waveNumber * 7.5); spawnWaveEnemies(); updateUI(); startWaveTimer(); displayRandomFact(); }
+    
+    function startNewWave() { 
+        waveNumber++; 
+        waveTimer = 30; 
+        resources += 50 + Math.floor(waveNumber * 7.5); 
+        spawnWaveEnemies(); 
+        updateUI(); 
+        startWaveTimer(); 
+        displayRandomFact(); 
+    }
+    
     function spawnWaveEnemies() {
-        const baseEnemyCount = 5; const enemyCount = baseEnemyCount + Math.floor(waveNumber * 2.5);
-        const enemyTypes = ['bacteria']; if (waveNumber >= 3) enemyTypes.push('virus'); if (waveNumber >= 5) enemyTypes.push('parasite');
+        const baseEnemyCount = 5; 
+        const enemyCount = baseEnemyCount + Math.floor(waveNumber * 2.5);
+        const enemyTypes = ['bacteria']; 
+        
+        if (waveNumber >= 3) enemyTypes.push('virus'); 
+        if (waveNumber >= 5) enemyTypes.push('parasite');
+        
         for (let i = 0; i < enemyCount; i++) {
             setTimeout(() => {
                 if (!gameRunning || isPaused) return;
-                const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)]; createEnemy(type);
+                const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)]; 
+                createEnemy(type);
             }, i * Math.max(200, (800 - waveNumber * 20))); // Ensure delay doesn't go below 200ms
         }
     }
 
     // --- Enemy Logic ---
     function createEnemy(type) {
+        if (!gameCanvas || !path || path.length < 2) {
+            console.error("Cannot create enemy: missing game canvas or path");
+            return;
+        }
+        
         const data = enemyData[type];
         const healthMultiplier = 1 + (waveNumber - 1) * 0.15;
         const enemy = {
@@ -815,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function() {
         enemy.element.style.left = `${enemy.x - 15}px`;
         enemy.element.style.top = `${enemy.y - 15}px`;
 
-        // Create health bar with proper structure
+        // Create health bar
         const healthBar = document.createElement('div');
         healthBar.className = 'health-bar';
         
@@ -830,30 +991,62 @@ document.addEventListener('DOMContentLoaded', function() {
         gameCanvas.appendChild(enemy.element);
         enemies.push(enemy);
     }
+    
     function updateEnemies() {
+        if (!path || path.length < 2) return;
+        
         for (let i = enemies.length - 1; i >= 0; i--) {
-            const enemy = enemies[i]; const targetPoint = path[enemy.pathIndex + 1];
-            if (!targetPoint) { health -= enemy.damage; if (health < 0) health = 0; enemy.element.remove(); enemies.splice(i, 1); updateUI(); continue; }
-            const dx = targetPoint.x - enemy.x; const dy = targetPoint.y - enemy.y; const distance = Math.sqrt(dx * dx + dy * dy);
+            const enemy = enemies[i]; 
+            const targetPoint = path[enemy.pathIndex + 1];
+            
+            if (!targetPoint) { 
+                health -= enemy.damage; 
+                if (health < 0) health = 0; 
+                enemy.element.remove(); 
+                enemies.splice(i, 1); 
+                updateUI(); 
+                continue; 
+            }
+            
+            const dx = targetPoint.x - enemy.x; 
+            const dy = targetPoint.y - enemy.y; 
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
             if (distance < enemy.speed * 1.5) {
-                 enemy.pathIndex++;
-                 if (path[enemy.pathIndex +1]) { // Snap to point
-                      enemy.x = path[enemy.pathIndex].x;
-                      enemy.y = path[enemy.pathIndex].y;
-                 }
-            } else { const vx = (dx / distance) * enemy.speed; const vy = (dy / distance) * enemy.speed; enemy.x += vx; enemy.y += vy; }
-            enemy.element.style.left = `${enemy.x - 15}px`; enemy.element.style.top = `${enemy.y - 15}px`;
+                enemy.pathIndex++;
+                if (path[enemy.pathIndex + 1]) { // Snap to point
+                    enemy.x = path[enemy.pathIndex].x;
+                    enemy.y = path[enemy.pathIndex].y;
+                }
+            } else { 
+                const vx = (dx / distance) * enemy.speed; 
+                const vy = (dy / distance) * enemy.speed; 
+                enemy.x += vx; 
+                enemy.y += vy; 
+            }
+            
+            enemy.element.style.left = `${enemy.x - 15}px`; 
+            enemy.element.style.top = `${enemy.y - 15}px`;
         }
     }
+    
     function updateEnemyHealthBar(enemy) {
-         const healthPercent = Math.max(0, (enemy.health / enemy.maxHealth) * 100);
-         const healthBarFill = enemy.element.querySelector('.health-bar-fill');
-         if (healthBarFill) { healthBarFill.style.width = `${healthPercent}%`; }
+        const healthPercent = Math.max(0, (enemy.health / enemy.maxHealth) * 100);
+        const healthBarFill = enemy.element.querySelector('.health-bar-fill');
+        if (healthBarFill) { 
+            healthBarFill.style.width = `${healthPercent}%`; 
+        }
     }
 
-    // --- Tower Logic (Keep as is, including render/select/affordability/place/error/update) ---
+    // --- Tower Logic ---
     function renderTowerSelection() {
+        if (!towerSelectionContainer) {
+            console.error("Tower selection container not found");
+            return;
+        }
+        
         towerSelectionContainer.innerHTML = '';
+        
         Object.entries(towerData).forEach(([type, data]) => {
             const div = document.createElement('div'); div.className = 'tower-type'; div.dataset.type = type;
             div.title = `${data.name} - Cost: ${data.cost}\nDamage: ${data.damage}, Range: ${data.range}, Rate: ${(1000/data.fireRate).toFixed(1)}/s\n${data.description}`;
@@ -861,12 +1054,16 @@ document.addEventListener('DOMContentLoaded', function() {
             div.addEventListener('click', () => selectTowerType(type, div));
             towerSelectionContainer.appendChild(div);
         });
+        
         selectTowerType(selectedTowerType, towerSelectionContainer.querySelector('.tower-type'));
         updateTowerAffordability();
     }
+    
     function selectTowerType(type, element) { selectedTowerType = type; document.querySelectorAll('.tower-type').forEach(el => el.classList.remove('selected')); if (element) { element.classList.add('selected'); } }
     function updateTowerAffordability() { document.querySelectorAll('.tower-type').forEach(el => { const type = el.dataset.type; if (towerData[type].cost > resources) { el.classList.add('disabled'); } else { el.classList.remove('disabled'); } }); }
     function placeTower(clickX, clickY) {
+        if (!gameCanvas || !path || path.length < 2) return;
+        
         const towerInfo = towerData[selectedTowerType]; const towerRadius = 22.5; const placementRadius = 40;
         const x = clickX; const y = clickY;
         if (resources < towerInfo.cost) { showPlacementError("Not enough resources!"); return; }
@@ -883,6 +1080,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function showPlacementError(message) { console.warn("Placement Error:", message); gameCanvas.classList.add('placement-error'); setTimeout(() => gameCanvas.classList.remove('placement-error'), 500); }
     function updateTowers() {
+        if (!path || path.length < 2) return;
+        
         const now = Date.now();
         towers.forEach(tower => {
             if (now - tower.lastFired < tower.fireRate) return;
@@ -903,8 +1102,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Projectile Logic (Keep as is) ---
+    // --- Projectile Logic ---
     function fireProjectile(tower, target) {
+        if (!gameCanvas) return;
+        
         const projectile = { x: tower.x, y: tower.y, target: target, speed: 6, damage: tower.damage, color: towerData[tower.type].borderColor, id: `proj-${Date.now()}-${Math.random()}`, element: document.createElement('div') };
         projectile.element.id = projectile.id; projectile.element.className = 'projectile'; projectile.element.style.backgroundColor = projectile.color;
         projectile.element.style.left = `${projectile.x - 5}px`; projectile.element.style.top = `${projectile.y - 5}px`;
@@ -932,13 +1133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (distance < p.speed + 5) {
                 // Apply damage and update health bar
                 target.health -= p.damage;
-                
-                // Update enemy health bar visualization
-                const healthPercent = Math.max(0, (target.health / target.maxHealth) * 100);
-                const healthBarFill = target.element.querySelector('.health-bar-fill');
-                if (healthBarFill) {
-                    healthBarFill.style.width = `${healthPercent}%`;
-                }
+                updateEnemyHealthBar(target);
                 
                 // Check if enemy is destroyed
                 if (target.health <= 0) {
@@ -951,8 +1146,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Add hit animation before removing
                         const hitEffect = document.createElement('div');
                         hitEffect.className = 'hit-effect';
-                        hitEffect.style.left = `${target.x - 15}px`;
-                        hitEffect.style.top = `${target.y - 15}px`;
+                        hitEffect.style.left = `${target.x}px`;
+                        hitEffect.style.top = `${target.y}px`;
                         gameCanvas.appendChild(hitEffect);
                         
                         setTimeout(() => {
@@ -980,145 +1175,265 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- UI & Game State Updates (Keep as is, including game over logic) ---
-    function updateUI() { scoreDisplay.textContent = score; healthDisplay.textContent = health; resourcesDisplay.textContent = resources; waveNumberDisplay.textContent = waveNumber > 0 ? waveNumber : '-'; updateTowerAffordability(); }
-    function displayRandomFact() { const fact = bloodFacts[Math.floor(Math.random() * bloodFacts.length)]; bloodFactDisplay.textContent = fact; }
-    function checkGameOver() { if (health <= 0 && gameRunning) { gameOver(); } }
-    function gameOver() {
-        gameRunning = false; isPaused = false; clearInterval(gameInterval); clearInterval(waveInterval);
-        finalScoreDisplay.textContent = score;
-        if (score > 500) { resultTitle.textContent = "Excellent Defense!"; resultIcon.className = "fas fa-trophy text-yellow-500 text-6xl"; resultMessage.textContent = `Incredible work! Score: ${score}.`; }
-        else if (score > 200) { resultTitle.textContent = "Good Effort!"; resultIcon.className = "fas fa-shield-alt text-blue-500 text-6xl"; resultMessage.textContent = `Nice job! Score: ${score}.`; }
-        else { resultTitle.textContent = "Pathogens Overwhelmed!"; resultIcon.className = "fas fa-skull-crossbones text-red-500 text-6xl"; resultMessage.textContent = `Try again! Score: ${score}.`; }
-        // Cleanup
-        towers.forEach(t => { if(t.element) t.element.remove(); }); enemies.forEach(e => { if(e.element) e.element.remove(); }); projectiles.forEach(p => { if(p.element) p.element.remove(); });
-        towers = []; enemies = []; projectiles = [];
-        if(saveScoreBtn) { saveScoreBtn.disabled = false; saveScoreBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Score'; } // Reset button text
-        gameScreen.classList.add('hidden'); resultsScreen.classList.remove('hidden'); pauseMenu.classList.add('hidden');
+    // --- UI & Game State Updates ---
+    function updateUI() { 
+        if (scoreDisplay) scoreDisplay.textContent = score; 
+        if (healthDisplay) healthDisplay.textContent = health; 
+        if (resourcesDisplay) resourcesDisplay.textContent = resources; 
+        if (waveNumberDisplay) waveNumberDisplay.textContent = waveNumber > 0 ? waveNumber : '-'; 
+        updateTowerAffordability(); 
     }
-    function pauseGame() {
-        if (!gameRunning || isPaused) return; isPaused = true; // Set paused flag
-        pauseButton.innerHTML = '<i class="fas fa-play mr-1"></i> Resume Game'; // Update button text/icon
-        pauseMenu.classList.remove('hidden');
-        const modal = pauseMenu.querySelector('.animate-fade-in-up'); // Animate modal
-        if (modal) { modal.style.opacity = '0'; modal.style.transform = 'scale(0.95) translateY(10px)'; requestAnimationFrame(() => { modal.style.opacity = '1'; modal.style.transform = 'scale(1) translateY(0)'; }); }
+    
+    function displayRandomFact() { 
+        const fact = bloodFacts[Math.floor(Math.random() * bloodFacts.length)]; 
+        if (bloodFactDisplay) bloodFactDisplay.textContent = fact; 
     }
-    function resumeGame() {
-        if (!gameRunning || !isPaused) return; isPaused = false; // Unset paused flag
-        pauseButton.innerHTML = '<i class="fas fa-pause mr-1"></i> Pause Game'; // Reset button
-        pauseMenu.classList.add('hidden');
+    
+    function checkGameOver() { 
+        if (health <= 0 && gameRunning) { 
+            gameOver(); 
+        } 
     }
-     function restartGame() { gameOver(); resultsScreen.classList.add('hidden'); gameScreen.classList.remove('hidden'); initializeGame(); } // Directly initialize
-     function quitGame() { gameOver(); }
 
-    // --- Score Saving & Badge Notification (Keep as is) ---
+    function gameOver() {
+        gameRunning = false; 
+        isPaused = false; 
+        clearInterval(gameInterval); 
+        clearInterval(waveInterval);
+        
+        if (finalScoreDisplay) finalScoreDisplay.textContent = score;
+        
+        if (score > 500) { 
+            if (resultTitle) resultTitle.textContent = "Excellent Defense!"; 
+            if (resultIcon) resultIcon.className = "fas fa-trophy text-yellow-500 text-6xl"; 
+            if (resultMessage) resultMessage.textContent = `Incredible work! Score: ${score}.`; 
+        }
+        else if (score > 200) { 
+            if (resultTitle) resultTitle.textContent = "Good Effort!"; 
+            if (resultIcon) resultIcon.className = "fas fa-shield-alt text-blue-500 text-6xl"; 
+            if (resultMessage) resultMessage.textContent = `Nice job! Score: ${score}.`; 
+        }
+        else { 
+            if (resultTitle) resultTitle.textContent = "Pathogens Overwhelmed!"; 
+            if (resultIcon) resultIcon.className = "fas fa-skull-crossbones text-red-500 text-6xl"; 
+            if (resultMessage) resultMessage.textContent = `Try again! Score: ${score}.`; 
+        }
+        
+        // Cleanup
+        towers.forEach(t => { if(t.element) t.element.remove(); }); 
+        enemies.forEach(e => { if(e.element) e.element.remove(); }); 
+        projectiles.forEach(p => { if(p.element) p.element.remove(); });
+        towers = []; 
+        enemies = []; 
+        projectiles = [];
+        
+        if(saveScoreBtn) { 
+            saveScoreBtn.disabled = false; 
+            saveScoreBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Score'; 
+        }
+        
+        if (gameScreen) gameScreen.classList.add('hidden');
+        if (resultsScreen) resultsScreen.classList.remove('hidden');
+        if (pauseMenu) pauseMenu.classList.add('hidden');
+    }
+    
+    function pauseGame() {
+        if (!gameRunning || isPaused) return; 
+        isPaused = true;
+        
+        if (pauseButton) pauseButton.innerHTML = '<i class="fas fa-play mr-1"></i> Resume Game';
+        if (pauseMenu) pauseMenu.classList.remove('hidden');
+        
+        const modal = pauseMenu ? pauseMenu.querySelector('.animate-fade-in-up') : null;
+        if (modal) { 
+            modal.style.opacity = '0'; 
+            modal.style.transform = 'scale(0.95) translateY(10px)'; 
+            requestAnimationFrame(() => { 
+                modal.style.opacity = '1'; 
+                modal.style.transform = 'scale(1) translateY(0)'; 
+            }); 
+        }
+    }
+    
+    function resumeGame() {
+        if (!gameRunning || !isPaused) return; 
+        isPaused = false;
+        
+        if (pauseButton) pauseButton.innerHTML = '<i class="fas fa-pause mr-1"></i> Pause Game';
+        if (pauseMenu) pauseMenu.classList.add('hidden');
+    }
+    
+    function restartGame() { 
+        gameOver(); 
+        if (resultsScreen) resultsScreen.classList.add('hidden'); 
+        if (gameScreen) gameScreen.classList.remove('hidden'); 
+        initializeGame(); 
+    }
+    
+    function quitGame() { 
+        gameOver(); 
+    }
+
+    // --- Score Saving & Leaderboard ---
     function saveScore() {
         if (!userLoggedIn || !saveScoreBtn || saveScoreBtn.disabled) return;
-        saveScoreBtn.disabled = true; saveScoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
-        fetch('save_score.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', }, body: `score=${score}&user_id=${userId}&game=blood_cell_defenders` })
+        
+        saveScoreBtn.disabled = true; 
+        saveScoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+        
+        fetch('save_score.php', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, 
+            body: `score=${score}&user_id=${userId}&game=blood_cell_defenders` 
+        })
         .then(response => response.ok ? response.json() : Promise.reject('Save failed'))
         .then(data => {
-            if (data.success) { saveScoreBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Score Saved!'; fetchLeaderboard(); if (data.new_badges && data.new_badges.length > 0) { showBadgeNotification(data.new_badges); } }
-            else { saveScoreBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Error Saving'; console.error('Error saving score:', data.error); setTimeout(() => { if(saveScoreBtn) { saveScoreBtn.disabled = false; saveScoreBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Score'; } }, 2000); }
+            if (data.success) { 
+                saveScoreBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Score Saved!'; 
+                fetchLeaderboard(); 
+                if (data.new_badges && data.new_badges.length > 0) { 
+                    showBadgeNotification(data.new_badges); 
+                } 
+            }
+            else { 
+                saveScoreBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Error Saving'; 
+                console.error('Error saving score:', data.error); 
+                setTimeout(() => { 
+                    if(saveScoreBtn) { 
+                        saveScoreBtn.disabled = false; 
+                        saveScoreBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Score'; 
+                    } 
+                }, 2000); 
+            }
         })
-        .catch(error => { saveScoreBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Network Error'; console.error('Network Error:', error); setTimeout(() => { if(saveScoreBtn) { saveScoreBtn.disabled = false; saveScoreBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Score'; } }, 2000); });
+        .catch(error => { 
+            saveScoreBtn.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>Network Error'; 
+            console.error('Network Error:', error); 
+            setTimeout(() => { 
+                if(saveScoreBtn) { 
+                    saveScoreBtn.disabled = false; 
+                    saveScoreBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save Score'; 
+                } 
+            }, 2000);
+        });
     }
-    function showBadgeNotification(badges) { // Keep previous implementation
-         let container = document.getElementById('badge-notification');
-         if (!container) { container = document.createElement('div'); container.id = 'badge-notification'; container.className = 'fixed top-20 right-5 z-[100] w-80 space-y-3'; document.body.appendChild(container); }
-         const animateCSSLoaded = !!document.querySelector('link[href*="animate.min.css"]');
-         badges.forEach((badge, index) => {
-             const notification = document.createElement('div');
-             notification.className = `bg-white dark:bg-gray-800 shadow-xl rounded-lg p-4 border-l-4 border-yellow-400 dark:border-yellow-500 overflow-hidden transform transition-all duration-500 ${animateCSSLoaded ? 'animate__animated' : ''}`;
-             notification.style.opacity = '0'; notification.style.transform = 'translateX(100%)';
-             notification.innerHTML = `<div class="flex items-center"><div class="mr-3 flex-shrink-0 bg-yellow-400 dark:bg-yellow-500 rounded-full p-2 text-yellow-900 dark:text-white"><i class="fas ${badge.icon || 'fa-award'} text-xl"></i></div><div class="flex-grow"><h4 class="font-bold text-gray-900 dark:text-white">New Achievement!</h4><p class="text-sm text-gray-700 dark:text-gray-300">${badge.name}</p><p class="text-xs text-gray-500 dark:text-gray-400">${badge.description || ''}</p></div><button class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xl">×</button></div><a href="../dashboard/achievements.php" class="mt-2 text-xs text-blue-600 dark:text-blue-400 block text-right hover:underline">View Achievements</a>`;
-             const closeButton = notification.querySelector('button');
-             closeButton.onclick = () => { notification.style.transform = 'translateX(100%)'; notification.style.opacity = '0'; setTimeout(() => notification.remove(), 500); };
-             setTimeout(() => {
-                  container.appendChild(notification);
-                  requestAnimationFrame(() => { if (animateCSSLoaded) notification.classList.add('animate__fadeInRight'); notification.style.opacity = '1'; notification.style.transform = 'translateX(0)'; });
-                  setTimeout(() => { if (notification.parentElement) { if (animateCSSLoaded) { notification.classList.remove('animate__fadeInRight'); notification.classList.add('animate__fadeOutRight'); } else { notification.style.transform = 'translateX(100%)'; notification.style.opacity = '0'; } setTimeout(() => notification.remove(), 1000); } }, 6000 + index * 500);
-             }, index * 300);
-         });
+    
+    function showBadgeNotification(badges) {
+        // Display badge notification (implementation can be added here)
+        console.log("Earned badges:", badges);
     }
 
-    // --- Leaderboard Fetch (Modified for Table) ---
+    // --- Leaderboard Fetch ---
     function fetchLeaderboard() {
-        // Show skeleton loader rows
+        if (!leaderboardList) return;
+        
+        // Show skeleton loader rows with proper structure
         leaderboardList.innerHTML = Array(5).fill(0).map(() => `
-            <tr class="skeleton-item">
-                <td><div class="rank-skel"></div></td>
-                <td><div class="name-skel"></div></td>
-                <td class="score"><div class="score-skel"></div></td>
-            </tr>
+            <div class="leaderboard-item animate-pulse">
+                <div class="rank">-</div>
+                <div class="name">Loading...</div>
+                <div class="score">-</div>
+            </div>
         `).join('');
 
         fetch('get_leaderboard.php?game=blood_cell_defenders&limit=10')
         .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok.'))
         .then(data => {
             leaderboardList.innerHTML = ''; // Clear loader
+            
             if (data.length === 0) {
                 leaderboardList.innerHTML = `
-                    <tr>
-                        <td colspan="3" class="text-center text-gray-500 dark:text-gray-400 py-4">
-                            No scores recorded yet. Be the first!
-                        </td>
-                    </tr>`;
+                    <div class="leaderboard-item">
+                        <div class="rank">-</div>
+                        <div class="name">No scores yet</div>
+                        <div class="score">-</div>
+                    </div>`;
             } else {
                 data.forEach((item, index) => {
-                    const tr = document.createElement('tr');
+                    const leaderboardItem = document.createElement('div');
+                    leaderboardItem.className = 'leaderboard-item';
+                    
                     // Highlight current user
                     if (userLoggedIn && item.user_id == userId) {
-                        tr.classList.add('current-user');
+                        leaderboardItem.classList.add('current-user');
                     }
-                    // Use innerHTML to create cells easily
-                    tr.innerHTML = `
-                        <td>${index + 1}</td>
-                        <td>${item.name ? item.name : 'Anonymous'}</td>
-                        <td>${item.score}</td>
+                    
+                    // Use div elements with the appropriate class names
+                    leaderboardItem.innerHTML = `
+                        <div class="rank">${index + 1}</div>
+                        <div class="name">${item.name ? item.name : 'Anonymous'}</div>
+                        <div class="score">${item.score}</div>
                     `;
-                    leaderboardList.appendChild(tr);
+                    leaderboardList.appendChild(leaderboardItem);
                 });
             }
         })
         .catch(error => {
             console.error('Error fetching leaderboard:', error);
             leaderboardList.innerHTML = `
-                 <tr>
-                     <td colspan="3" class="text-center text-red-500 dark:text-red-400 py-4">
-                         <i class="fas fa-exclamation-triangle mr-2"></i>Could not load leaderboard.
-                     </td>
-                 </tr>`;
+                <div class="leaderboard-item">
+                    <div class="rank">-</div>
+                    <div class="name">Error loading leaderboard</div>
+                    <div class="score">-</div>
+                </div>`;
         });
     }
 
-    // --- Event Listeners (Keep as is) ---
-    startButton.addEventListener('click', () => { startScreen.classList.add('hidden'); gameScreen.classList.remove('hidden'); initializeGame(); });
-    pauseButton.addEventListener('click', () => { if (isPaused) resumeGame(); else pauseGame(); });
-    resumeButton.addEventListener('click', resumeGame);
-    restartButton.addEventListener('click', restartGame);
-    quitButton.addEventListener('click', quitGame);
-    playAgainBtn.addEventListener('click', () => { resultsScreen.classList.add('hidden'); startScreen.classList.remove('hidden'); }); // Go to start screen
-    if (saveScoreBtn) { saveScoreBtn.addEventListener('click', saveScore); }
-    gameCanvas.addEventListener('click', (e) => { if (!gameRunning || isPaused) return; const rect = gameCanvas.getBoundingClientRect(); const x = e.clientX - rect.left; const y = e.clientY - rect.top; placeTower(x, y); });
+    // --- Event Listeners ---
+    if (startButton) {
+        startButton.addEventListener('click', () => { 
+            console.log("Start button clicked");
+            if (startScreen) startScreen.classList.add('hidden'); 
+            if (gameScreen) gameScreen.classList.remove('hidden'); 
+            initializeGame(); 
+        });
+    } else {
+        console.error("Start button not found - game cannot be started!");
+    }
+    
+    if (pauseButton) pauseButton.addEventListener('click', () => { if (isPaused) resumeGame(); else pauseGame(); });
+    if (resumeButton) resumeButton.addEventListener('click', resumeGame);
+    if (restartButton) restartButton.addEventListener('click', restartGame);
+    if (quitButton) quitButton.addEventListener('click', quitGame);
+    if (playAgainBtn) playAgainBtn.addEventListener('click', () => { 
+        if (resultsScreen) resultsScreen.classList.add('hidden'); 
+        if (startScreen) startScreen.classList.remove('hidden'); 
+    });
+    if (saveScoreBtn) saveScoreBtn.addEventListener('click', saveScore);
+    
+    if (gameCanvas) {
+        gameCanvas.addEventListener('click', (e) => { 
+            if (!gameRunning || isPaused) return; 
+            const rect = gameCanvas.getBoundingClientRect(); 
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top; 
+            placeTower(x, y); 
+        });
+    } else {
+        console.error("Game canvas not found - cannot place towers!");
+    }
 
     // --- Initial Load ---
+    console.log("Loading initial game components...");
     renderTowerSelection();
     fetchLeaderboard();
 
-    // --- Resize Handler (Keep as is) ---
+    // --- Resize Handler ---
     let resizeTimeout;
     window.addEventListener('resize', () => {
-         clearTimeout(resizeTimeout);
-         resizeTimeout = setTimeout(() => {
-             if (gameRunning || gameScreen.offsetParent !== null) { // Recalculate if game is running OR visible
-                 console.log("Window resized, recalculating path.");
-                 calculatePath();
-                 if(pathContainer) pathContainer.innerHTML = ''; // Clear old SVG
-                 drawPath(); // Redraw SVG path
-             }
-         }, 250);
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (gameRunning || (gameScreen && gameScreen.offsetParent !== null)) {
+                console.log("Window resized, recalculating path.");
+                calculatePath();
+                if(pathContainer) pathContainer.innerHTML = '';
+                drawPath();
+            }
+        }, 250);
     });
+    
+    // Display a message to let users know the game is ready
+    console.log("Blood Cell Defenders game ready to play!");
 });
 </script>
 

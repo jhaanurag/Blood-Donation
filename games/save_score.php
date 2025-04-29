@@ -114,7 +114,7 @@ try {
     
     // Check for knowledge badges if score was updated or newly inserted
     if ($scoreUpdated) {
-        $newBadges = check_knowledge_badges($user_id, $score);
+        $newBadges = check_knowledge_badges($user_id, $score, $game);
     }
     
     echo json_encode([

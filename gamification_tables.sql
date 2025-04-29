@@ -36,5 +36,16 @@ INSERT INTO badges (name, description, badge_type, icon, requirement_count) VALU
 ('Novice Learner', 'Score at least 5 points in a knowledge game', 'knowledge', 'fa-book', 5),
 ('Blood Expert', 'Score at least 8 points in a knowledge game', 'knowledge', 'fa-graduation-cap', 8),
 ('Perfect Score', 'Score 10/10 in a knowledge game', 'knowledge', 'fa-star', 10),
-('Community Builder', 'Refer your first friend', 'referral', 'fa-user-plus', 1),
-('Influencer', 'Refer 5 friends', 'referral', 'fa-users', 5);
+('Helpful Friend', 'Refer 1 friend who completes a donation', 'referral', 'fa-user-friends', 1),
+('Community Builder', 'Refer 5 friends who complete donations', 'referral', 'fa-users', 5),
+('Donation Ambassador', 'Refer 10 friends who complete donations', 'referral', 'fa-certificate', 10),
+
+-- New badges for Blood Cell Defenders game
+('Cell Defender Rookie', 'Score at least 5 points in Blood Cell Defenders game', 'knowledge', 'cell_defender_rookie.svg', 5),
+('Cell Defender Pro', 'Score at least 8 points in Blood Cell Defenders game', 'knowledge', 'cell_defender_pro.svg', 8),
+('Cell Defender Master', 'Get a perfect score in Blood Cell Defenders game', 'knowledge', 'cell_defender_master.svg', 10),
+
+-- New badges for Blood Word Guess game
+('Word Guess Beginner', 'Score at least 5 points in Blood Word Guess game', 'knowledge', 'word_guess_beginner.svg', 5),
+('Word Guess Expert', 'Score at least 8 points in Blood Word Guess game', 'knowledge', 'word_guess_expert.svg', 8),
+('Word Guess Champion', 'Get a perfect score in Blood Word Guess game', 'knowledge', 'word_guess_champion.svg', 10);

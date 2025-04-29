@@ -6,27 +6,197 @@ include_once '../includes/db.php';
 $user_logged_in = isset($_SESSION['donor_id']);
 $user_name = $user_logged_in ? $_SESSION['donor_name'] : '';
 $user_id = $user_logged_in ? $_SESSION['donor_id'] : '';
+
+// Set a session variable to indicate we're in the word guess game section
+$_SESSION['theme_active'] = 'word-game-theme';
+
+// Add JavaScript to apply theme
+echo '<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add theme class to body when entering this page
+        document.body.classList.add("word-game-theme");
+        
+        // Store theme preference in sessionStorage
+        sessionStorage.setItem("activeTheme", "word-game-theme");
+        
+        // Add theme class to navbar
+        const navbar = document.querySelector("nav");
+        if (navbar) navbar.classList.add("word-game-navbar");
+    });
+    
+    // Remove theme when leaving page
+    window.addEventListener("beforeunload", function() {
+        sessionStorage.removeItem("activeTheme");
+    });
+</script>';
 ?>
 
 <style>
-/* Fix for navigation bar buttons - MODIFIED to ensure proper display of all menu items */
-nav .hidden.md\:flex {
-    display: flex !important;
+/* MightySouly Font Face Declaration */
+@font-face {
+    font-family: 'MightySouly';
+    src: url('../assets/fonts/MightySouly-lxggD.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
-nav .md\:hidden {
-    display: none !important;
+
+/* Word Game Theme Styles - Applied when body has the word-game-theme class */
+body.word-game-theme {
+    background: linear-gradient(135deg, #4c1d95, #7e22ce) !important;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-nav .md\:block {
-    display: block !important;
+
+body.word-game-theme nav {
+    background: linear-gradient(to right, #4c1d95, #6d28d9) !important;
+    border-bottom: 3px solid #c4b5fd !important;
 }
-/* Ensure dropdown menus appear properly - MODIFIED to not force display: block */
-nav #hamburger-dropdown {
-    /* Remove the forced display property */
-    z-index: 50;
+
+body.word-game-theme nav a {
+    color: #fff !important;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
 }
-nav #mobile-menu:not(.hidden) {
-    display: block !important;
+
+body.word-game-theme nav button {
+    background-color: #c4b5fd !important;
+    border-color: #a78bfa !important;
 }
+
+body.word-game-theme h1, 
+body.word-game-theme h2, 
+body.word-game-theme .score-display,
+body.word-game-theme button,
+body.word-game-theme .leaderboard-container h2 {
+    font-family: 'MightySouly', 'Arial Rounded MT Bold', 'Segoe UI', sans-serif;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+/* Word Game Theme Color Scheme */
+.word-game-theme {
+    --primary-light: #6366F1; /* Bright indigo */
+    --primary-dark: #4F46E5; /* Deep indigo */
+    --accent-light: #F97316; /* Coral orange */
+    --accent-dark: #EA580C; /* Deep coral */
+    --secondary: #EC4899; /* Pink */
+    --success: #22C55E; /* Green */
+    --danger: #EF4444; /* Red */
+    --light-bg1: #F5F3FF;
+    --light-bg2: #EDE9FE;
+    --dark-bg1: #121212; /* Neutral dark */
+    --dark-bg2: #1E1E1E; /* Slightly lighter neutral */
+    --card-light: rgba(255, 255, 255, 0.95);
+    --card-dark: #252525; /* Card dark background */
+    --text-light: #1F2937;
+    --text-dark: #F9FAFB;
+}
+
+/* Word Game Theme Button Styling */
+.word-game-theme .btn {
+    background: linear-gradient(to bottom, var(--primary-light), var(--primary-dark));
+    border: 2px solid #6d28d9;
+    box-shadow: 0 3px 0 #5b21b6, 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: all 0.2s;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+}
+
+.word-game-theme .btn:hover {
+    background: linear-gradient(to bottom, #9d5cf7, #8550f3);
+    transform: translateY(-1px);
+}
+
+.word-game-theme .btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #5b21b6;
+}
+
+.word-game-theme .btn-secondary {
+    background: linear-gradient(to bottom, var(--accent-light), var(--accent-dark));
+    border: 2px solid #8b5cf6;
+    box-shadow: 0 3px 0 #7c3aed, 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.word-game-theme .btn-secondary:hover {
+    background: linear-gradient(to bottom, #d8cbfd, #cabcfc);
+}
+
+/* Special styling for key items on the keyboard in the word game theme */
+.word-game-theme .key {
+    font-family: 'MightySouly', sans-serif;
+    font-size: 1.2rem;
+    background-color: #8b5cf6;
+    color: white;
+    border: 2px solid #7c3aed;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 0 #6d28d9, 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.word-game-theme .key:hover {
+    background-color: #9d6df7;
+    transform: translateY(-2px);
+}
+
+.word-game-theme .key:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 #6d28d9;
+}
+
+.word-game-theme .key.used {
+    background-color: #d1d5db;
+    border-color: #9ca3af;
+    color: #4b5563;
+}
+
+.word-game-theme .key.correct {
+    background-color: #34d399;
+    border-color: #10b981;
+    color: white;
+}
+
+.word-game-theme .key.incorrect {
+    background-color: #f87171;
+    border-color: #ef4444;
+    color: white;
+}
+
+.word-game-theme .dark .key {
+    background-color: #7c3aed;
+    border-color: #6d28d9;
+}
+
+.word-game-theme .dark .key:hover {
+    background-color: #8b5cf6;
+}
+
+/* Enhanced letter box styling for word game */
+.word-game-theme .letter-box {
+    font-family: 'MightySouly', sans-serif;
+    border: 3px solid #a78bfa;
+    background-color: rgba(196, 181, 253, 0.1);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+}
+
+.word-game-theme .letter-box.revealed {
+    background-color: #8b5cf6;
+    border-color: #7c3aed;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+}
+
+/* Fix for navigation bar buttons (Keep these as they are essential) */
+nav .hidden.md\:flex { display: flex !important; }
+nav .md\:hidden { display: none !important; }
+nav .md\:block { display: block !important; }
+nav #hamburger-dropdown:not(.hidden) { display: block !important; }
+nav #mobile-menu:not(.hidden) { display: block !important; }
 
 /* Game specific styles */
 .game-container {
@@ -1428,6 +1598,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
 
 // Add navigation and dark mode toggle functionality 
 document.addEventListener('DOMContentLoaded', function() { 

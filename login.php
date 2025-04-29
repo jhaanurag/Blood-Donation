@@ -96,17 +96,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 include_once 'includes/header.php';
 ?>
 
-<div class="bg-gray-100 dark:bg-gray-900 min-h-screen py-12">
+<div class="bg-gray-100 dark:bg-[#121212] min-h-screen py-12">
     <div class="container mx-auto px-4">
-        <div class="max-w-md mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
-            <h2 class="text-2xl font-bold text-center text-red-600 dark:text-red-400 mb-6">Login to Your Donor Account</h2>
+        <div class="max-w-md mx-auto bg-white dark:bg-[#252525] p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-center text-primary-dark dark:text-primary-light mb-6">Login to Your Donor Account</h2>
 
             <?php echo display_alerts(); ?>
 
             <?php
             // Display any errors
             if (!empty($errors)) {
-                echo '<div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded relative mb-4" role="alert">';
+                echo '<div class="bg-red-100 dark:bg-red-900 border border-danger dark:border-red-700 text-danger dark:text-red-200 px-4 py-3 rounded relative mb-4" role="alert">';
                 echo '<ul class="list-disc list-inside">';
                 foreach ($errors as $error) {
                     echo '<li>' . htmlspecialchars($error) . '</li>';
@@ -123,31 +123,33 @@ include_once 'includes/header.php';
 
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="email">Email Address</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:focus:ring-red-400 dark:bg-gray-700 dark:text-white"
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-light dark:bg-gray-800 dark:text-white"
                            type="email" name="email" id="email" value="<?php echo htmlspecialchars($email); ?>" required>
                 </div>
 
                 <div class="mb-6">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="password">Password</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:focus:ring-red-400 dark:bg-gray-700 dark:text-white"
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-light dark:bg-gray-800 dark:text-white"
                            type="password" name="password" id="password" required>
-                    <div class="mt-1" id="password-strength-container">
-                        <div class="h-2 w-full bg-gray-200 dark:bg-gray-600 rounded-full">
-                            <div id="password-strength-meter" class="h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    <div class="flex justify-between mt-2">
+                        <div id="password-strength-container" class="w-3/4">
+                            <div class="h-2 w-full bg-gray-200 dark:bg-gray-600 rounded-full">
+                                <div id="password-strength-meter" class="h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="password-strength-text" class="text-xs mt-1 text-gray-600 dark:text-gray-300"></p>
                         </div>
-                        <p id="password-strength-text" class="text-xs mt-1 text-gray-600 dark:text-gray-300"></p>
+                        <p class="text-right text-sm"><a href="forgot_password.php" class="text-accent-dark dark:text-accent-light hover:underline">Forgot Password?</a></p>
                     </div>
-                    <p class="text-right text-sm mt-1"><a href="forgot_password.php" class="text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</a></p>
                 </div>
 
                 <div class="mb-6">
-                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50 dark:bg-red-700 dark:hover:bg-red-800 dark:focus:ring-red-400"
+                    <button class="w-full bg-primary-dark text-white py-2 px-4 rounded-md hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-opacity-50 dark:bg-primary-dark dark:hover:bg-primary-light dark:focus:ring-primary-light"
                             type="submit">Login</button>
                 </div>
 
                 <div class="text-center text-gray-600 dark:text-gray-300">
                     <p class="mb-2">
-                        Don't have an account? <a href="register.php" class="text-red-600 dark:text-red-400 hover:underline">Register here</a>
+                        Don't have an account? <a href="register.php" class="text-accent-dark dark:text-accent-light hover:underline">Register here</a>
                     </p>
                 </div>
             </form>
@@ -161,13 +163,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const strengthMeter = document.getElementById('password-strength-meter');
     const strengthText = document.getElementById('password-strength-text');
     
-    // Colors for different strength levels
+    // Colors for different strength levels with new color theme
     const strengthColors = {
-        1: 'bg-red-500',   // Very weak
-        2: 'bg-orange-500', // Weak
-        3: 'bg-yellow-500', // Medium
-        4: 'bg-blue-500',   // Strong
-        5: 'bg-green-500'   // Very strong
+        1: 'bg-danger',   // Very weak - red
+        2: 'bg-accent-dark', // Weak - deep coral
+        3: 'bg-accent-light', // Medium - coral orange
+        4: 'bg-primary-light',   // Strong - bright indigo
+        5: 'bg-success'   // Very strong - green
     };
     
     // Password strength levels text descriptions

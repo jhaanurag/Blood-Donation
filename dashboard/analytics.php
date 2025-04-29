@@ -593,17 +593,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const getGridColor = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
         const getBorderColor = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(45, 55, 72, 1)' : 'rgba(255, 255, 255, 1)'; // For Pie/Doughnut
 
-        // Chart Colors (Define some palettes)
-        const primaryColor = 'rgba(220, 38, 38, <alpha>)'; // Red
-        const secondaryColor = 'rgba(54, 162, 235, <alpha>)'; // Blue
-        const tertiaryColor = 'rgba(75, 192, 192, <alpha>)'; // Green/Teal
-        const accentColor = 'rgba(255, 159, 64, <alpha>)'; // Orange
+        // Chart Colors (Updated to indigo/coral theme)
+        const primaryColor = 'rgba(79, 70, 229, <alpha>)'; // Indigo primary
+        const secondaryColor = 'rgba(99, 102, 241, <alpha>)'; // Lighter indigo
+        const accentColor = 'rgba(251, 113, 133, <alpha>)'; // Coral accent
+        const tertiaryColor = 'rgba(244, 114, 182, <alpha>)'; // Lighter coral
 
         const pieColors = [
-            '#e53e3e', '#f56565', '#fc8181', '#feb2b2',
-            '#dd6b20', '#f6ad55', '#fbd38d', '#9c4221' // Adjust as needed
+            '#4F46E5', '#6366F1', '#818CF8', '#A5B4FC', 
+            '#FB7185', '#FDA4AF', '#FEA3B4', '#FECDD3' // Indigo and coral variants
         ];
-         const genderColors = [primaryColor.replace('<alpha>', '0.7'), secondaryColor.replace('<alpha>', '0.7'), tertiaryColor.replace('<alpha>', '0.7')];
+        const genderColors = [primaryColor.replace('<alpha>', '0.7'), accentColor.replace('<alpha>', '0.7'), tertiaryColor.replace('<alpha>', '0.7')];
 
 
         // --- Initialize Charts ---
@@ -677,15 +677,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         {
                             label: 'New Donors',
                             data: <?php echo json_encode($donor_trend_new_data); ?>,
-                            borderColor: secondaryColor.replace('<alpha>', '1'),
-                            backgroundColor: secondaryColor.replace('<alpha>', '0.1'),
+                            borderColor: primaryColor.replace('<alpha>', '1'),
+                            backgroundColor: primaryColor.replace('<alpha>', '0.1'),
                             borderWidth: 2, tension: 0.3, fill: true
                         },
                         {
                             label: 'Returning Donors',
                             data: <?php echo json_encode($donor_trend_returning_data); ?>,
-                            borderColor: tertiaryColor.replace('<alpha>', '1'),
-                            backgroundColor: tertiaryColor.replace('<alpha>', '0.1'),
+                            borderColor: accentColor.replace('<alpha>', '1'),
+                            backgroundColor: accentColor.replace('<alpha>', '0.1'),
                             borderWidth: 2, tension: 0.3, fill: true
                         }
                     ]
@@ -902,10 +902,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         {
                             label: 'Current Supply (Units)',
                             data: <?php echo json_encode($supply_data_radar); ?>,
-                            borderColor: tertiaryColor.replace('<alpha>', '1'),
-                            backgroundColor: tertiaryColor.replace('<alpha>', '0.3'),
+                            borderColor: primaryColor.replace('<alpha>', '1'),
+                            backgroundColor: primaryColor.replace('<alpha>', '0.3'),
                             borderWidth: 2,
-                            pointBackgroundColor: tertiaryColor.replace('<alpha>', '1')
+                            pointBackgroundColor: primaryColor.replace('<alpha>', '1')
                         },
                         {
                             label: 'Recent Demand (Requests)',

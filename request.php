@@ -82,13 +82,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+<div class="min-h-screen bg-gray-50 dark:bg-[#121212] py-12">
     <div class="container mx-auto px-4">
-        <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold text-center text-red-600 dark:text-red-400 mb-6">Request Blood</h1>
+        <div class="max-w-2xl mx-auto bg-white dark:bg-[#252525] rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-center text-primary-dark dark:text-primary-light mb-6">Request Blood</h1>
             
             <?php if ($success): ?>
-            <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-200 px-4 py-3 rounded relative mb-6" role="alert">
+            <div class="bg-green-100 dark:bg-green-900 border border-success dark:border-green-700 text-success dark:text-green-200 px-4 py-3 rounded relative mb-6" role="alert">
                 <p class="font-bold">Request Submitted Successfully!</p>
                 <p>We'll search for matching donors in your area and contact you soon.</p>
             </div>
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <?php 
             if (!empty($errors)) {
-                echo '<div class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 px-4 py-3 rounded relative mb-6" role="alert">';
+                echo '<div class="bg-red-100 dark:bg-red-900 border border-danger dark:border-red-700 text-danger dark:text-red-200 px-4 py-3 rounded relative mb-6" role="alert">';
                 echo '<ul class="list-disc list-inside">';
                 foreach ($errors as $error) {
                     echo '<li>' . htmlspecialchars($error) . '</li>';
@@ -111,13 +111,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="requester_name">Your Full Name</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white" 
                            type="text" name="requester_name" id="requester_name" value="<?php echo htmlspecialchars($requester_name); ?>" required>
                 </div>
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="blood_group">Blood Group Needed</label>
-                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
+                    <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white" 
                             name="blood_group" id="blood_group" required>
                         <option value="" disabled <?php echo empty($blood_group) ? 'selected' : ''; ?>>Select Blood Group</option>
                         <option value="A+" <?php echo $blood_group === 'A+' ? 'selected' : ''; ?>>A+</option>
@@ -133,25 +133,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="city">City</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white" 
                            type="text" name="city" id="city" value="<?php echo htmlspecialchars($city); ?>" required>
                 </div>
                 
                 <div class="mb-4">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="state">State</label>
-                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
+                    <input class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white" 
                            type="text" name="state" id="state" value="<?php echo htmlspecialchars($state); ?>" required>
                 </div>
                 
                 <div class="mb-6">
                     <label class="block text-gray-700 dark:text-gray-200 text-sm font-bold mb-2" for="message">Additional Details</label>
-                    <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-600 dark:bg-gray-800 dark:text-white" 
+                    <textarea class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:bg-gray-800 dark:text-white" 
                               name="message" id="message" rows="4"><?php echo htmlspecialchars($message); ?></textarea>
                     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Please provide any additional information that might help (urgency, hospital name, etc.)</p>
                 </div>
                 
                 <div class="flex justify-center">
-                    <button class="bg-red-600 dark:bg-red-700 text-white py-2 px-6 rounded-md hover:bg-red-700 dark:hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50" 
+                    <button class="bg-primary-dark text-white py-2 px-6 rounded-md hover:bg-primary-light dark:hover:bg-primary-light focus:outline-none focus:ring-2 focus:ring-primary-light focus:ring-opacity-50 transition duration-200" 
                             type="submit">Submit Request</button>
                 </div>
             </form>

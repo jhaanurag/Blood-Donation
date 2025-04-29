@@ -80,12 +80,14 @@ $dashboard_path = DASHBOARD_URL . '/';
                     </p>
                 </div>
                 
-                <div class="mt-4 md:mt-0 flex flex-col sm:flex-row gap-2">
-                    <a href="<?php echo $dashboard_url; ?>/profile.php" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2 px-4 rounded text-center">
-                        <i class="fas fa-user mr-1"></i> Edit Profile
+                <div class="mt-6 md:mt-0 flex flex-col sm:flex-row gap-3">
+                    <a href="<?php echo $dashboard_url; ?>/profile.php" class="bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-semibold py-2.5 px-4 rounded-lg border border-gray-300 dark:border-gray-600 text-center shadow-sm transition-all hover:shadow flex items-center justify-center">
+                        <i class="fas fa-user-edit mr-2 text-lg"></i> 
+                        <span>Edit Profile</span>
                     </a>
-                    <a href="<?php echo $dashboard_url; ?>/appointments.php" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded text-center">
-                        <i class="fas fa-calendar-plus mr-1"></i> Book Appointment
+                    <a href="<?php echo $dashboard_url; ?>/appointments.php" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-2.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center">
+                        <i class="fas fa-calendar-plus mr-2 text-lg"></i> 
+                        <span>Book Donation Appointment</span>
                     </a>
                 </div>
             </div>
@@ -217,7 +219,7 @@ $dashboard_path = DASHBOARD_URL . '/';
                                         <p class="font-semibold dark:text-white"><?php echo htmlspecialchars($request['requester_name']); ?> needs <?php echo htmlspecialchars($request['blood_group']); ?> blood</p>
                                         <p class="text-sm text-gray-600 dark:text-gray-400"><?php echo htmlspecialchars($request['city']) . ', ' . htmlspecialchars($request['state']); ?></p>
                                         <p class="text-sm text-gray-500 dark:text-gray-400 mt-1"><?php echo htmlspecialchars(substr($request['message'], 0, 100)) . (strlen($request['message']) > 100 ? '...' : ''); ?></p>
-                                        <a href="<?php echo $dashboard_path; ?>help_request.php?id=<?php echo $request['id']; ?>" class="mt-2 inline-block bg-red-600 text-white text-sm px-3 py-1 rounded hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600">I Can Help</a>
+                                        <a href="<?php echo $dashboard_path; ?>help_request.php?id=<?php echo $request['id']; ?>" class="mt-2 inline-block bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white text-sm px-3 py-1 rounded transition-all">I Can Help</a>
                                     </li>
                                 <?php endwhile; ?>
                             </ul>
@@ -238,7 +240,7 @@ $dashboard_path = DASHBOARD_URL . '/';
                                         <p class="font-semibold dark:text-white"><?php echo htmlspecialchars($camp['title']); ?></p>
                                         <p class="text-sm text-gray-600 dark:text-gray-400"><?php echo date("F j, Y", strtotime($camp['date'])); ?></p>
                                         <p class="text-sm text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($camp['location']); ?></p>
-                                        <a href="<?php echo $dashboard_path; ?>appointments.php?camp_id=<?php echo $camp['id']; ?>" class="mt-2 inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600">Book Appointment</a>
+                                        <a href="<?php echo $dashboard_path; ?>appointments.php?camp_id=<?php echo $camp['id']; ?>" class="mt-2 inline-block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm px-3 py-1 rounded transition-all">Book Appointment</a>
                                     </li>
                                 <?php endwhile; ?>
                             </ul>

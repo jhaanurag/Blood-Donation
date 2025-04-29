@@ -67,7 +67,7 @@ nav #mobile-menu:not(.hidden) {
     bottom: -4px !important;
     z-index: -1 !important;
     border-radius: inherit !important;
-    background: linear-gradient(135deg, #ff3e3e, #ffb700, #ff3e9d, #0066ff) !important;
+    background: linear-gradient(135deg, #6366F1, #4F46E5, #F97316, #EA580C) !important; /* Indigo to Coral */
     background-size: 300% 300% !important;
     opacity: 0 !important;
     transition: opacity 0.5s ease !important;
@@ -150,7 +150,7 @@ nav #mobile-menu:not(.hidden) {
 
 .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #f56565, #e53e3e);
+    background: linear-gradient(90deg, #6366F1, #F97316); /* Indigo to Coral */
     border-radius: 4px;
     transition: width 0.3s ease;
 }
@@ -450,7 +450,7 @@ nav #mobile-menu:not(.hidden) {
             </div>
             <h2 class="text-2xl font-bold mb-6 dark:text-white">Ready to Play?</h2>
             <p class="mb-8 text-gray-600 dark:text-gray-300">Answer 10 questions about blood donation and blood facts. For every correct answer, the heart beats faster!</p>
-            <button id="start-button" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-md">
+            <button id="start-button" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-md">
                 Start Challenge
             </button>
         </div>
@@ -476,7 +476,7 @@ nav #mobile-menu:not(.hidden) {
                 </div>
             </div>
             <div class="text-center">
-                <button id="next-button" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-md">
+                <button id="next-button" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition shadow-md">
                     Next Question
                 </button>
             </div>
@@ -491,12 +491,12 @@ nav #mobile-menu:not(.hidden) {
             <div class="score-display text-3xl mb-6"><span id="final-score">0</span>/10</div>
             <p id="score-message" class="mb-6 text-gray-700 dark:text-gray-300">Great job! You know your blood facts!</p>
             <?php if($user_logged_in): ?>
-                <button id="save-score-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition shadow-md">
+                <button id="save-score-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition shadow-md">
                     Save Score to Leaderboard
                 </button>
             <?php else: ?>
             <div class="mb-6 text-gray-700 dark:text-gray-300">
-                <p><a href="<?php echo $base_url; ?>login.php" class="text-red-600 dark:text-red-400 underline">Log in</a> to save your score to the leaderboard!</p>
+                <p><a href="<?php echo $base_url; ?>login.php" class="text-orange-600 dark:text-orange-400 underline">Log in</a> to save your score to the leaderboard!</p>
             </div>
             <?php endif; ?>
             
@@ -511,9 +511,10 @@ nav #mobile-menu:not(.hidden) {
                     <i class="fab fa-whatsapp"></i> Share
                 </button>
             </div>
+            
             <div class="mt-8">
-                <button id="play-again-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-md">
-                    Play Again
+                <button id="play-again-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition shadow-md">
+                    <i class="fas fa-redo mr-2"></i> Play Again
                 </button>
             </div>
         </div>

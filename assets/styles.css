@@ -11,6 +11,56 @@
     }
 }
 
+/* Root variables for the indigo and coral theme */
+:root {
+    --primary-light: #6366F1; /* Bright indigo */
+    --primary-dark: #4F46E5; /* Deep indigo */
+    --accent-light: #F97316; /* Coral orange */
+    --accent-dark: #EA580C; /* Deep coral */
+    --secondary: #EC4899; /* Pink for highlight elements */
+    --success: #22C55E; /* Green */
+    --danger: #EF4444; /* Keep red for alerts */
+    --light-bg1: #F9FAFB;
+    --light-bg2: #F3F4F6;
+    --dark-bg1: #121212; /* Nearly black, neutral base */
+    --dark-bg2: #1E1E1E; /* Slightly lighter neutral */
+    --card-dark: #252525; /* Card background */
+    --text-light: #1F2937;
+    --text-dark: #F9FAFB;
+    --border-light: #E5E7EB;
+    --border-dark: #374151;
+}
+
+/* --- Animation & Utility Styles --- */
+/* Initial state: Hidden and moved down (or left for left-to-right) */
+.animate-on-scroll {
+    opacity: 0;
+    /* Original: Slide up */
+    /* transform: translateY(20px); */
+
+    /* NEW: Slide from left */
+    transform: translateX(-30px); /* Start 30px to the left */
+
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* Use ease-out for a smoother finish */
+    /* Add will-change for potential performance boost (use sparingly) */
+    will-change: opacity, transform;
+}
+
+/* Final state: Visible and in original position */
+.animate-on-scroll.visible {
+    opacity: 1;
+    /* Original: Slide up */
+    /* transform: translateY(0); */
+
+    /* NEW: Slide from left */
+    transform: translateX(0); /* Move to final horizontal position */
+}
+
+/* Optional: Add staggered delays directly in HTML or via JS */
+/* Example CSS for delays (better to add inline style via JS/HTML if dynamic) */
+/* .animate-on-scroll:nth-child(2) { transition-delay: 100ms; } */
+/* .animate-on-scroll:nth-child(3) { transition-delay: 200ms; } */
+
 * {
     animation: perspec 0.4s ease forwards;
     
@@ -22,26 +72,26 @@
     left: 0;
     width: 50px; /* Adjust size as needed */
     height: 50px; /* Adjust size as needed */
-    background-color: rgba(255, 0, 0, 0.24); /* White with some transparency */
+    background-color: rgba(99, 102, 241, 0.24); /* Indigo with transparency */
     border-top-right-radius: 70%;
     border-bottom-left-radius: 70%;
     border-bottom-right-radius: 70%;
     pointer-events: none; /* Ignore mouse events on the blob itself */
     z-index: 9999; /* Ensure it's on top */
     filter: blur(2px);
-    transition: top 0.1s ease-out, left 0.1s ease-out, opacity 0.2s; /* Add this */
-    will-change: top, left, opacity; /* Add this */
+    transition: top 0.1s ease-out, left 0.1s ease-out, opacity 0.2s;
+    will-change: top, left, opacity; 
     opacity: 0; /* Start hidden */
     backdrop-filter: blur(1px);
-    box-shadow: 0 0 40px rgba(255, 0, 0, 0.39);
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.39);
     transform: translate(-50%, -50%);
 }
 
 /* todo: add subtle move up animattion with transtion */
 
 html.dark #mouse-follower {
-    background-color: rgba(255, 69, 69, 0.3); /* Darker red with some transparency for dark mode */
-    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
+    background-color: rgba(99, 102, 241, 0.3); /* Darker indigo with transparency for dark mode */
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
 }
 
 *:hover #mouse-follower {
@@ -114,27 +164,21 @@ html.dark .rounded-lg:hover {
 .donor-info .container .grid [class*="bg-gray-"]:hover,
 .container .grid .blood-type-box:hover {
     transform: translateY(-5px) scale(1.02);
-    /* Modified shadow to create edge glow without center light source */
+    /* Modified shadow to create edge glow with indigo theme */
     box-shadow: 
-        0 0 0 3px rgba(220, 38, 38, 0.25), 
-        0 0 12px 2px rgba(255, 0, 0, 0.25),
+        0 0 0 3px rgba(99, 102, 241, 0.25), 
+        0 0 12px 2px rgba(99, 102, 241, 0.25),
         0 10px 20px -5px rgba(0, 0, 0, 0.2);
 }
 
 /* Dark mode version of the hover effect for small blood type boxes */
-/* html.dark .container .grid .bg-white::before, 
-html.dark .container .grid [class*="bg-gray-"]::before {
-    background: radial-gradient(circle at center, rgba(255, 60, 60, 0.45) 0%, rgba(255, 40, 40, 0) 70%);
-    filter: blur(10px);
-} */
-
 html.dark .donor-info .container .grid .bg-white:hover, 
 html.dark .donor-info .container .grid [class*="bg-gray-"]:hover,
 html.dark .container .grid .blood-type-box:hover {
     /* Edge glow effect in dark mode */
     box-shadow: 
-        0 0 0 3px rgba(248, 113, 113, 0.3),
-        0 0 12px 3px rgba(255, 40, 40, 0.35),  
+        0 0 0 3px rgba(99, 102, 241, 0.3),
+        0 0 12px 3px rgba(99, 102, 241, 0.35),  
         0 10px 20px -5px rgba(0, 0, 0, 0.4);
 }
 
@@ -152,29 +196,36 @@ body, nav, div, main, footer, a, button, input, select, textarea {
     transform: rotate(45deg);
 }
 
-/* Form inputs in dark mode */
-html.dark input, 
-html.dark select, 
-html.dark textarea {
-    background-color: #374151;
-    border-color: #4B5563;
-    color: #F9FAFB;
+/* Form inputs focus states */
+input:focus, 
+select:focus, 
+textarea:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    outline: none;
 }
 
+/* Dark mode form input focus states */
 html.dark input:focus, 
 html.dark select:focus, 
 html.dark textarea:focus {
-    border-color: #991B1B;
-    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+/* Focus outline for accessibility */
+:focus {
+    outline: 2px solid rgba(99, 102, 241, 0.5);
+    outline-offset: 2px;
 }
 
 /* Links in dark mode */
 html.dark a:not([class]) {
-    color: #fb7185;
+    color: var(--accent-light);
 }
 
 html.dark a:not([class]):hover {
-    color: #f43f5e;
+    color: var(--accent-dark);
 }
 
 /* Tables in dark mode */
@@ -182,19 +233,13 @@ html.dark table {
     border-color: #374151;
 }
 
-/* Focus outline for dark mode accessibility */
-html.dark :focus {
-    outline: 2px solid rgba(239, 68, 68, 0.6);
-    outline-offset: 2px;
-}
-
 /* Buttons in dark mode */
 html.dark .btn-primary {
-    background-color: #991B1B;
+    background-color: var(--primary-dark);
 }
 
 html.dark .btn-primary:hover {
-    background-color: #7F1D1D;
+    background-color: var(--primary-light);
 }
 
 /* Placeholder text in dark mode */
@@ -291,23 +336,14 @@ html.dark .border-red-200 {
 
 .donor-search-table tbody tr:hover {
     transform: translateY(-4px) scale(1.01);
-    background-color: rgba(255, 240, 240, 0.2); /* Subtle highlight color */
-    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 0, 0, 0.05);
+    background-color: rgba(99, 102, 241, 0.1); /* Subtle indigo highlight */
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(99, 102, 241, 0.15);
     z-index: 2; /* Ensures the row appears above others when hovering */
 }
 
 html.dark .donor-search-table tbody tr:hover {
-    background-color: rgba(255, 50, 50, 0.1); /* Subtle red tint for dark mode */
-    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 50, 50, 0.1);
-}
-
-/* Add slight delay to the first and last cells for a more dynamic effect */
-.donor-search-table tbody tr td:first-child {
-    transition-delay: 0.05s;I
-}
-
-.donor-search-table tbody tr td:last-child {
-    transition-delay: 0.1s;
+    background-color: rgba(99, 102, 241, 0.15); /* Subtle indigo tint for dark mode */
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(99, 102, 241, 0.2);
 }
 
 /* Blood type label enhanced hover effect */
@@ -317,7 +353,7 @@ html.dark .donor-search-table tbody tr:hover {
 
 .donor-search-table tbody tr:hover .blood-type-label {
     transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
 /* Card Base Styles */
@@ -332,17 +368,10 @@ html.dark .donor-search-table tbody tr:hover {
     transition: transform 0.5s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
-/* Dark mode for the card */
-.dark .card {
-    background: linear-gradient(135deg, #232336 80%, #181825 100%);
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
-    border: 1px solid #232336;
-}
-
 /* Card hover effect */
 .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
 }
 
 /* Gradient overlay effect */
@@ -353,7 +382,7 @@ html.dark .donor-search-table tbody tr:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, transparent 50%);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
     z-index: -1;
     transition: opacity 0.5s ease;
     opacity: 0;
@@ -578,20 +607,73 @@ html.dark #mobile-menu.show {
 }
 
 #mobile-menu a:hover {
-  background-color: rgba(239, 68, 68, 0.2);
+  background-color: rgba(99, 102, 241, 0.2);
 }
 
-/* Hide scrollbar while keeping scroll functionality for mobile menu */
-#mobile-menu::-webkit-scrollbar {
-  display: none;
+/* Improved background transitions for better blending */
+body {
+    background-color: white;
+    transition: background-color 0.3s ease;
 }
 
-#mobile-menu {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+html.dark body {
+    background-color: #111827; /* Consistent with gray-900 */
 }
 
-/* Ensure the navbar container position is relative for absolute positioning of mobile menu */
-nav, .navbar-container {
-  position: relative;
+/* Section background transitions */
+.section-gradient-light {
+    background-image: linear-gradient(to bottom, #f9fafb, #ffffff);
+}
+
+.section-gradient-dark {
+    background-image: linear-gradient(to bottom, #1f2937, #111827);
+}
+
+.section-gradient-reverse-light {
+    background-image: linear-gradient(to bottom, #ffffff, #f9fafb);
+}
+
+.section-gradient-reverse-dark {
+    background-image: linear-gradient(to bottom, #111827, #1f2937);
+}
+
+/* Box style improvements */
+.bg-content-box {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+html.dark .bg-content-box {
+    background-color: #1f2937; /* gray-800 */
+    border: 1px solid #374151; /* gray-700 */
+}
+
+/* Button improvements */
+.btn-gradient-primary {
+    background-image: linear-gradient(to right, #6366f1, #4f46e5);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient-primary:hover {
+    background-image: linear-gradient(to right, #4f46e5, #4338ca);
+}
+
+.btn-gradient-red {
+    background-image: linear-gradient(to right, #ef4444, #dc2626);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient-red:hover {
+    background-image: linear-gradient(to right, #dc2626, #b91c1c);
+}
+
+.btn-gradient-blue {
+    background-image: linear-gradient(to right, #3b82f6, #2563eb);
+    transition: all 0.3s ease;
+}
+
+.btn-gradient-blue:hover {
+    background-image: linear-gradient(to right, #2563eb, #1d4ed8);
 }
